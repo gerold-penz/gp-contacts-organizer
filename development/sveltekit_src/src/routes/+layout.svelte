@@ -8,7 +8,12 @@
     const {children} = $props()
 
     onMount(async () => {
-        await import("bootstrap")
+        const {Tooltip, Collapse} = await import("bootstrap")
+
+        // Tooltips aktivieren
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((tooltipTriggerEl) => {
+            new Tooltip(tooltipTriggerEl)
+        })
     })
 </script>
 

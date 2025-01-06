@@ -1,9 +1,20 @@
+<script lang="ts">
+  // import {page} from "$app/state"
+</script>
+
+
 <header>
 
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
 
-      <a class="navbar-brand" href="/">GP Address Butler</a>
+      <a
+        href="/"
+        class="navbar-brand"
+        data-bs-toggle="tooltip"
+        data-bs-title="Go to start page"
+        data-bs-placement="bottom"
+      >Address Butler</a>
 
 <!--      <button-->
 <!--        class="navbar-toggler"-->

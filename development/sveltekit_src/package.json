@@ -12,6 +12,7 @@
 		"preview": "bun run --bun vite preview --host=0.0.0.0"
 	},
 	"devDependencies": {
+		"@fontsource/ubuntu": "^5.1.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/bootstrap": "^5.2.10",
