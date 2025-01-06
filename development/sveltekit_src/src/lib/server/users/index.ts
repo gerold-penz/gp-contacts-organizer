@@ -11,6 +11,8 @@ const db = new BunSqliteKeyValue(BSKV_USERS_PATH)
 export namespace Users {
 
     export function get(userUuid?: string, username?: string): User | undefined {
+        console.debug(`server.users.Users.get(${userUuid}, ${username})`)
+
         if (userUuid) {
             return db.get<User>(userUuid)
         } else if (username) {
@@ -22,6 +24,8 @@ export namespace Users {
 
 
     export function set(user: User) {
+        console.debug(`server.users.Users.set(${user.username})`)
+
         db.set<User>(user.userUuid, user)
         const usernameTag = "username:" + user.username
         db.addTag(user.userUuid, usernameTag)

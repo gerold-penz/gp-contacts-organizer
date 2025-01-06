@@ -15,6 +15,7 @@ export namespace Sessions {
 
 
     export function create(userUuid: string): Session {
+        console.debug(`server.sessions.Sessions.create(${userUuid})`)
 
         const token = crypto.randomUUID()
         const session: Session = {
@@ -30,6 +31,8 @@ export namespace Sessions {
 
 
     export function validate(token: string): Session | undefined {
+        console.debug(`server.sessions.Sessions.validate(${token})`)
+
         const session = db.get<Session>(token)
         if (session === undefined) {
             return
@@ -50,9 +53,16 @@ export namespace Sessions {
 
 
     export function invalidate(token: string) {
+        console.debug(`server.sessions.Sessions.invalidate(${token})`)
+
         db.delete(token)
     }
 
+}
+
+
+export function getSessionTokenCookie(event: RequestEvent) {
+    return event.cookies.get(SESSION_COOKIE_NAME)
 }
 
 
@@ -69,3 +79,4 @@ export function setSessionTokenCookie(event: RequestEvent, token: string, expire
 export function deleteSessionTokenCookie(event: RequestEvent): void {
     event.cookies.delete(SESSION_COOKIE_NAME, {path: "/"})
 }
+

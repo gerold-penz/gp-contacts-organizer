@@ -13,6 +13,7 @@ export namespace Auth {
 
 
     export function register(username: string, password: string): User {
+        console.debug("server.auth.Auth.register()")
 
         // Check username
         username = username.trim()
@@ -54,6 +55,8 @@ export namespace Auth {
 
 
     export function login(username: string, password: string): User {
+        console.debug("server.auth.Auth.login()")
+
         const user = Users.get(undefined, username)
         if (!user) {
             throw new Error(USERNAME_NOT_EXISTS_ERROR)

@@ -1,12 +1,12 @@
 import type { Handle } from "@sveltejs/kit";
-import { SESSION_COOKIE_NAME } from "$lib/constants"
-import { Sessions, setSessionTokenCookie, deleteSessionTokenCookie } from "$lib/server/sessions"
+import { Sessions, setSessionTokenCookie, deleteSessionTokenCookie, getSessionTokenCookie } from "$lib/server/sessions"
 import { Users } from "$lib/server/users"
 
 
 export const handle: Handle = async ({event, resolve}) => {
-    const sessionToken = event.cookies.get(SESSION_COOKIE_NAME)
+    console.debug("hooks.server.handle()")
 
+    const sessionToken = getSessionTokenCookie(event)
     if (sessionToken) {
         event.locals.session = Sessions.validate(sessionToken)
         event.locals.user = Users.get(event.locals.session?.userUuid)
@@ -24,5 +24,5 @@ export const handle: Handle = async ({event, resolve}) => {
 
     // Finished
     return resolve(event)
-}
 
+}
