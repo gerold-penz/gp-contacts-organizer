@@ -4,18 +4,13 @@ import { BunSqliteKeyValue } from "bun-sqlite-key-value"
 import type { User } from "$lib/interfaces"
 
 
-const BSKV_USERS_PATH = path.resolve(path.join(env.BSKV_DIR, "users.sqlite"))
+const BSKV_USERS_PATH = path.resolve(path.join(env.SQLITE_DIR, "users.sqlite"))
 const db = new BunSqliteKeyValue(BSKV_USERS_PATH)
 
 
 export namespace Users {
 
-    export function count() {
-        return db.getCount()
-    }
-
-
-    export function get(userUuid: string | undefined, username: string | undefined): User | undefined {
+    export function get(userUuid?: string, username?: string): User | undefined {
         if (userUuid) {
             return db.get<User>(userUuid)
         } else if (username) {
