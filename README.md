@@ -1,2 +1,3 @@
-# gp-address-butler
-CardDAV client for managing contact data. Ideal for Nexcloud contacts.
+# GP Address Butler
+
+Web app for managing adresses. Ideal for Nexcloud contacts or any other CardDAV server.
