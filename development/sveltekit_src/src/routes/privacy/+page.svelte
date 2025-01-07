@@ -3,7 +3,7 @@
 </svelte:head>
 
 
-<main class="container my-3">
-  <h1>Privacy</h1>
+<main class="container my-4">
+  <h1 class="mb-4">Privacy</h1>
 </main>
 

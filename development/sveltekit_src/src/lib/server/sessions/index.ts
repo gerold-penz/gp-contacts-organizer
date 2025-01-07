@@ -2,7 +2,7 @@ import path from "node:path"
 import { env } from "$env/dynamic/private"
 import { BunSqliteKeyValue } from "bun-sqlite-key-value"
 import type { Session } from "$lib/interfaces"
-import type { RequestEvent } from "@sveltejs/kit"
+import type { Cookies } from "@sveltejs/kit"
 import { SESSION_COOKIE_NAME } from "$lib/constants"
 
 
@@ -61,13 +61,13 @@ export namespace Sessions {
 }
 
 
-export function getSessionTokenCookie(event: RequestEvent) {
-    return event.cookies.get(SESSION_COOKIE_NAME)
+export function getSessionTokenCookie(cookies: Cookies) {
+    return cookies.get(SESSION_COOKIE_NAME)
 }
 
 
-export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date): void {
-    event.cookies.set(SESSION_COOKIE_NAME, token, {
+export function setSessionTokenCookie(cookies: Cookies, token: string, expiresAt: Date): void {
+    cookies.set(SESSION_COOKIE_NAME, token, {
         httpOnly: true,
         sameSite: "lax",
         expires: expiresAt,
@@ -76,7 +76,7 @@ export function setSessionTokenCookie(event: RequestEvent, token: string, expire
 }
 
 
-export function deleteSessionTokenCookie(event: RequestEvent): void {
-    event.cookies.delete(SESSION_COOKIE_NAME, {path: "/"})
+export function deleteSessionTokenCookie(cookies: Cookies): void {
+    cookies.delete(SESSION_COOKIE_NAME, {path: "/"})
 }
 

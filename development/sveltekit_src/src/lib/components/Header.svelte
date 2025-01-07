@@ -1,5 +1,11 @@
 <script lang="ts">
-  // import {page} from "$app/state"
+  import {page} from "$app/state"
+
+  const data = page.data
+
+  console.log("aaa", data)
+
+
 </script>
 
 
