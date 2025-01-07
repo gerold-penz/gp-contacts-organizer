@@ -3,11 +3,15 @@
     import type { ActionData } from "./$types"
 
 
-    let {
-        form
-    }: {
-        form: ActionData
-    } = $props()
+    let {form}: {form: ActionData} = $props()
+    let username = $derived(form?.username || "")
+    let password = $derived(form?.password || "")
+
+    // @ts-ignore
+    const usernameErrorMessage = $derived(form?.fieldErrors?.username?.join(" ") || "")
+    // @ts-ignore
+    const passwordErrorMessage = $derived(form?.fieldErrors?.password?.join(" ") || "")
+
 </script>
 
 
@@ -40,11 +44,13 @@
             id="username"
             name="username"
             class="form-control"
-            aria-describedby="usernameDescription"
+            class:is-invalid={usernameErrorMessage}
+            aria-describedby="usernameInvalidFeedback"
             placeholder=""
+            value={username}
           />
-          <div id="usernameDescription" class="form-text">
-            Your username must be at least 6 characters long.
+          <div id="usernameInvalidFeedback" class="invalid-feedback">
+            {usernameErrorMessage}
           </div>
         </div>
         <!-- Username END -->
@@ -62,11 +68,13 @@
             id="password"
             name="password"
             class="form-control"
-            aria-describedby="passwordDescription"
+            class:is-invalid={passwordErrorMessage}
+            aria-describedby="passwordInvalidFeedback"
             placeholder=""
+            value={password}
           />
-          <div id="passwordDescription" class="form-text">
-            Your password must be at least 8 characters long.
+          <div id="passwordInvalidFeedback" class="invalid-feedback">
+            {passwordErrorMessage}
           </div>
         </div>
         <!-- Password END -->
