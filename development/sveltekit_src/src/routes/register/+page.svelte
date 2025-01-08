@@ -1,12 +1,9 @@
 <script lang="ts">
     import { superForm } from "sveltekit-superforms"
-    import SuperDebug from "sveltekit-superforms"
 
 
     let {data} = $props()
     const {form, message, errors, constraints} = superForm(data.form)
-
-
 </script>
 
 
@@ -84,7 +81,6 @@
         {/if}
         <!-- Message END -->
 
-
         <div class="row mb-3">
 
           <!-- Link to login page BEGIN -->
@@ -111,18 +107,8 @@
   </div>
   <!-- Card END -->
 
-
-  <!--  &lt;!&ndash; Form Message BEGIN &ndash;&gt;-->
-  <!--  {#if form?.message}-->
-  <!--    <div class="alert alert-danger" role="alert">-->
-  <!--      {form.message}-->
-  <!--    </div>-->
-  <!--  {/if}-->
-  <!--  &lt;!&ndash; Form Message END &ndash;&gt;-->
-
 </main>
 
 
 <style lang="scss">
-
 </style>
