@@ -6,7 +6,7 @@
 <footer>
 
   <nav class="navbar bg-body-tertiary">
-    <div class="container">
+    <div class="container-fluid">
 
       <ul class="navbar-nav d-flex flex-row gap-3">
 

@@ -3,16 +3,21 @@
 </svelte:head>
 
 
-<main class="container my-3">
+<main class="container my-4">
 
-  <h1>Home</h1>
 
-  <p>Isch bin ein Börliner.</p>
-  <p>Isch bin ein Börliner.</p>
-  <p>Isch bin ein Börliner.</p>
-  <p>Isch bin ein Börliner.</p>
-  <p>Isch bin ein Börliner.</p>
-  <p>Isch bin ein Börliner.</p>
+  <h1 class="mb-4">Address Butler</h1>
+
+  <!-- Card BEGIN -->
+  <div class="card text-bg-light">
+    <div class="card-body">
+
+
+
+
+    </div>
+  </div>
+  <!-- Card END -->
 
 </main>
 
