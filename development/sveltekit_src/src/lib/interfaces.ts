@@ -5,9 +5,18 @@ export interface Session {
 }
 
 
+export interface AddressBook {
+    label: string
+    url: string  // https://next.gerold-penz.at/remote.php/dav/addressbooks/users/gerold/kontakte/
+    basicAuthUsername?: string
+    basicAuthPassword?: string
+}
+
+
 export interface User {
-    userUuid: string
+    uuid: string
     username: string
     passwordHash?: string
+    addressBooks?: AddressBook[]
 }
 

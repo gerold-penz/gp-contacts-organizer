@@ -32,9 +32,9 @@ export namespace Users {
     export function set(user: User) {
         console.debug(`server.users.Users.set(${user.username})`)
 
-        db.set<User>(user.userUuid, user)
+        db.set<User>(user.uuid, user)
         const usernameTag = "username:" + user.username
-        db.addTag(user.userUuid, usernameTag)
+        db.addTag(user.uuid, usernameTag)
     }
 
 }

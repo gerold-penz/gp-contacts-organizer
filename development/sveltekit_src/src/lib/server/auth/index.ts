@@ -42,7 +42,7 @@ export namespace Auth {
 
         // Create user
         const newUser: User = {
-            userUuid: crypto.randomUUID(),
+            uuid: crypto.randomUUID(),
             username,
             passwordHash: Bun.password.hashSync(password)
         }

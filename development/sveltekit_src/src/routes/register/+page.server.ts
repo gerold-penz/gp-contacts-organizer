@@ -50,7 +50,7 @@ export const actions: Actions = {
         }
 
         // Create session and session cookie
-        const session = Sessions.create(user.userUuid)
+        const session = Sessions.create(user.uuid)
         setSessionTokenCookie(cookies, session.token, session.expiresAt)
 
         // Redirect to home page

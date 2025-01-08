@@ -14,7 +14,7 @@ const schema = z.object({
 })
 
 
-export const load: ServerLoad = async ({request}) => {
+export const load: ServerLoad = async () => {
     const form = await superValidate(zod(schema))
     return {form}
 }
@@ -23,7 +23,7 @@ export const load: ServerLoad = async ({request}) => {
 export const actions: Actions = {
 
 
-    default: async ({request, cookies}) => {
+    default: async ({request, cookies, locals, url}) => {
         console.debug(`auth.Actions.login()`)
 
         // Get form data
@@ -33,10 +33,11 @@ export const actions: Actions = {
         }
 
         // Log in
-        let user: User
         try {
-            user = Auth.login(form.data.username, form.data.password)
+            locals.user = Auth.login(form.data.username, form.data.password)
         } catch (error) {
+            locals.user = undefined
+            locals.session = undefined
             if (
                 String(error).includes(Auth.USERNAME_NOT_EXISTS_ERROR) ||
                 String(error).includes(Auth.INVALID_PASSWORD_ERROR)
@@ -48,11 +49,14 @@ export const actions: Actions = {
         }
 
         // Create session and session cookie
-        const session = Sessions.create(user.userUuid)
-        setSessionTokenCookie(cookies, session.token, session.expiresAt)
+        locals.session = Sessions.create(locals.user.uuid)
+        setSessionTokenCookie(cookies, locals.session.token, locals.session.expiresAt)
 
-        // Redirect to home page
-        return redirect(status.FOUND, "/")
+        // Redirect to redirect page or home page
+        return redirect(
+            status.FOUND,
+            url.searchParams.get("redirect") || "/"
+        )
 
     },
 
