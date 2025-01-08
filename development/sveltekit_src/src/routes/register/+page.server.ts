@@ -1,50 +1,60 @@
-import type { Actions } from "@sveltejs/kit"
-import { zfd } from "zod-form-data"
+import type { Actions, ServerLoad } from "@sveltejs/kit"
+import {fail} from "@sveltejs/kit"
+import { superValidate, message } from "sveltekit-superforms"
+import { zod } from "sveltekit-superforms/adapters"
 import { z } from "zod"
 import { redirect } from "@sveltejs/kit"
 import { status } from "http-status"
-import { Users } from "$lib/server/users"
-import type { User } from "$lib/interfaces"
 import { Sessions, setSessionTokenCookie } from "$lib/server/sessions"
 import { Auth } from "$lib/server/auth"
+import type { User } from "$lib/interfaces"
 
 
-// https://github.com/airjp73/rvf/tree/main/packages/zod-form-data
-const schema = zfd.formData({
-    username: zfd.text(z.string().min(6).max(255)),
-    password: zfd.text(z.string().min(8).max(255)),
+const schema = z.object({
+    username: z.string().min(6).max(255),
+    password: z.string().min(8).max(255),
 })
+
+
+export const load: ServerLoad = async ({request}) => {
+    const form = await superValidate(zod(schema))
+    return {form}
+}
 
 
 export const actions: Actions = {
 
-    default: async ({request, locals, cookies}) => {
+    default: async ({request, cookies, locals}) => {
         console.debug(`auth.Actions.register()`)
 
-        // Check form data
-        const formData = await request.formData()
-        const {data, error} = schema.safeParse(formData)
-        if (error) {
-            return {
-                username: formData.get("username"),
-                password: formData.get("password"),
-                fieldErrors: error.flatten().fieldErrors
-            }
+        // Get form data
+        const form = await superValidate(request, zod(schema));
+        if (!form.valid) {
+            return fail(status.BAD_REQUEST, {form})
         }
 
         // Create user
-        const {username, password} = data
-        const user = Auth.register(username, password)
+        let user: User
+        try {
+            user = Auth.register(form.data.username, form.data.password)
+        } catch (error) {
+            if (String(error).includes(Auth.USERNAME_EXISTS_ERROR)) {
+                return message(form, "Username already exists.", {status: status.BAD_REQUEST})
+            } else if (String(error).includes(Auth.INVALID_USERNAME_ERROR)) {
+                return message(form, "Invalid username.", {status: status.BAD_REQUEST})
+            } else if (String(error).includes(Auth.INVALID_PASSWORD_ERROR)) {
+                return message(form, "Invalid password.", {status: status.BAD_REQUEST})
+            } else {
+                return message(form, String(error), {status: status.BAD_REQUEST})
+            }
+        }
 
-        // Create session
+        // Create session and session cookie
         const session = Sessions.create(user.userUuid)
-
-        // Cookie
         setSessionTokenCookie(cookies, session.token, session.expiresAt)
 
         // Redirect to home page
         return redirect(status.FOUND, "/")
-
     },
 
 }

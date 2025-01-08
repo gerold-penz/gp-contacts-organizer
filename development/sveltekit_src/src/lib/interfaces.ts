@@ -8,6 +8,6 @@ export interface Session {
 export interface User {
     userUuid: string
     username: string
-    passwordHash: string
+    passwordHash?: string
 }
 

@@ -3,12 +3,13 @@ import { env } from "$env/dynamic/private"
 import { BunSqliteKeyValue } from "bun-sqlite-key-value"
 import type { Session } from "$lib/interfaces"
 import type { Cookies } from "@sveltejs/kit"
-import { SESSION_COOKIE_NAME } from "$lib/constants"
+import { SESSION_COOKIE_NAME, SESSION_TTL_MS } from "$lib/constants"
 
 
-const BSKV_SESSIONS_PATH = path.resolve(path.join(env.SQLITE_DIR, "sessions.sqlite"))
-const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 30
-const db = new BunSqliteKeyValue(BSKV_SESSIONS_PATH)
+const dbPath = path.resolve(path.join(env.SQLITE_DIR, "sessions.sqlite"))
+const db = new BunSqliteKeyValue(dbPath, {
+    ttlMs: SESSION_TTL_MS
+})
 
 
 export namespace Sessions {
@@ -24,7 +25,7 @@ export namespace Sessions {
             expiresAt: new Date(Date.now() + SESSION_TTL_MS)
         }
 
-        db.set<Session>(token, session, SESSION_TTL_MS)
+        db.set<Session>(token, session)
 
         return session
     }
@@ -45,7 +46,7 @@ export namespace Sessions {
 
         if (Date.now() >= session.expiresAt.getTime() - (SESSION_TTL_MS / 2)) {
             session.expiresAt = new Date(Date.now() + SESSION_TTL_MS)
-            db.set<Session>(token, session, SESSION_TTL_MS)
+            db.set<Session>(token, session)
         }
 
         return session

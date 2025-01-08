@@ -1,16 +1,11 @@
 <script lang="ts">
-    import { enhance } from "$app/forms"
-    import type { ActionData } from "./$types"
+    import { superForm } from "sveltekit-superforms"
+    import SuperDebug from "sveltekit-superforms"
 
 
-    let {form}: {form: ActionData} = $props()
-    let username = $derived(form?.username || "")
-    let password = $derived(form?.password || "")
+    let {data} = $props()
+    const {form, message, errors, constraints} = superForm(data.form)
 
-    // @ts-ignore
-    const usernameErrorMessage = $derived(form?.fieldErrors?.username?.join(" ") || "")
-    // @ts-ignore
-    const passwordErrorMessage = $derived(form?.fieldErrors?.password?.join(" ") || "")
 
 </script>
 
@@ -29,7 +24,7 @@
     <div class="card-body">
 
       <!-- Register Form BEGIN -->
-      <form method="post" use:enhance>
+      <form method="post">
 
         <!-- Username BEGIN -->
         <div class="mb-3">
@@ -44,13 +39,14 @@
             id="username"
             name="username"
             class="form-control"
-            class:is-invalid={usernameErrorMessage}
             aria-describedby="usernameInvalidFeedback"
-            placeholder=""
-            value={username}
+            aria-invalid={$errors.username ? "true" : undefined}
+            class:is-invalid={$errors.username}
+            bind:value={$form.username}
+            {...$constraints.username}
           />
           <div id="usernameInvalidFeedback" class="invalid-feedback">
-            {usernameErrorMessage}
+            {$errors.username}
           </div>
         </div>
         <!-- Username END -->
@@ -68,22 +64,44 @@
             id="password"
             name="password"
             class="form-control"
-            class:is-invalid={passwordErrorMessage}
             aria-describedby="passwordInvalidFeedback"
-            placeholder=""
-            value={password}
+            aria-invalid={$errors.password ? "true" : undefined}
+            class:is-invalid={$errors.password}
+            bind:value={$form.password}
+            {...$constraints.password}
           />
           <div id="passwordInvalidFeedback" class="invalid-feedback">
-            {passwordErrorMessage}
+            {$errors.password}
           </div>
         </div>
         <!-- Password END -->
 
-        <!-- Submit Button BEGIN -->
-        <div>
-          <button type="submit" class="btn btn-primary">Register</button>
+        <!-- Message BEGIN -->
+        {#if $message}
+          <div class="alert alert-warning" role="alert">
+            {$message}
+          </div>
+        {/if}
+        <!-- Message END -->
+
+
+        <div class="row mb-3">
+
+          <!-- Link to login page BEGIN -->
+          <div class="col align-content-center">
+            <a href="/login" class="text-secondary">Login</a>
+
+          </div>
+          <!-- Link to login page END -->
+
+          <!-- Submit Button BEGIN -->
+          <div class="col text-end">
+            <button type="submit" class="btn btn-primary">Register</button>
+          </div>
+          <!-- Submit Button END -->
+
         </div>
-        <!-- Submit Button END -->
+
 
       </form>
       <!-- Register Form END -->

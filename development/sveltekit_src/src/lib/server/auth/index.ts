@@ -36,7 +36,7 @@ export namespace Auth {
         }
 
         // Check if username exists
-        if (Users.get(undefined, username)) {
+        if (Users.exists(username)) {
             throw new Error(USERNAME_EXISTS_ERROR)
         }
 
@@ -49,7 +49,7 @@ export namespace Auth {
         Users.set(newUser)
 
         // Finished
-        return newUser
+        return {...newUser, passwordHash: undefined}
 
     }
 
@@ -62,7 +62,7 @@ export namespace Auth {
             throw new Error(USERNAME_NOT_EXISTS_ERROR)
         }
         // Check password
-        if (!Bun.password.verifySync(password, user.passwordHash)) {
+        if (!Bun.password.verifySync(password, user.passwordHash!)) {
             throw new Error(INVALID_PASSWORD_ERROR)
         }
         // Finished
