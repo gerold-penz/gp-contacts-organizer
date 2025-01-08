@@ -37,4 +37,11 @@ export namespace Users {
         db.addTag(user.uuid, usernameTag)
     }
 
+
+    export function changeUsername(userUuid: string, newUsername: string) {
+        console.debug(`server.users.Users.changeUsername(${userUuid}, ${newUsername})`)
+
+
+    }
+
 }

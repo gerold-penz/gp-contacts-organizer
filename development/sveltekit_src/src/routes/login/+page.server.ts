@@ -3,7 +3,6 @@ import { z } from "zod"
 import { message, superValidate } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import { status } from "http-status"
-import type { User } from "$lib/interfaces"
 import { Auth } from "$lib/server/auth"
 import { Sessions, setSessionTokenCookie } from "$lib/server/sessions"
 
@@ -24,10 +23,10 @@ export const actions: Actions = {
 
 
     default: async ({request, cookies, locals, url}) => {
-        console.debug(`auth.Actions.login()`)
+        console.debug(`login.Actions.login()`)
 
         // Get form data
-        const form = await superValidate(request, zod(schema));
+        const form = await superValidate(request, zod(schema))
         if (!form.valid) {
             return fail(status.BAD_REQUEST, {form})
         }

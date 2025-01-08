@@ -9,9 +9,6 @@ export const handle: Handle = async ({event, resolve}) => {
     const {cookies, locals} = event
 
     const sessionToken = getSessionTokenCookie(cookies)
-
-    console.log("sessionToken", sessionToken)
-
     if (sessionToken) {
         locals.session = Sessions.validate(sessionToken)
     }
@@ -25,8 +22,8 @@ export const handle: Handle = async ({event, resolve}) => {
     if (sessionToken && locals.session && locals.user) {
         setSessionTokenCookie(cookies, sessionToken, locals.session.expiresAt)
     } else {
-        event.locals.session = undefined
-        event.locals.user = undefined
+        locals.session = undefined
+        locals.user = undefined
         deleteSessionTokenCookie(cookies)
     }
 
