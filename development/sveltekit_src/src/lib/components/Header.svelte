@@ -45,71 +45,71 @@
         <div class="w-100 d-sm-flex justify-content-end">
           <ul class="navbar-nav">
 
-            <!-- User Menu BEGIN -->
-            {#if data.user}
+<!--            &lt;!&ndash; User Menu BEGIN &ndash;&gt;-->
+<!--            {#if data.user}-->
 
-              <li class="nav-item dropdown">
-                <button class="nav-link dropdown-toggle d-flex align-items-center gap-1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <span class="material-symbols--person-outline"></span>
-                  {data.user.username}
-                </button>
+<!--              <li class="nav-item dropdown">-->
+<!--                <button class="nav-link dropdown-toggle d-flex align-items-center gap-1"-->
+<!--                  data-bs-toggle="dropdown"-->
+<!--                  aria-expanded="false"-->
+<!--                >-->
+<!--                  <span class="material-symbols&#45;&#45;person-outline"></span>-->
+<!--                  {data.user.username}-->
+<!--                </button>-->
 
-                <ul class="dropdown-menu dropdown-menu-end">
+<!--                <ul class="dropdown-menu dropdown-menu-end">-->
 
-                  <!-- Settings menu item BEGIN -->
-                  <li>
-                    <a class="dropdown-item d-flex align-items-center gap-2" href="/settings">
-                      <span class="material-symbols--settings-outline"></span>
-                      Settings
-                    </a>
-                  </li>
-                  <!-- Settings menu item END -->
+<!--                  &lt;!&ndash; Settings menu item BEGIN &ndash;&gt;-->
+<!--                  <li>-->
+<!--                    <a class="dropdown-item d-flex align-items-center gap-2" href="/settings">-->
+<!--                      <span class="material-symbols&#45;&#45;settings-outline"></span>-->
+<!--                      Settings-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  &lt;!&ndash; Settings menu item END &ndash;&gt;-->
 
-                  <!-- Settings menu divider BEGIN -->
-                  <li><hr class="dropdown-divider"></li>
-                  <!-- Settings menu divider BEGIN -->
+<!--                  &lt;!&ndash; Settings menu divider BEGIN &ndash;&gt;-->
+<!--                  <li><hr class="dropdown-divider"></li>-->
+<!--                  &lt;!&ndash; Settings menu divider BEGIN &ndash;&gt;-->
 
-                  <!-- Logout menu item BEGIN -->
-                  <li>
-                    <a class="dropdown-item d-flex align-items-center gap-2" href="/logout">
-                      <span class="material-symbols--logout"></span>
-                      Logout
-                    </a>
-                  </li>
-                  <!-- Logout menu item END -->
+<!--                  &lt;!&ndash; Logout menu item BEGIN &ndash;&gt;-->
+<!--                  <li>-->
+<!--                    <a class="dropdown-item d-flex align-items-center gap-2" href="/logout">-->
+<!--                      <span class="material-symbols&#45;&#45;logout"></span>-->
+<!--                      Logout-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  &lt;!&ndash; Logout menu item END &ndash;&gt;-->
 
-                </ul>
+<!--                </ul>-->
 
-              </li>
-            {/if}
-            <!-- User Menu END -->
+<!--              </li>-->
+<!--            {/if}-->
+<!--            &lt;!&ndash; User Menu END &ndash;&gt;-->
 
             <!-- Register/Login BEGIN -->
-            {#if !data?.user}
+            <!--{#if !data?.user}-->
+<!--              <li class="nav-item">-->
+<!--                <a-->
+<!--                  class="nav-link d-flex align-items-center gap-1"-->
+<!--                  href="/register"-->
+<!--                  title="Register new account."-->
+<!--                >-->
+<!--                  <span class="material-symbols&#45;&#45;person-add-outline"></span>-->
+<!--                  Register-->
+<!--                </a>-->
+<!--              </li>-->
               <li class="nav-item">
                 <a
                   class="nav-link d-flex align-items-center gap-1"
-                  href="/register"
-                  title="Register new account."
-                >
-                  <span class="material-symbols--person-add-outline"></span>
-                  Register
-                </a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link d-flex align-items-center gap-1"
-                  href="/login"
-                  title="Login with existing account."
+                  href="/signin"
+                  title="Sign in to your Nextcloud account."
                 >
                   <span class="material-symbols--login"></span>
-                  Login
+                  Sign In
                 </a>
               </li>
-            {/if}
+            <!--{/if}-->
             <!-- Register/Login END -->
 
           </ul>
