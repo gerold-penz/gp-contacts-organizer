@@ -8,7 +8,7 @@
 
 
 <svelte:head>
-  <title>Address Butler - Login</title>
+  <title>Contacts Organizer - Login</title>
 </svelte:head>
 
 

@@ -25,7 +25,7 @@
 
 
 <svelte:head>
-  <title>Address Butler - Settings</title>
+  <title>Contacts Organizer - Settings</title>
 </svelte:head>
 
 

@@ -6,7 +6,7 @@
 
 
 <svelte:head>
-  <title>Address Butler - Logout</title>
+  <title>Contacts Organizer - Logout</title>
 </svelte:head>
 
 

@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>Address Butler - Privacy</title>
+  <title>Contacts Organizer - Privacy</title>
 </svelte:head>
 
 

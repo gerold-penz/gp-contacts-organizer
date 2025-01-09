@@ -4,7 +4,7 @@
 
 
 <svelte:head>
-  <title>Address Butler - Imprint</title>
+  <title>Contacts Organizer - Imprint</title>
 </svelte:head>
 
 

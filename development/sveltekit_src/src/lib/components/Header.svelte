@@ -16,7 +16,9 @@
         href="/"
         class="navbar-brand"
         title="Go to start page"
-      >Address Butler</a>
+      >
+        Contacts Organizer
+      </a>
       <!-- Brand END -->
 
 
