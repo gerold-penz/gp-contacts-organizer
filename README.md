@@ -1,3 +1,4 @@
-# GP Address Butler
+# GP Contacts Organizer for Nextcloud
 
-Web app for managing adresses. Ideal for Nexcloud contacts or any other CardDAV server.
+The “Contacts Organizer” is a web app for managing/organizing Nextcloud contacts.
+
