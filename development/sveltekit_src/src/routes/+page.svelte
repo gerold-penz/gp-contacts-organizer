@@ -6,8 +6,8 @@
 <main class="container my-4">
 
 
-  <hgroup>
-    <h1 class="mb-4">Contacts Organizer</h1>
+  <hgroup class="mb-4">
+    <h1>Contacts Organizer</h1>
     <p>for Nextcloud</p>
   </hgroup>
 

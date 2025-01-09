@@ -14,10 +14,11 @@
       <!-- Brand BEGIN -->
       <a
         href="/"
-        class="navbar-brand"
+        class="navbar-brand lh-1"
         title="Go to start page"
       >
-        Contacts Organizer
+        Contacts Organizer <br>
+        <small class="text-secondary">for Nextcloud</small>
       </a>
       <!-- Brand END -->
 
