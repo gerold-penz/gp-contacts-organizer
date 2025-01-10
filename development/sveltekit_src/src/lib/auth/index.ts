@@ -5,20 +5,41 @@ import { env } from "$env/dynamic/private"
 
 export const {handle, signIn, signOut} = SvelteKitAuth({
     callbacks: {
-        jwt: async (event) => {
+        jwt: async ({token, session, user, profile, account, trigger}) => {
 
-            if ("account" in event) {
-                console.log("-----------------")
-                console.log(event.account)
-                console.log("-----------------")
+            if (token) {
+                console.log("token ------------")
+                console.log(token)
+                console.log("token ------------")
             }
-            if ("profile" in event) {
-                console.log("-----------------")
-                console.log(event.profile)
-                console.log("-----------------")
+            if (session) {
+                console.log("session ------------")
+                console.log(session)
+                console.log("session ------------")
+            }
+            if (user) {
+                console.log("user ------------")
+                console.log(user)
+                console.log("user ------------")
+            }
+            if (profile) {
+                console.log("profile ------------")
+                console.log(profile)
+                console.log("profile ------------")
+            }
+            if (account) {
+                console.log("account ------------")
+                console.log(account)
+                console.log("account ------------")
+            }
+            if (trigger) {
+                console.log("trigger ------------")
+                console.log(trigger)
+                console.log("trigger ------------")
             }
 
-            // ToDo: userId und Tokens extrahieren und speichern
+
+            // ToDo: "user_id", "access_token" und "refresh_token" extrahieren und speichern
 
 
             // -----------------
@@ -43,7 +64,7 @@ export const {handle, signIn, signOut} = SvelteKitAuth({
             // }
             // -----------------
 
-            return event.token
+            return token
         },
         session: async ({session, token}) => {
 
@@ -53,13 +74,13 @@ export const {handle, signIn, signOut} = SvelteKitAuth({
             }
 
 
-            console.log("SESSION ----------")
-            console.log(session)
-            console.log("SESSION ----------")
-
-            console.log("TOKEN ----------")
-            console.log(token)
-            console.log("TOKEN ----------")
+            // console.log("SESSION ----------")
+            // console.log(session)
+            // console.log("SESSION ----------")
+            //
+            // console.log("TOKEN ----------")
+            // console.log(token)
+            // console.log("TOKEN ----------")
 
             return session
         },
