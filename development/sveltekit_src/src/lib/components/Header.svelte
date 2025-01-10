@@ -54,7 +54,16 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <span class="material-symbols--person-outline"></span>
+                  {#if user?.image}
+                    <img
+                      src={user.image}
+                      class="rounded-circle user-thumbnail"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  {:else}
+                    <span class="material-symbols--person-outline"></span>
+                  {/if}
                   {user.name}
                 </button>
 
@@ -118,3 +127,10 @@
 
 </header>
 
+
+<style lang="scss">
+  .user-thumbnail {
+    width: 1.5em;
+    height: 1.5em;
+  }
+</style>
