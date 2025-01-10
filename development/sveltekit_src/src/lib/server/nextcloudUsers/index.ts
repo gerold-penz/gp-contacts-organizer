@@ -10,29 +10,46 @@ const db = new BunSqliteKeyValue(dbPath)
 
 export namespace NextcloudUsers {
 
-    export function set(user: NextcloudUser) {
-        console.debug(`NextcloudUsers.set(${user.userId})`)
-        db.set<NextcloudUser>(user.userId, user)
+    export function setUser(user: NextcloudUser) {
+        console.debug(`NextcloudUsers.set(${user.username})`)
+        db.set<NextcloudUser>(user.username, user)
         if (user.sub) {
             const subTag = `sub:${user.sub}`
-            db.addTag(user.userId, subTag)
+            db.addTag(user.username, subTag)
         }
     }
 
 
-    export function getById(userId: string): NextcloudUser | undefined {
-        console.debug(`NextcloudUsers.getById(${userId})`)
-        return db.get<NextcloudUser>(userId)
+    export function getUserByUsername(username: string): NextcloudUser | undefined {
+        console.debug(`NextcloudUsers.getByUsername(${username})`)
+        return db.get<NextcloudUser>(username)
     }
 
 
-    export function getBySub(sub: string) {
+    export function getUserBySub(sub: string) {
         console.debug(`NextcloudUsers.getBySub(${sub})`)
         const subTag = `sub:${sub}`
         const taggedValues = db.getTaggedValues(subTag)
         if (taggedValues) {
             return taggedValues.at(0)
         }
+    }
+
+
+    export function getUsernameBySub(sub: string) {
+        console.debug(`NextcloudUsers.getUsernameBySub(${sub})`)
+        const subTag = `sub:${sub}`
+        const usernames = db.getTaggedKeys(subTag)
+        if (usernames) {
+            return usernames.at(0)
+        }
+    }
+
+
+    export function getAccessTokenByUsername(username: string): string | undefined {
+        const nextcloudUser = getUserByUsername(username)
+        if (!nextcloudUser) return
+        return nextcloudUser.accessToken
     }
 
 }
