@@ -20,9 +20,6 @@
     <div class="card-body">
 
       <SignIn provider="nextcloud">
-        {#snippet submitButton()}
-          Click to start signin with Nextcloud
-        {/snippet}
       </SignIn>
 
     </div>

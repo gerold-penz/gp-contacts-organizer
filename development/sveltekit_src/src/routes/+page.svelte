@@ -1,3 +1,7 @@
+<script lang="ts">
+</script>
+
+
 <svelte:head>
   <title>Contacts Organizer</title>
 </svelte:head>

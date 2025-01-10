@@ -5,13 +5,13 @@
 
     const {data} = $props()
 
-    const {
-        form: changeUsernameForm,
-        message: changeUsernameMessage,
-        errors: changeUsernameErrors,
-        constraints: changeUsernameConstraints,
-        enhance: changeUsernameEnhance,
-    } = superForm(data.changeUsernameForm, {resetForm: false})
+    // const {
+    //     form: changeUsernameForm,
+    //     message: changeUsernameMessage,
+    //     errors: changeUsernameErrors,
+    //     constraints: changeUsernameConstraints,
+    //     enhance: changeUsernameEnhance,
+    // } = superForm(data.changeUsernameForm, {resetForm: false})
 
     // const {
     //     form: changePasswordForm,
@@ -41,72 +41,72 @@
       User Settings
     </div>
 
-    <!-- Change Username Form BEGIN -->
-    <div class="card-body">
+<!--    &lt;!&ndash; Change Username Form BEGIN &ndash;&gt;-->
+<!--    <div class="card-body">-->
 
-      <SuperDebug data={$changeUsernameForm} />
+<!--      <SuperDebug data={$changeUsernameForm} />-->
 
-      <!--  use:changeUsernameEnhance -->
-      <form method="post" action="?/changeUsername">
+<!--      &lt;!&ndash;  use:changeUsernameEnhance &ndash;&gt;-->
+<!--      <form method="post" action="?/changeUsername">-->
 
-        <!-- Message BEGIN -->
-        {#if $changeUsernameMessage}
-          <div class="alert"
-            class:alert-warning={page.status >= 400}
-            class:alert-success={page.status < 400}
-            role="alert"
-          >
-            {$changeUsernameMessage}
-          </div>
-        {/if}
-        <!-- Message END -->
+<!--        &lt;!&ndash; Message BEGIN &ndash;&gt;-->
+<!--        {#if $changeUsernameMessage}-->
+<!--          <div class="alert"-->
+<!--            class:alert-warning={page.status >= 400}-->
+<!--            class:alert-success={page.status < 400}-->
+<!--            role="alert"-->
+<!--          >-->
+<!--            {$changeUsernameMessage}-->
+<!--          </div>-->
+<!--        {/if}-->
+<!--        &lt;!&ndash; Message END &ndash;&gt;-->
 
-        <label
-          for="username"
-          class="form-label"
-        >
-          Username
-        </label>
+<!--        <label-->
+<!--          for="username"-->
+<!--          class="form-label"-->
+<!--        >-->
+<!--          Username-->
+<!--        </label>-->
 
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            id="username"
-            name="username"
-            class="form-control"
-            aria-describedby="usernameInvalidFeedback"
-            aria-invalid={$changeUsernameErrors.username ? "true" : undefined}
-            class:is-invalid={$changeUsernameErrors.username}
-            bind:value={$changeUsernameForm.username}
-            {...$changeUsernameConstraints.username}
-          />
-          <button
-            type="submit"
-            class="btn btn-primary"
-          >
-            Change Username
-          </button>
-        </div>
+<!--        <div class="input-group mb-3">-->
+<!--          <input-->
+<!--            type="text"-->
+<!--            id="username"-->
+<!--            name="username"-->
+<!--            class="form-control"-->
+<!--            aria-describedby="usernameInvalidFeedback"-->
+<!--            aria-invalid={$changeUsernameErrors.username ? "true" : undefined}-->
+<!--            class:is-invalid={$changeUsernameErrors.username}-->
+<!--            bind:value={$changeUsernameForm.username}-->
+<!--            {...$changeUsernameConstraints.username}-->
+<!--          />-->
+<!--          <button-->
+<!--            type="submit"-->
+<!--            class="btn btn-primary"-->
+<!--          >-->
+<!--            Change Username-->
+<!--          </button>-->
+<!--        </div>-->
 
-        <div id="usernameInvalidFeedback" class="invalid-feedback">
-          {$changeUsernameErrors.username}
-        </div>
+<!--        <div id="usernameInvalidFeedback" class="invalid-feedback">-->
+<!--          {$changeUsernameErrors.username}-->
+<!--        </div>-->
 
-      </form>
-    </div>
-    <!-- Change Username Form END -->
+<!--      </form>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Change Username Form END &ndash;&gt;-->
 
 
     <div class="card-body">
       <p>
-        ToDo: Change Password
+        xxx
       </p>
     </div>
 
 
     <div class="card-body">
       <p>
-        ToDo: Delete user
+        yyy
       </p>
     </div>
 
