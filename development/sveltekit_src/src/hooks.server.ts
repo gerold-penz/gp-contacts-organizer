@@ -4,7 +4,8 @@ import { handle as handleAuth } from "$lib/auth"
 import type { User, Session } from "@auth/core/types"
 
 
-export const handleCustom: Handle = async ({event, resolve}) => {
+
+const handleCustom: Handle = async ({event, resolve}) => {
     const {locals} = event
 
     const session: Session | undefined = await locals.auth() || undefined

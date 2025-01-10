@@ -1,5 +1,12 @@
 <script lang="ts">
     import { SignIn } from "@auth/sveltekit/components"
+    import { onMount } from "svelte"
+
+
+    onMount(() => {
+        const signinForm = document.querySelector<HTMLFormElement>("form.signin-form")
+        signinForm?.submit()
+    })
 </script>
 
 
@@ -19,11 +26,21 @@
   <div class="card text-bg-light">
     <div class="card-body">
 
-      <SignIn provider="nextcloud">
-        {#snippet submitButton()}
-          Sign in to your Nextcloud instance
-        {/snippet}
+      <!-- SignIn Form BEGIN -->
+      <SignIn
+        className="signin-form"
+        provider="nextcloud"
+        style="visibility: hidden; height: 0;"
+      >
       </SignIn>
+      <!-- SignIn Form END -->
+
+      <!-- Spinner BEGIN -->
+      <div class="card-body d-flex align-items-center gap-4 justify-content-center">
+        <span class="spinner-grow spinner-grow-sm text-secondary" style="width: 3rem; height: 3rem;" aria-hidden="true"></span>
+        <span role="status">Connecting Nextcloud ...</span>
+      </div>
+      <!-- Spinner END -->
 
     </div>
   </div>
