@@ -6,5 +6,4 @@ export const load: ServerLoad = async ({locals}) => {
     if (!locals?.user) {
         return redirect(status.FOUND, "/signin?redirect=/settings")
     }
-
 }

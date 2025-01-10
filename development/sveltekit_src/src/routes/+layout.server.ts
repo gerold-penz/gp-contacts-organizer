@@ -6,7 +6,6 @@ export const load: LayoutServerLoad = ({locals}) => {
 
     const user: User | undefined = locals?.user || undefined
 
-
     return {
         user
     }

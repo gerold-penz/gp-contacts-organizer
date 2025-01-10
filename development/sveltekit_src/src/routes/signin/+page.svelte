@@ -4,14 +4,14 @@
 
 
 <svelte:head>
-  <title>Contacts Organizer - Signin</title>
+  <title>Contacts Organizer - Sign In</title>
 </svelte:head>
 
 
 <main class="container my-4">
 
   <hgroup class="mb-4">
-    <h1>Signin</h1>
+    <h1>Sign In</h1>
     <p>to your Nextcloud instance</p>
   </hgroup>
 
@@ -20,6 +20,9 @@
     <div class="card-body">
 
       <SignIn provider="nextcloud">
+        {#snippet submitButton()}
+          Sign in to your Nextcloud instance
+        {/snippet}
       </SignIn>
 
     </div>
