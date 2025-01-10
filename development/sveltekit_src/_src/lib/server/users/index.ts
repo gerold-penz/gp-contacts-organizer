@@ -16,26 +16,8 @@ export namespace Users {
         return !!db.getTaggedKeys(usernameTag)?.length
     }
 
-    export function get(userUuid?: string, username?: string): User | undefined {
-        console.debug(`server.users.Users.get(${userUuid}, ${username})`)
-
-        if (userUuid) {
-            return db.get<User>(userUuid)
-        } else if (username) {
-            const usernameTag = "username:" + username
-            const values = db.getTaggedValues<User>(usernameTag)
-            if (values) return values[0]
-        }
-    }
 
 
-    export function set(user: User) {
-        console.debug(`server.users.Users.set(${user.username})`)
-
-        db.set<User>(user.uuid, user)
-        const usernameTag = "username:" + user.username
-        db.addTag(user.uuid, usernameTag)
-    }
 
 
     export function changeUsername(userUuid: string, newUsername: string) {
