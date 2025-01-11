@@ -1,11 +1,18 @@
-export interface NextcloudUser {
+export interface User {
     username: string
     accessToken?: string
     refreshToken?: string
+    expiresAt?: number
     sub?: string
-    expiresAt?: Date
 }
 
+export interface RefreshTokenResult {
+  access_token: string
+  token_type: string
+  expires_in: number
+  refresh_token: string
+  user_id: string
+}
 
 
 // export interface Session {

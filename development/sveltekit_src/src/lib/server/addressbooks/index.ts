@@ -1,11 +1,11 @@
-import { NextcloudUsers } from "$lib/server/nextcloudUsers"
+import { getAccessToken } from "$lib/server/auth"
 import { parseStringPromise } from "xml2js"
 import {env} from "$env/dynamic/private"
 
 
 export async function getAddressbooks(username: string) {
 
-    const accessToken = NextcloudUsers.getAccessTokenByUsername(username)
+    const accessToken = await getAccessToken(username)
 
     const response = await fetch(`${env.NEXTCLOUD_URL}/remote.php/dav/addressbooks/users/${username}/`, {
         method: "PROPFIND",

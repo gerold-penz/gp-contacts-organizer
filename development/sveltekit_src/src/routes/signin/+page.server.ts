@@ -1,4 +1,4 @@
-import { signIn } from "$lib/auth"
+import { signIn } from "../../lib/server/auth"
 import type { Actions } from "./$types"
 import { redirect, type ServerLoad } from "@sveltejs/kit"
 import type { User } from "@auth/core/types"
