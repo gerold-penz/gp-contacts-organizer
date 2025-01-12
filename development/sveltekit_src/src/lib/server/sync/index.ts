@@ -1,6 +1,7 @@
 import type { User, Username } from "$lib/interfaces"
 import { Users } from "$lib/server/users"
 import { Nextcloud } from "$lib/server/nextcloud"
+import { env } from "$env/dynamic/private"
 
 
 export const USER_NOT_FOUND_ERROR = "[USER NOT FOUND ERROR]"
@@ -22,11 +23,12 @@ export async function updateUserAddressBookDefinitions(username: Username) {
 
         // Push webAddressBook to userAddressBooks if not exists
         const found = Boolean(userAddressBooks.find((userAddressBook) => {
-            return ncAddressBook.url === userAddressBook.url
+            const userAddressBookUrl = env.NEXTCLOUD_URL + userAddressBook.path
+            return ncAddressBook.url === userAddressBookUrl
         }))
         if (!found) {
             userAddressBooks.push({
-                url: ncAddressBook.url,
+                path: ncAddressBook.url.substring(env.NEXTCLOUD_URL.length),
                 displayName: ncAddressBook.displayName,
                 active: true
             })
@@ -34,7 +36,8 @@ export async function updateUserAddressBookDefinitions(username: Username) {
 
         // Update display name
         const userAddressBook = userAddressBooks.find((userAddressBook) => {
-            return userAddressBook.url === ncAddressBook.url
+            const userAddressBookUrl = env.NEXTCLOUD_URL + userAddressBook.path
+            return userAddressBookUrl === ncAddressBook.url
         })
         if (userAddressBook) {
             userAddressBook.displayName = ncAddressBook.displayName
@@ -44,8 +47,9 @@ export async function updateUserAddressBookDefinitions(username: Username) {
 
     // Delete userAdressBook if not in ncAddressBooks
     userAddressBooks = userAddressBooks.filter((userAddressBook) => {
+        const userAddressBookUrl = env.NEXTCLOUD_URL + userAddressBook.path
         return ncAddressBooks.find((ncAddressBook) => {
-            return ncAddressBook.url === userAddressBook.url
+            return ncAddressBook.url === userAddressBookUrl
         })
     })
 

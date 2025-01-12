@@ -9,7 +9,7 @@ export interface NcAddressBook {
 }
 
 export interface UserAddressBook {
-    url: string
+    path: string
     displayName: string
     active: boolean
     ctag?: unknown

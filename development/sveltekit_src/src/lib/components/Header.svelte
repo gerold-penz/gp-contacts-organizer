@@ -1,10 +1,10 @@
 <script lang="ts">
     import { page } from "$app/state"
-    import type { User } from "@auth/core/types"
+    import type { Session } from "@auth/core/types"
 
 
     const data = page.data
-    const user: User | undefined = data?.user || undefined
+    const session: Session | undefined = data?.session || undefined
 </script>
 
 
@@ -48,15 +48,15 @@
           <ul class="navbar-nav">
 
             <!-- User Menu BEGIN -->
-            {#if user}
+            {#if session}
               <li class="nav-item dropdown">
                 <button class="nav-link dropdown-toggle d-flex align-items-center gap-1"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {#if user?.image}
+                  {#if session?.user?.image}
                     <img
-                      src={user.image}
+                      src={session?.user.image}
                       class="rounded-circle user-thumbnail"
                       alt=""
                       aria-hidden="true"
@@ -64,7 +64,7 @@
                   {:else}
                     <span class="material-symbols--person-outline"></span>
                   {/if}
-                  {user.name}
+                  {session?.user?.name}
                 </button>
 
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -100,7 +100,7 @@
             <!-- User Menu END -->
 
             <!-- Sign In BEGIN -->
-            {#if !user}
+            {#if !session}
               <li class="nav-item">
                 <a
                   class="nav-link d-flex align-items-center gap-1"

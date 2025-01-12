@@ -11,7 +11,7 @@ const handleCustom: Handle = async ({event, resolve}) => {
     const session: Session | undefined = await locals.auth() || undefined
     const user: User | undefined = session?.user || undefined
 
-    locals.user = user
+    locals.session = session
 
     return resolve(event)
 }

@@ -2,14 +2,14 @@
 // for information about these interfaces
 
 
-import type { User } from "@auth/core/types"
+import type { Session } from "@auth/core/types"
 
 
 declare global {
     namespace App {
         // interface Error {}
         interface Locals {
-            user?: User
+            session?: Session
         }
 
 

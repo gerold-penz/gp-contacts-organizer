@@ -1,6 +1,10 @@
 <script lang="ts">
     // import SuperDebug, { superForm } from "sveltekit-superforms"
     // import { page } from "$app/state"
+    import { enhance } from "$app/forms"
+    import type { UserAddressBook } from "$lib/interfaces"
+
+
     const {data} = $props()
 
     // const {
@@ -36,13 +40,37 @@
   <div class="card text-bg-light mb-4">
 
     <div class="card-header">
-      xxx
+      Address Books
     </div>
 
+    <ul class="list-group list-group-flush">
+      {#each data.user.addressBooks as addressBook, index}
+        <li class="list-group-item">
+
+          <div class="form-check form-switch" title="Active">
+            <form method="POST" use:enhance>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="addrssBookEnabled_{index}"
+                checked={addressBook.active}
+              >
+              <label
+                class="form-check-label"
+                for="addrssBookEnabled_{index}"
+              >
+                {addressBook.displayName}
+              </label>
+            </form>
+          </div>
+        </li>
+      {/each}
+    </ul>
+
+
     <div class="card-body">
-
       <pre>{JSON.stringify(data, undefined, 2)}</pre>
-
     </div>
 
   </div>

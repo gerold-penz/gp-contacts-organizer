@@ -2,23 +2,20 @@ import { redirect, type ServerLoad } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
 import { updateUserAddressBookDefinitions } from "$lib/server/sync"
+import type { User } from "$lib/interfaces"
 
 
 export const load: ServerLoad = async ({locals}) => {
-    if (!locals?.user) {
+    if (!locals?.session) {
         return redirect(status.FOUND, "/signin?redirect=/settings")
     }
 
-    const username = locals.user.id!
+    // Update the address book definitions
+    const username = locals.session?.user?.id!
     await updateUserAddressBookDefinitions(username)
 
 
-    let userAddressBooks = Users.get(username)?.addressBooks ?? []
-
-
     return {
-        userAddressBooks,
+        user: Users.get(username) as User
     }
-
-
 }

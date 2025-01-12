@@ -1,12 +1,13 @@
 import type { LayoutServerLoad } from "./$types"
-import type { User } from "@auth/core/types"
+import type { Session } from "@auth/core/types"
 
 
 export const load: LayoutServerLoad = ({locals}) => {
 
-    const user: User | undefined = locals?.user || undefined
+    const session: Session | undefined = locals?.session || undefined
 
     return {
-        user
+        session
     }
+
 }

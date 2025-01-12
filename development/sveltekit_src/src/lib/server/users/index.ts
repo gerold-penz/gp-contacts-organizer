@@ -20,7 +20,16 @@ export namespace Users {
     export function set(user: User) {
         console.debug(`server.users.set(${user.username})`)
         const key = USER_PREFIX + user.username
+
+        const oldUserSub = get(user.username)?.sub
         db.set<User>(key, user)
+
+        // Remove old SUB tag
+        if (oldUserSub) {
+            const oldSubTag = TAG_SUB_PREFIX + oldUserSub
+            db.deleteTag(key, oldSubTag)
+        }
+        // Add new SUB tag
         if (user.sub) {
             const subTag = TAG_SUB_PREFIX + user.sub
             db.addTag(key, subTag)
@@ -43,7 +52,7 @@ export namespace Users {
     /**
      * Return the username for the `token.sub`.
      * @description
-     * The `token.sub` changes on Nextcloud restarts or other cirumstances.
+     * The `token.sub` changes on every log in.
      * But it is the only one connection between the tokens and the user.
      * So we saved it as *tag*.
      * @param {string} sub
