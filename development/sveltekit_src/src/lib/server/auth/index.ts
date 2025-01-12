@@ -10,7 +10,6 @@ const nextcloudProvider = Nextcloud({
     clientSecret: env.AUTH_NEXTCLOUD_CLIENT_SECRET,
     issuer: env.NEXTCLOUD_URL,
 })
-export const REFRESH_TOKEN_ERROR = "[REFRESH TOKEN ERROR]"
 
 
 export const {handle, signIn, signOut} = SvelteKitAuth({

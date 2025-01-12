@@ -1,6 +1,6 @@
 import { redirect, type ServerLoad } from "@sveltejs/kit"
 import { status } from "http-status"
-import { getAddressBooks } from "$lib/server/carddav"
+import { Nextcloud } from "$lib/server/nextcloud"
 import { Users } from "$lib/server/users"
 
 
@@ -11,31 +11,35 @@ export const load: ServerLoad = async ({locals}) => {
 
     const username = locals.user.id!
     let userAddressBooks = Users.get(username)?.addressBooks ?? []
-    const webAddressBooks = (await getAddressBooks(username)) ?? []
+    const ncAddressBooks = (await Nextcloud.getAddressBooks(username)) ?? []
 
 
-    webAddressBooks.forEach((webAddressBook) => {
+    ncAddressBooks.forEach((ncAddressBook) => {
 
         // Push webAddressBook to userAddressBooks if not exists
         const found = Boolean(userAddressBooks.find((userAddressBook) => {
-            return webAddressBook.url === userAddressBook.url
+            return ncAddressBook.url === userAddressBook.url
         }))
         if (!found) {
-            userAddressBooks.push({...webAddressBook, active: true})
+            userAddressBooks.push({
+                url: ncAddressBook.url,
+                displayName: ncAddressBook.displayName,
+                active: true
+            })
         }
 
         // Update display name
-        const userAddressBook = userAddressBooks.find((userAddressBook) => userAddressBook.url === webAddressBook.url)
+        const userAddressBook = userAddressBooks.find((userAddressBook) => userAddressBook.url === ncAddressBook.url)
         if (userAddressBook) {
-            userAddressBook.displayName = webAddressBook.displayName
+            userAddressBook.displayName = ncAddressBook.displayName
         }
 
     })
 
-    // Delete userAdressBook if not in webAddressBooks
+    // Delete userAdressBook if not in ncAddressBooks
     const urlsToDelete = new Set<string>()
     for (const userAddressBook of userAddressBooks) {
-        const found = Boolean(webAddressBooks.find((webAddressBook) => webAddressBook.url === userAddressBook.url))
+        const found = Boolean(ncAddressBooks.find((ncAddressBook) => ncAddressBook.url === userAddressBook.url))
         if (!found) {
             urlsToDelete.add(userAddressBook.url)
         }
@@ -51,7 +55,7 @@ export const load: ServerLoad = async ({locals}) => {
 
     return {
         userAddressBooks,
-        webAddressBooks,
+        webAddressBooks: ncAddressBooks,
     }
 
 

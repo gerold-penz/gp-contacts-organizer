@@ -1,9 +1,16 @@
-export interface AddressBook {
+export interface NcAddressBook {
     url: string
-    ctag: string | number
     displayName: string
+    ctag: unknown
     syncToken: string
-    active?: boolean
+}
+
+export interface UserAddressBook {
+    url: string
+    displayName: string
+    active: boolean
+    ctag?: unknown
+    syncToken?: string
 }
 
 
@@ -13,7 +20,7 @@ export interface User {
     refreshToken?: string
     expiresAt?: number
     sub?: string
-    addressBooks?: AddressBook[]
+    addressBooks?: UserAddressBook[]
 }
 
 
