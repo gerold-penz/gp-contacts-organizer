@@ -1,4 +1,4 @@
-import { redirect, type ServerLoad } from "@sveltejs/kit"
+import {json, redirect, type RequestHandler, type ServerLoad } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
 import { updateUserAddressBookDefinitions } from "$lib/server/sync"
