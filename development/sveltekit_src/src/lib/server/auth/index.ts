@@ -2,7 +2,7 @@ import { SvelteKitAuth } from "@auth/sveltekit"
 import Nextcloud from "@auth/sveltekit/providers/nextcloud"
 import { env } from "$env/dynamic/private"
 import { Users } from "$lib/server/users"
-import type { RefreshTokenResult, User } from "$lib/interfaces"
+import type { RefreshTokenResult, User, Username } from "$lib/interfaces"
 
 
 const nextcloudProvider = Nextcloud({
@@ -18,7 +18,7 @@ export const {handle, signIn, signOut} = SvelteKitAuth({
 
             // Save tokens
             if (account?.user_id && token?.sub) {
-                const username = account.user_id as string
+                const username = account.user_id as Username
                 const accessToken = account.access_token as string
                 const refreshToken = account.refresh_token as string
                 const sub = token.sub as string

@@ -1,7 +1,7 @@
 import path from "node:path"
 import { env } from "$env/dynamic/private"
 import { BunSqliteKeyValue } from "bun-sqlite-key-value"
-import type { User } from "$lib/interfaces"
+import type { User, Username } from "$lib/interfaces"
 
 
 const USER_PREFIX = "user:"
@@ -33,7 +33,7 @@ export namespace Users {
      * @param {string} username
      * @returns {User | undefined}
      */
-    export function get(username: string): User | undefined {
+    export function get(username: Username): User | undefined {
         console.debug(`server.users.getByUsername(${username})`)
         const key = USER_PREFIX + username
         return db.get<User>(key)
@@ -42,16 +42,14 @@ export namespace Users {
 
     /**
      * Return the username for the `token.sub`.
-     *
      * @description
      * The `token.sub` changes on Nextcloud restarts or other cirumstances.
      * But it is the only one connection between the tokens and the user.
      * So we saved it as *tag*.
-     *
      * @param {string} sub
-     * @returns {string | undefined}
+     * @returns {Username | undefined}
      */
-    export function getUsernameBySub(sub: string): string | undefined {
+    export function getUsernameBySub(sub: string): Username | undefined {
         console.debug(`server.users.getUsernameBySub(${sub})`)
         const subTag = TAG_SUB_PREFIX + sub
         const keys = db.getTaggedKeys(subTag)
@@ -59,11 +57,6 @@ export namespace Users {
             return keys[0].substring("user:".length)
         }
     }
-
-
-    // export function getAllUsers(): User[] | undefined {
-    //
-    // }
 
 }
 

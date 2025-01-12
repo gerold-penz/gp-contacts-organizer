@@ -1,3 +1,6 @@
+export type Username = string
+
+
 export interface NcAddressBook {
     url: string
     displayName: string
@@ -15,7 +18,7 @@ export interface UserAddressBook {
 
 
 export interface User {
-    username: string
+    username: Username
     accessToken?: string
     refreshToken?: string
     expiresAt?: number

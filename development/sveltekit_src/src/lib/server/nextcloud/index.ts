@@ -1,7 +1,7 @@
 import { getAccessToken } from "$lib/server/auth"
 import { env } from "$env/dynamic/private"
 import { DAVClient } from "tsdav"
-import type { NcAddressBook } from "$lib/interfaces"
+import type { NcAddressBook, Username } from "$lib/interfaces"
 
 
 export const NO_ACCESS_TOKEN_ERROR = "[NO ACCESS TOKEN ERROR]"
@@ -14,7 +14,7 @@ class DAVClientExt extends DAVClient {
 }
 
 
-async function getDavClient(username: string) {
+async function getDavClient(username: Username) {
 
     const accessToken = await getAccessToken(username)
     if (!accessToken) {
@@ -46,7 +46,7 @@ async function getDavClient(username: string) {
 export namespace Nextcloud {
 
 
-    export async function getAddressBooks(username: string):Promise<NcAddressBook[]> {
+    export async function getAddressBooks(username: Username):Promise<NcAddressBook[]> {
         console.debug(`server.carddav.getAddressBooks(${username})`)
 
         const client = await getDavClient(username)
@@ -64,8 +64,3 @@ export namespace Nextcloud {
     }
 
 }
-
-
-// export namespace UserAddressBooks {
-//     export async function update
-// }
