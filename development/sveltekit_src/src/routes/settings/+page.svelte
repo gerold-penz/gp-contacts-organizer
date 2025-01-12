@@ -1,30 +1,12 @@
 <script lang="ts">
-    import { page } from "$app/state"
-    import type { UserAddressBook } from "$lib/interfaces"
-
-
     const {data} = $props()
-    const addressBooks: UserAddressBook[] = data.user.addressBooks!
+    const addressBooks = $state(data.addressBooks)
 
 
-    async function updateActive(addressBook: UserAddressBook) {
-        addressBook.active = !addressBook.active
+    function onAddressBookChanged() {
+        console.debug("onAddressbookChanged()")
 
-        const result = await fetch(page.url.pathname, {
-            method: "POST",
-            headers: {
-                "ContentType": "application.json"
-            },
-            body: JSON.stringify({
-                action: "updateAddressBook",
-                addressBook
-            })
-        })
-
-        const x = await result.json()
-
-
-        console.log(x)
+        // ToDo:
 
 
     }
@@ -41,7 +23,6 @@
 
   <h1 class="mb-4">Settings</h1>
 
-
   <!-- Address books card BEGIN -->
   <div class="card text-bg-light mb-4">
 
@@ -49,7 +30,9 @@
       Address Books
     </div>
 
+    <!-- Address Books list BEGIN -->
     <ul class="list-group list-group-flush">
+
       {#each addressBooks as addressBook, index}
         <li class="list-group-item">
 
@@ -59,10 +42,8 @@
               type="checkbox"
               role="switch"
               id="addrssBookEnabled_{index}"
-              checked={addressBook.active}
-              oninput={() => {
-                    updateActive(addressBook)
-                }}
+              bind:checked={addressBook.active}
+              onchange={onAddressBookChanged}
             >
             <label
               class="form-check-label"
@@ -73,7 +54,9 @@
           </div>
         </li>
       {/each}
+
     </ul>
+    <!-- Address Books list END -->
 
 
     <div class="card-body">
