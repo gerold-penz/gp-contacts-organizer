@@ -56,7 +56,15 @@ export const {handle, signIn, signOut} = SvelteKitAuth({
 })
 
 
-async function refreshAccessToken(user: User): Promise<User|undefined> {
+/**
+ * Refresh Nextcloud access token.
+ * @description
+ * Updates the tokens of the user and saves it to the sqlite database.
+ * @param {User} user
+ * @returns {Promise<User | undefined>}
+ * Returns the updated user.
+ */
+async function refreshAccessToken(user: User): Promise<User | undefined> {
     console.debug(`server.auth.refreshAccessToken(${user.username})`)
 
     const url = nextcloudProvider.token
@@ -87,7 +95,16 @@ async function refreshAccessToken(user: User): Promise<User|undefined> {
 }
 
 
-export async function getAccessToken(username: string) {
+/**
+ * Return the Nextcloud access token of the user.
+ * @description
+ * If the token is too old, it is renewed and saved.
+ * @param {string} username
+ * @returns {Promise<string | undefined>}
+ * Returns the (updated) access token.
+ * If this is not possible, `undefined` is returned.
+ */
+export async function getAccessToken(username: string): Promise<string | undefined> {
     console.debug(`server.auth.getAccessToken(${username})`)
 
     let user = Users.get(username)
