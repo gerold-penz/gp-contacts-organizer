@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from "$app/state"
     import { superForm } from "sveltekit-superforms"
+    import BootstrapToast from "$lib/components/BootstrapToast.svelte"
 
 
     const pathname = page.url.pathname
@@ -11,17 +12,39 @@
         form: addressBooksForm,
         enhance: addressBooksEnhance,
         submit: addressBooksSubmit,
-        submitting: addressBooksSubmitting
+        submitting: addressBooksSubmitting,
     } = superForm(data.addressBooksForm, {
-        dataType: "json"
+        dataType: "json",
+        onUpdated: async ({form}) => {
+          // Erfolgsmeldung
+          await bootstrapToast.show(
+              undefined,
+              form.message,
+              "success",
+              2000
+          )
+        }
     })
 
+    let updatingDefinitionsForm: HTMLFormElement
+    let updatingDefinitions = $state(false)
 
     function onAddressBookChanged() {
         console.debug("onAddressbookChanged()")
         $addressBooksForm.addressBooks = addressBooks
         addressBooksSubmit()
     }
+
+    let bootstrapToast: BootstrapToast
+
+
+    const {
+        form: synchronizationForm,
+        enhance: synchronizationEnhance,
+        submit: synchronizationSubmit,
+        submitting: synchronizationSubmitting,
+    } = superForm(data.synchronizationForm)
+
 
 </script>
 
@@ -49,8 +72,20 @@
     </div>
 
     <div class="card-body">
-      <form method="POST" action={`${pathname}?/updateDefinitions`}>
-        <button type="submit" class="btn btn-outline-secondary">
+      <form method="POST" action={`${pathname}?/updateDefinitions`} bind:this={updatingDefinitionsForm}>
+        <button
+          type="submit"
+          class="btn btn-outline-secondary"
+          disabled={updatingDefinitions}
+          onclick={() => {
+              updatingDefinitions = true
+              updatingDefinitionsForm.submit()
+          }}
+        >
+          {#if updatingDefinitions}
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span class="visually-hidden" role="status">Synchronizating...</span>
+          {/if}
           Synchronize address books list with Nextcloud
         </button>
       </form>
@@ -76,13 +111,15 @@
                 onchange={onAddressBookChanged}
               >
               <label
-                class="form-check-label"
+                class="form-check-label d-flex align-items-center gap-2"
                 for="addrssBookEnabled_{index}"
               >
-                {addressBook.displayName}
+                <span>
+                  {addressBook.displayName}
+                </span>
 
                 <!-- Badge BEGIN -->
-                <span class="ms-2 badge rounded-pill"
+                <span class="badge rounded-pill"
                   class:text-bg-success={addressBook.active}
                   class:text-bg-secondary={!addressBook.active}
                 >
@@ -111,5 +148,37 @@
   <!-- Address books card END -->
 
 
+  <!-- Synchronization card BEGIN -->
+  <div class="card text-bg-light mb-4">
+
+    <div class="card-header">
+      Synchronization
+      {#if $synchronizationSubmitting}
+        <div class="ms-2 spinner-border spinner-border-sm text-secondary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      {/if}
+    </div>
+
+    <div class="card-body">
+
+      <!-- Form BEGIN -->
+      <form method="POST" use:synchronizationEnhance action={`${pathname}?/saveSynchronization`}>
+
+
+      </form>
+      <!-- Form END -->
+
+    </div>
+
+  </div>
+  <!-- Synchronization card END -->
+
+
 </main>
 
+
+<!-- Toast BEGIN -->
+<BootstrapToast bind:this={bootstrapToast}>
+</BootstrapToast>
+<!-- Toast END -->

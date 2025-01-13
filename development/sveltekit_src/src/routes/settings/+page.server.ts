@@ -15,6 +15,11 @@ const addressBooksSchema = z.object({
     }).array()
 })
 
+const synchronizationSchema = z.object({
+    active: z.boolean().optional(),
+})
+
+
 
 export const load: ServerLoad = async ({locals}) => {
     console.debug(`settings.+page.server.load()`)
@@ -25,21 +30,27 @@ export const load: ServerLoad = async ({locals}) => {
 
     // Get address books
     const username = locals.session?.user?.id!
-    let addressBooks = Users.get(username)?.addressBooks ?? []
+    let user = Users.get(username)!
+    let addressBooks = user.addressBooks || []
 
     // Update the address book definitions for first time
     if (!addressBooks?.length) {
         await updateUserAddressBookDefinitions(username)
-        addressBooks = Users.get(username)?.addressBooks ?? []
+        user = Users.get(username)!
+        addressBooks = user.addressBooks || []
     }
 
     // Initialize address books form
     const addressBooksForm = await superValidate({addressBooks}, zod(addressBooksSchema))
 
+    // Initialize synchronization form
+    const synchronizationForm = await superValidate(user.synchronization || {}, zod(synchronizationSchema))
+
     // Finished
     return {
         addressBooksForm,
         addressBooks,
+        synchronizationForm,
     }
 
 }
@@ -64,12 +75,11 @@ export const actions: Actions = {
         Users.set(user)
 
         // Finished
-        return message(form, "Address books saved")
-
+        return message(form, "Changes saved")
     },
 
 
-    updateDefinitions: async ({request, locals}) => {
+    updateDefinitions: async ({locals}) => {
         console.debug(`settings.+page.server.updateDefinitions()`)
 
         // Update the address book definitions
@@ -78,7 +88,21 @@ export const actions: Actions = {
 
         // Finished
         return true
+    },
+
+
+    saveSynchronization: async ({request, locals}) => {
+        console.debug(`settings.+page.server.saveSynchronization()`)
+
+        // Update settings
+        const username = locals.session?.user?.id!
+
+        // ToDo:
+
+
+        // return message(form, "Changes saved")
 
     },
+
 
 }

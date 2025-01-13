@@ -8,12 +8,21 @@ export interface NcAddressBook {
     syncToken: string
 }
 
+
 export interface UserAddressBook {
     path: string
     displayName: string
     active: boolean
     ctag?: unknown
     syncToken?: string
+}
+
+
+export interface SynchronizationSettings {
+    /**
+     * Activates the synchronization
+     */
+    active: boolean
 }
 
 
@@ -24,6 +33,7 @@ export interface User {
     expiresAt?: number
     sub?: string
     addressBooks?: UserAddressBook[]
+    synchronization?: SynchronizationSettings
 }
 
 
