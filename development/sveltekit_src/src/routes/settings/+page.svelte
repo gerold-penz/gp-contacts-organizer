@@ -2,6 +2,7 @@
     import { page } from "$app/state"
     import { superForm } from "sveltekit-superforms"
 
+
     const pathname = page.url.pathname
     const {data} = $props()
 
@@ -64,6 +65,7 @@
         {#each addressBooks as addressBook, index}
           <li class="list-group-item">
 
+            <!-- Check BEGIN -->
             <div class="form-check form-switch" title="Active">
               <input
                 class="form-check-input"
@@ -78,11 +80,20 @@
                 for="addrssBookEnabled_{index}"
               >
                 {addressBook.displayName}
-                <span class="ms-1 small form-text">
+
+                <!-- Badge BEGIN -->
+                <span class="ms-2 badge rounded-pill"
+                  class:text-bg-success={addressBook.active}
+                  class:text-bg-secondary={!addressBook.active}
+                >
                   {addressBook.active ? "visible" : "hidden"}
                 </span>
+                <!-- Badge END -->
+
               </label>
             </div>
+            <!-- Check END -->
+
           </li>
         {/each}
 
@@ -92,9 +103,9 @@
     </form>
     <!-- Form END -->
 
-<!--    <div class="card-body">-->
-<!--      <pre>{JSON.stringify(data, undefined, 2)}</pre>-->
-<!--    </div>-->
+    <!--    <div class="card-body">-->
+    <!--      <pre>{JSON.stringify(data, undefined, 2)}</pre>-->
+    <!--    </div>-->
 
   </div>
   <!-- Address books card END -->
