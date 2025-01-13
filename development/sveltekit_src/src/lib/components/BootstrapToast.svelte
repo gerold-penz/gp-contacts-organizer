@@ -1,6 +1,7 @@
 <script lang="ts">
-    import {Toast} from "bootstrap"
-    import {tick} from "svelte"
+    import { tick } from "svelte"
+    import { browser } from "$app/environment"
+
 
     type Color = "primary" | "secondary" | "success" | "danger" | "dark" | "info" | "light" | "warning"
 
@@ -12,15 +13,18 @@
 
     export async function show(title?: string, message?: string, color?: Color, delayMs: number = 8000) {
 
+        if (!browser) return
+
         // Daten übernehmen
         if (title) _title = title
         if (message) _message = message
         if (color) _color = color
         await tick()
         // Toast öffnen
-        const toast = Toast.getOrCreateInstance(toastElement, {delay: delayMs})
+        const toast = (await import("bootstrap")).Toast.getOrCreateInstance(toastElement, {delay: delayMs})
         toast.show()
     }
+
 
 </script>
 

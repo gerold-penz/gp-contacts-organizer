@@ -18,7 +18,7 @@
         onUpdated: async ({form}) => {
           // Erfolgsmeldung
           await bootstrapToast.show(
-              undefined,
+              "Success",
               form.message,
               "success",
               2000

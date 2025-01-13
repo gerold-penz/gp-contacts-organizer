@@ -11,7 +11,7 @@
     onMount(async () => {
         const {
             // Tooltip,
-            Collapse  // Import is sufficient
+            Collapse,  // Import is sufficient
         } = await import("bootstrap")
 
         // // Activate tooltips
