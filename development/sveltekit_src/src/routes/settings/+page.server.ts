@@ -5,6 +5,7 @@ import { updateUserAddressBookDefinitions } from "$lib/server/sync"
 import { z } from "zod"
 import { zod } from "sveltekit-superforms/adapters"
 import { message, superValidate } from "sveltekit-superforms"
+import type { SynchronizationSettings } from "$lib/interfaces"
 
 
 const addressBooksSchema = z.object({
@@ -16,9 +17,10 @@ const addressBooksSchema = z.object({
 })
 
 const synchronizationSchema = z.object({
-    active: z.boolean().optional(),
+    synchronization: z.object({
+        active: z.boolean().optional(),
+    })
 })
-
 
 
 export const load: ServerLoad = async ({locals}) => {
@@ -32,25 +34,27 @@ export const load: ServerLoad = async ({locals}) => {
     const username = locals.session?.user?.id!
     let user = Users.get(username)!
     let addressBooks = user.addressBooks || []
+    let synchronization = user.synchronization || {active: false}
 
     // Update the address book definitions for first time
     if (!addressBooks?.length) {
         await updateUserAddressBookDefinitions(username)
+        // Load user again
         user = Users.get(username)!
         addressBooks = user.addressBooks || []
+        synchronization = user.synchronization || {active: false}
     }
 
-    // Initialize address books form
+    // Initialize forms
     const addressBooksForm = await superValidate({addressBooks}, zod(addressBooksSchema))
-
-    // Initialize synchronization form
-    const synchronizationForm = await superValidate(user.synchronization || {}, zod(synchronizationSchema))
+    const synchronizationForm = await superValidate({synchronization}, zod(synchronizationSchema))
 
     // Finished
     return {
         addressBooksForm,
         addressBooks,
         synchronizationForm,
+        synchronization
     }
 
 }
@@ -94,14 +98,20 @@ export const actions: Actions = {
     saveSynchronization: async ({request, locals}) => {
         console.debug(`settings.+page.server.saveSynchronization()`)
 
+        // Get form data
+        const form = await superValidate(request, zod(synchronizationSchema))
+        if (!form.valid) {
+            return fail(status.BAD_REQUEST, {form})
+        }
+
         // Update settings
         const username = locals.session?.user?.id!
+        const user = Users.get(username)!
+        user.synchronization = form.data.synchronization as SynchronizationSettings
+        Users.set(user)
 
-        // ToDo:
-
-
-        // return message(form, "Changes saved")
-
+        // Finished
+        return message(form, "Changes saved")
     },
 
 

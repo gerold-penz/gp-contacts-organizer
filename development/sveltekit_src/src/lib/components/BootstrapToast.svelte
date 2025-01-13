@@ -6,9 +6,9 @@
     type Color = "primary" | "secondary" | "success" | "danger" | "dark" | "info" | "light" | "warning"
 
     let toastElement: HTMLDivElement
-    let _title: string
-    let _message: string
-    let _color: Color = "light"
+    let _title = $state<string | undefined>(undefined)
+    let _message = $state<string | undefined>(undefined)
+    let _color = $state<Color>("light")
 
 
     export async function show(title?: string, message?: string, color?: Color, delayMs: number = 8000) {
@@ -38,10 +38,12 @@
     aria-atomic="true"
     bind:this={toastElement}
   >
-    <div class="toast-header">
-      <strong class="me-auto">{_title}</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
+    {#if _title}
+      <div class="toast-header">
+        <strong class="me-auto">{_title}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    {/if}
     <div class="toast-body">
       {_message}
     </div>
