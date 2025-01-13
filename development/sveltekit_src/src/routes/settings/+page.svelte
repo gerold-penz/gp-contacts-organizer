@@ -243,7 +243,7 @@
   <!-- Synchronization card END -->
 
 
-    <pre>{JSON.stringify(data, undefined, 2)}</pre>
+<!--    <pre>{JSON.stringify(data, undefined, 2)}</pre>-->
 
 
 </main>
