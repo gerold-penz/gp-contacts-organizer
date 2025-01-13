@@ -68,11 +68,14 @@
 </script>
 
 
+<!-- Page head BEGIN -->
 <svelte:head>
   <title>Contacts Organizer - Settings</title>
 </svelte:head>
+<!-- Page head END -->
 
 
+<!-- Main container BEGIN -->
 <main class="container my-4">
 
   <h1 class="mb-4">Settings</h1>
@@ -110,7 +113,7 @@
       </form>
     </div>
 
-    <!-- Form BEGIN -->
+    <!-- Address books form BEGIN -->
     <form method="POST" use:addressBooksEnhance action={`${pathname}?/saveAddressBooks`}>
 
       <!-- Address Books list BEGIN -->
@@ -157,11 +160,7 @@
       <!-- Address Books list END -->
 
     </form>
-    <!-- Form END -->
-
-    <!--    <div class="card-body">-->
-    <!--      <pre>{JSON.stringify(data, undefined, 2)}</pre>-->
-    <!--    </div>-->
+    <!-- Address books form END -->
 
     <!-- Card footer BEGIN -->
     <div class="card-footer">
@@ -198,7 +197,7 @@
 
     <div class="card-body">
 
-      <!-- Form BEGIN -->
+      <!-- Synchronization settings form BEGIN -->
       <form method="POST" use:synchronizationEnhance action={`${pathname}?/saveSynchronization`}>
 
         <!-- Active BEGIN -->
@@ -236,7 +235,7 @@
         <!-- Active END -->
 
       </form>
-      <!-- Form END -->
+      <!-- Synchronization settings form END -->
 
     </div>
 
@@ -244,10 +243,15 @@
   <!-- Synchronization card END -->
 
 
+    <pre>{JSON.stringify(data, undefined, 2)}</pre>
+
+
 </main>
+<!-- Main container BEGIN -->
 
 
 <!-- Toast BEGIN -->
 <BootstrapToast bind:this={bootstrapToast}>
 </BootstrapToast>
 <!-- Toast END -->
+

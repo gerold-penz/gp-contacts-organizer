@@ -24,7 +24,12 @@ export const {handle, signIn, signOut} = SvelteKitAuth({
                 const sub = token.sub as string
                 const expiresAt = account.expires_at as number
 
-                const user: User = {username, accessToken, refreshToken, sub, expiresAt: expiresAt}
+                let user = Users.get(username)
+                if (user) {
+                    Object.assign(user, {accessToken, refreshToken, sub, expiresAt: expiresAt})
+                } else {
+                    user = {username, accessToken, refreshToken, sub, expiresAt: expiresAt}
+                }
                 Users.set(user)
             }
 
