@@ -50,7 +50,7 @@
     <div class="card-body">
       <form method="POST" action={`${pathname}?/updateDefinitions`}>
         <button type="submit" class="btn btn-outline-secondary">
-          Update address book list with Nextcloud.
+          Synchronize address books list with Nextcloud
         </button>
       </form>
     </div>
@@ -78,6 +78,9 @@
                 for="addrssBookEnabled_{index}"
               >
                 {addressBook.displayName}
+                <span class="ms-1 small form-text">
+                  {addressBook.active ? "visible" : "hidden"}
+                </span>
               </label>
             </div>
           </li>
@@ -89,9 +92,9 @@
     </form>
     <!-- Form END -->
 
-    <div class="card-body">
-      <pre>{JSON.stringify(data, undefined, 2)}</pre>
-    </div>
+<!--    <div class="card-body">-->
+<!--      <pre>{JSON.stringify(data, undefined, 2)}</pre>-->
+<!--    </div>-->
 
   </div>
   <!-- Address books card END -->

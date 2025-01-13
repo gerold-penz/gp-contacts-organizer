@@ -25,7 +25,13 @@ export const load: ServerLoad = async ({locals}) => {
 
     // Get address books
     const username = locals.session?.user?.id!
-    const addressBooks = Users.get(username)?.addressBooks ?? []
+    let addressBooks = Users.get(username)?.addressBooks ?? []
+
+    // Update the address book definitions for first time
+    if (!addressBooks?.length) {
+        await updateUserAddressBookDefinitions(username)
+        addressBooks = Users.get(username)?.addressBooks ?? []
+    }
 
     // Initialize address books form
     const addressBooksForm = await superValidate({addressBooks}, zod(addressBooksSchema))
