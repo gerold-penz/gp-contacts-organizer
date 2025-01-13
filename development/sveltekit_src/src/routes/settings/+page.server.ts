@@ -4,10 +4,10 @@ import { Users } from "$lib/server/users"
 import { updateUserAddressBookDefinitions } from "$lib/server/sync"
 import { z } from "zod"
 import { zod } from "sveltekit-superforms/adapters"
-import type { UserAddressBook } from "$lib/interfaces"
+import { message, superValidate } from "sveltekit-superforms"
 
 
-const schema = z.object({
+const addressBooksSchema = z.object({
     addressBooks: z.object({
         path: z.string().min(1),
         displayName: z.string().min(1),
@@ -23,15 +23,56 @@ export const load: ServerLoad = async ({locals}) => {
         return redirect(status.FOUND, "/signin?redirect=/settings")
     }
 
-    // Update the address book definitions
-    const username = locals.session?.user?.id!
-    await updateUserAddressBookDefinitions(username)
-
     // Get address books
+    const username = locals.session?.user?.id!
     const addressBooks = Users.get(username)?.addressBooks ?? []
 
+    // Initialize address books form
+    const addressBooksForm = await superValidate({addressBooks}, zod(addressBooksSchema))
+
+    // Finished
     return {
-        addressBooks
+        addressBooksForm,
+        addressBooks,
     }
+
+}
+
+
+export const actions: Actions = {
+
+
+    saveAddressBooks: async ({request, locals}) => {
+        console.debug(`settings.+page.server.saveAddressBooks()`)
+
+        // Get form data
+        const form = await superValidate(request, zod(addressBooksSchema))
+        if (!form.valid) {
+            return fail(status.BAD_REQUEST, {form})
+        }
+
+        // Update address books
+        const username = locals.session?.user?.id!
+        const user = Users.get(username)!
+        user.addressBooks = form.data.addressBooks
+        Users.set(user)
+
+        // Finished
+        return message(form, "Address books saved")
+
+    },
+
+
+    updateDefinitions: async ({request, locals}) => {
+        console.debug(`settings.+page.server.updateDefinitions()`)
+
+        // Update the address book definitions
+        const username = locals.session?.user?.id!
+        await updateUserAddressBookDefinitions(username)
+
+        // Finished
+        return true
+
+    },
 
 }

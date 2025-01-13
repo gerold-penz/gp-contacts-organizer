@@ -1,14 +1,25 @@
 <script lang="ts">
+    import { page } from "$app/state"
+    import { superForm } from "sveltekit-superforms"
+
+    const pathname = page.url.pathname
     const {data} = $props()
-    const addressBooks = $state(data.addressBooks)
+
+    let addressBooks = $state(data.addressBooks)
+    const {
+        form: addressBooksForm,
+        enhance: addressBooksEnhance,
+        submit: addressBooksSubmit,
+        submitting: addressBooksSubmitting
+    } = superForm(data.addressBooksForm, {
+        dataType: "json"
+    })
 
 
     function onAddressBookChanged() {
         console.debug("onAddressbookChanged()")
-
-        // ToDo:
-
-
+        $addressBooksForm.addressBooks = addressBooks
+        addressBooksSubmit()
     }
 
 </script>
@@ -23,41 +34,60 @@
 
   <h1 class="mb-4">Settings</h1>
 
+
   <!-- Address books card BEGIN -->
   <div class="card text-bg-light mb-4">
 
     <div class="card-header">
       Address Books
+      {#if $addressBooksSubmitting}
+        <div class="ms-2 spinner-border spinner-border-sm text-secondary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      {/if}
     </div>
 
-    <!-- Address Books list BEGIN -->
-    <ul class="list-group list-group-flush">
+    <div class="card-body">
+      <form method="POST" action={`${pathname}?/updateDefinitions`}>
+        <button type="submit" class="btn btn-outline-secondary">
+          Update address book list with Nextcloud.
+        </button>
+      </form>
+    </div>
 
-      {#each addressBooks as addressBook, index}
-        <li class="list-group-item">
+    <!-- Form BEGIN -->
+    <form method="POST" use:addressBooksEnhance action={`${pathname}?/saveAddressBooks`}>
 
-          <div class="form-check form-switch" title="Active">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="addrssBookEnabled_{index}"
-              bind:checked={addressBook.active}
-              onchange={onAddressBookChanged}
-            >
-            <label
-              class="form-check-label"
-              for="addrssBookEnabled_{index}"
-            >
-              {addressBook.displayName}
-            </label>
-          </div>
-        </li>
-      {/each}
+      <!-- Address Books list BEGIN -->
+      <ul class="list-group list-group-flush">
 
-    </ul>
-    <!-- Address Books list END -->
+        {#each addressBooks as addressBook, index}
+          <li class="list-group-item">
 
+            <div class="form-check form-switch" title="Active">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="addrssBookEnabled_{index}"
+                bind:checked={addressBook.active}
+                onchange={onAddressBookChanged}
+              >
+              <label
+                class="form-check-label"
+                for="addrssBookEnabled_{index}"
+              >
+                {addressBook.displayName}
+              </label>
+            </div>
+          </li>
+        {/each}
+
+      </ul>
+      <!-- Address Books list END -->
+
+    </form>
+    <!-- Form END -->
 
     <div class="card-body">
       <pre>{JSON.stringify(data, undefined, 2)}</pre>
@@ -65,6 +95,7 @@
 
   </div>
   <!-- Address books card END -->
+
 
 </main>
 

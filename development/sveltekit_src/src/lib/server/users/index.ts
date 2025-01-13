@@ -43,7 +43,7 @@ export namespace Users {
      * @returns {User | undefined}
      */
     export function get(username: Username): User | undefined {
-        console.debug(`server.users.getByUsername(${username})`)
+        console.debug(`server.users.get(${username})`)
         const key = USER_PREFIX + username
         return db.get<User>(key)
     }
