@@ -13,11 +13,12 @@ const db = new BunSqliteKeyValue(dbPath)
 export namespace Vcards {
 
     export function deleteAllUserVcards(username: string) {
-        console.debug(`server.vcards.deleteAll(${username})`)
+        console.debug(`server.vcards.deleteAllUserVcards(${username})`)
         const startsWith = `${VCARD_PREFIX}:${username}:`
         const keys = db.getKeys(startsWith)
         db.delete(keys)
     }
+
 
     export function set(username: string, vcard: Vcard): void {
         console.debug(`server.vcards.set(${username}, ...${vcard.url.substring(vcard.url.length - 40)})`)
@@ -40,6 +41,13 @@ export namespace Vcards {
         console.debug(`server.vcards.get(${vcardUrl})`)
         const key = `${VCARD_PREFIX}:${username}:${vcardUrl}`
         return db.get<Vcard>(key)
+    }
+
+
+    export function getAllUserVcards(username: string): (Vcard | undefined)[] | undefined {
+        console.debug(`server.vcards.getAllUserVcards(${username})`)
+        const startsWith = `${VCARD_PREFIX}:${username}:`
+        return db.getValues<Vcard>(startsWith)
     }
 
 }

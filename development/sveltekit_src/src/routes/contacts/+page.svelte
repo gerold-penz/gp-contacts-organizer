@@ -93,9 +93,9 @@
           </div>
         </div>
 
-        <div class="card-body table-responsive">
+        <div class="card-body table-responsive pt-0 px-0 pb-2">
 
-          <table class="table table-hover table-sm">
+          <table class="table table-hover">
             <thead class="table-light">
             <tr>
               <th><input class="form-check-input" type="checkbox"/></th>
@@ -117,7 +117,7 @@
                   alt=""
                 />
               </td>
-              <td>Gerold</td>
+              <td>Gerold Penz</td>
               <td>Oberhofen im Inntal</td>
               <td>+43 664 3463652</td>
               <td>gerold@gp-softwaretechnik.at</td>
@@ -125,17 +125,17 @@
             <tr class="table-active">
               <td><input class="form-check-input" type="checkbox"/></td>
               <td class="text-center">
-                <img
-                  src={session?.user?.image}
-                  class="rounded-circle"
-                  style="width: 1.3em; transform: translateY(-2px);"
-                  alt=""
-                />
+                <div
+                  class="d-inline-flex rounded-circle bg-light text-secondary align-items-center justify-content-center"
+                  style="height: 1.3em; width: 1.3em;"
+                >
+                  <div class="text-nowrap" style="font-size: 0.6em;">BP</div>
+                </div>
               </td>
-              <td>Bernhard</td>
+              <td>Bernhard Penz</td>
               <td>Oberhofen im Inntal</td>
-              <td>+43 664 3463652</td>
-              <td>gerold@gp-softwaretechnik.at</td>
+              <td class="text-nowrap">+43 664 3463652</td>
+              <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>
             </tr>
             <tr>
               <td><input class="form-check-input" type="checkbox"/></td>
@@ -147,24 +147,25 @@
                   alt=""
                 />
               </td>
-              <td>Gerda</td>
+              <td>Gerda Penz</td>
               <td>Oberhofen im Inntal</td>
-              <td>+43 664 3463652</td>
-              <td>gerold@gp-softwaretechnik.at</td>
+              <td class="text-nowrap">+43 664 3463652</td>
+              <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>
             </tr>
             <tr>
               <td><input class="form-check-input" type="checkbox"/></td>
               <td class="text-center">
                 <div
-                  class="d-inline-block rounded-circle bg-light"
-                  style="height: 1.3em; width: 1.3em; transform: translateY(2px);"
+                  class="d-inline-flex rounded-circle bg-light text-secondary align-items-center justify-content-center"
+                  style="height: 1.3em; width: 1.3em;"
                 >
+                  <div class="text-nowrap" style="font-size: 0.6em;">BM</div>
                 </div>
               </td>
-              <td>Blutwurst</td>
+              <td>Blutwurst Metzger</td>
               <td>Oberhofen im Inntal</td>
-              <td>+43 664 3463652</td>
-              <td>gerold@gp-softwaretechnik.at</td>
+              <td class="text-nowrap">+43 664 3463652</td>
+              <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>
             </tr>
             <tr>
               <td><input class="form-check-input" type="checkbox"/></td>
@@ -176,10 +177,10 @@
                   alt=""
                 />
               </td>
-              <td>Salami</td>
+              <td>Salami Metzger</td>
               <td>Oberhofen im Inntal</td>
-              <td>+43 664 3463652</td>
-              <td>gerold@gp-softwaretechnik.at</td>
+              <td class="text-nowrap">+43 664 3463652</td>
+              <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>
             </tr>
             </tbody>
           </table>
