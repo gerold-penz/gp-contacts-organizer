@@ -10,7 +10,7 @@ import type { SynchronizationSettings } from "$lib/interfaces"
 
 const addressBooksSchema = z.object({
     addressBooks: z.object({
-        path: z.string().min(1),
+        url: z.string().min(1),
         displayName: z.string().min(1),
         active: z.boolean(),
     }).array()

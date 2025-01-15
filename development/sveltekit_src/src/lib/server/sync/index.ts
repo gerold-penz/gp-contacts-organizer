@@ -23,12 +23,11 @@ export async function updateUserAddressBookDefinitions(username: Username) {
 
         // Push webAddressBook to userAddressBooks if not exists
         const found = Boolean(userAddressBooks.find((userAddressBook) => {
-            const userAddressBookUrl = env.NEXTCLOUD_URL + userAddressBook.path
-            return ncAddressBook.url === userAddressBookUrl
+            return ncAddressBook.url === userAddressBook.url
         }))
         if (!found) {
             userAddressBooks.push({
-                path: ncAddressBook.url.substring(env.NEXTCLOUD_URL.length),
+                url: ncAddressBook.url,
                 displayName: ncAddressBook.displayName,
                 active: true
             })
@@ -36,8 +35,7 @@ export async function updateUserAddressBookDefinitions(username: Username) {
 
         // Update display name
         const userAddressBook = userAddressBooks.find((userAddressBook) => {
-            const userAddressBookUrl = env.NEXTCLOUD_URL + userAddressBook.path
-            return userAddressBookUrl === ncAddressBook.url
+            return userAddressBook.url === ncAddressBook.url
         })
         if (userAddressBook) {
             userAddressBook.displayName = ncAddressBook.displayName
@@ -47,9 +45,8 @@ export async function updateUserAddressBookDefinitions(username: Username) {
 
     // Delete userAdressBook if not in ncAddressBooks
     userAddressBooks = userAddressBooks.filter((userAddressBook) => {
-        const userAddressBookUrl = env.NEXTCLOUD_URL + userAddressBook.path
         return ncAddressBooks.find((ncAddressBook) => {
-            return ncAddressBook.url === userAddressBookUrl
+            return ncAddressBook.url === userAddressBook.url
         })
     })
 
