@@ -1,11 +1,12 @@
 import { type Actions, fail, redirect, type ServerLoad } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
-import { updateUserAddressBookDefinitions } from "$lib/server/sync"
+import { updateOrInsertVcards, updateUserAddressBookDefinitions } from "$lib/server/sync"
 import { z } from "zod"
 import { zod } from "sveltekit-superforms/adapters"
 import { message, superValidate } from "sveltekit-superforms"
 import type { SynchronizationSettings } from "$lib/interfaces"
+import { Vcards } from "$lib/server/vcards"
 
 
 const addressBooksSchema = z.object({
@@ -21,6 +22,8 @@ const synchronizationSchema = z.object({
         active: z.boolean().optional(),
     })
 })
+
+const updateAllContactsSchema = z.object({})
 
 
 export const load: ServerLoad = async ({locals}) => {
@@ -48,13 +51,15 @@ export const load: ServerLoad = async ({locals}) => {
     // Initialize forms
     const addressBooksForm = await superValidate({addressBooks}, zod(addressBooksSchema))
     const synchronizationForm = await superValidate({synchronization}, zod(synchronizationSchema))
+    const updateAllVcardsForm = await superValidate(zod(updateAllContactsSchema))
 
     // Finished
     return {
         addressBooksForm,
         addressBooks,
         synchronizationForm,
-        synchronization
+        synchronization,
+        updateAllVcardsForm
     }
 
 }
@@ -112,6 +117,32 @@ export const actions: Actions = {
 
         // Finished
         return message(form, "Changes saved")
+    },
+
+
+    updateAllVcards: async ({request, locals}) => {
+        console.debug(`settings.+page.server.updateAllVcards()`)
+
+        // Get form data
+        const form = await superValidate(request, zod(updateAllContactsSchema))
+        if (!form.valid) {
+            return fail(status.BAD_REQUEST, {form})
+        }
+
+        // Get all address books
+        const username = locals.session?.user?.id!
+        const user = Users.get(username)!
+        const addressBooks = user.addressBooks || []
+
+        // Delete all vcards of user from database
+        Vcards.deleteAllUserVcards(username)
+
+        // No check --> insert all vcards into database
+        for await (const addressBook of addressBooks) {
+            if (!addressBook.active) return
+            await updateOrInsertVcards(username, addressBook.url)
+        }
+
     },
 
 

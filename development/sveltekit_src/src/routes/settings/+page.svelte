@@ -65,6 +65,12 @@
         synchronizationSubmit()
     }
 
+
+    let {
+        enhance: updateAllVcardsEnhance,
+        submitting: updateAllVcardsSubmitting,
+    } = superForm(data.updateAllVcardsForm)
+
 </script>
 
 
@@ -188,11 +194,28 @@
 
     <div class="card-header">
       Synchronization
-      {#if $synchronizationSubmitting}
+      {#if $updateAllVcardsSubmitting}
         <div class="ms-2 spinner-border spinner-border-sm text-secondary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       {/if}
+    </div>
+
+    <div class="card-body border-bottom">
+      <form method="POST" action={`${pathname}?/updateAllVcards`} use:updateAllVcardsEnhance>
+        <button
+          type="submit"
+          class="btn btn-outline-primary"
+          disabled={$updateAllVcardsSubmitting}
+        >
+          {#if updatingDefinitions}
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span class="visually-hidden" role="status">Updating...</span>
+          {/if}
+          Update all contacts with Nextcloud
+        </button>
+      </form>
+
     </div>
 
     <div class="card-body">

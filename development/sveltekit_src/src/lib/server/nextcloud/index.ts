@@ -1,7 +1,7 @@
 import { getAccessToken } from "$lib/server/auth"
 import { env } from "$env/dynamic/private"
-import { DAVClient, type DAVVCard, fetchVCards } from "tsdav"
-import type { NcAddressBook, Username } from "$lib/interfaces"
+import { DAVClient, fetchVCards } from "tsdav"
+import type { NcAddressBook, Username, Vcard } from "$lib/interfaces"
 
 
 export const NO_ACCESS_TOKEN_ERROR = "[NO ACCESS TOKEN ERROR]"
@@ -64,7 +64,7 @@ export namespace Nextcloud {
     }
 
 
-    export async function getAllVcards(username: Username, addressBookUrl: string): Promise<DAVVCard[]> {
+    export async function getAllVcards(username: Username, addressBookUrl: string): Promise<Vcard[]> {
         console.debug(`server.carddav.getAllContacts(${username}, ${addressBookUrl})`)
 
         const accessToken = await getAccessToken(username)
@@ -93,7 +93,7 @@ export namespace Nextcloud {
         //   END:VCARD",
         // }
 
-        return collection
+        return collection as Vcard[]
     }
 
 }

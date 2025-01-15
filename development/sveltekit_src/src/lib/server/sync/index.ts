@@ -1,6 +1,7 @@
 import type { User, Username } from "$lib/interfaces"
 import { Users } from "$lib/server/users"
 import { Nextcloud } from "$lib/server/nextcloud"
+import { Vcards } from "$lib/server/vcards"
 
 
 export const USER_NOT_FOUND_ERROR = "[USER NOT FOUND ERROR]"
@@ -57,13 +58,12 @@ export async function updateUserAddressBookDefinitions(username: Username) {
 }
 
 
-export async function refreshAllVcards(username: Username, addressBookUrl: string) {
+export async function updateOrInsertVcards(username: Username, addressBookUrl: string) {
+    console.debug(`sync.updateOrInsertVcards(${username}, ${addressBookUrl})`)
+
     const vcards = await Nextcloud.getAllVcards(username, addressBookUrl)
     if (!vcards) return
 
-    // ToDo: empty vCards database
-
-    // ToDo: insert all vCards into the database
-
-
+    // Insert or update all vCards into the database
+    Vcards.batchSet(username, vcards)
 }
