@@ -1,7 +1,6 @@
 import type { User, Username } from "$lib/interfaces"
 import { Users } from "$lib/server/users"
 import { Nextcloud } from "$lib/server/nextcloud"
-import { env } from "$env/dynamic/private"
 
 
 export const USER_NOT_FOUND_ERROR = "[USER NOT FOUND ERROR]"
@@ -54,5 +53,17 @@ export async function updateUserAddressBookDefinitions(username: Username) {
     user = Users.get(username)!
     user.addressBooks = userAddressBooks
     Users.set(user)
+
+}
+
+
+export async function refreshAllVcards(username: Username, addressBookUrl: string) {
+    const vcards = await Nextcloud.getAllVcards(username, addressBookUrl)
+    if (!vcards) return
+
+    // ToDo: empty vCards database
+
+    // ToDo: insert all vCards into the database
+
 
 }

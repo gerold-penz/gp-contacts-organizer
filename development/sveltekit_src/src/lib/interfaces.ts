@@ -46,3 +46,8 @@ export interface RefreshTokenResult {
 }
 
 
+export interface Vcard {
+    url: string
+    etag?: unknown
+    data: string
+}

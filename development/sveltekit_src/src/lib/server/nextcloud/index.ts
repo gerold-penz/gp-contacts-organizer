@@ -1,6 +1,6 @@
 import { getAccessToken } from "$lib/server/auth"
 import { env } from "$env/dynamic/private"
-import { DAVClient, fetchVCards } from "tsdav"
+import { DAVClient, type DAVVCard, fetchVCards } from "tsdav"
 import type { NcAddressBook, Username } from "$lib/interfaces"
 
 
@@ -64,7 +64,7 @@ export namespace Nextcloud {
     }
 
 
-    export async function getAllContacts(username: Username, addressBookUrl: string) {
+    export async function getAllVcards(username: Username, addressBookUrl: string): Promise<DAVVCard[]> {
         console.debug(`server.carddav.getAllContacts(${username}, ${addressBookUrl})`)
 
         const accessToken = await getAccessToken(username)
@@ -77,11 +77,7 @@ export namespace Nextcloud {
             headers: {"Authorization": `Bearer ${accessToken}`}
         })
 
-        console.log("coll", collection[0])
-
-        //                            /remote.php/dav/addressbooks/users/gerold/kontakte/
         // https://next.gerold-penz.at/remote.php/dav/addressbooks/users/gerold/kontakte/
-
         // {
         //   url: "https://next.gerold-penz.at/remote.php/dav/addressbooks/users/gerold/kontakte/DA53F074-9383-42B6-86F3-38E38287DCC4.vcf",
         //   etag: "\"159ed52d2dd33c3fa1601f654a8495ed\"",
@@ -97,7 +93,7 @@ export namespace Nextcloud {
         //   END:VCARD",
         // }
 
-
+        return collection
     }
 
 }
