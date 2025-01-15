@@ -1,7 +1,6 @@
 import { redirect, type ServerLoad } from "@sveltejs/kit"
 import type { Session } from "@auth/core/types"
 import { status } from "http-status"
-import { Nextcloud } from "$lib/server/nextcloud"
 import { Vcards } from "$lib/server/vcards"
 
 
