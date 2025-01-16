@@ -1,7 +1,7 @@
 <script lang="ts">
 
     const {data} = $props()
-    const {session, activeAddressBooks} = data
+    const {session} = data
 
     // ToDo: Load and show active address books
 
@@ -25,7 +25,7 @@
 
 <!-- Page head BEGIN -->
 <svelte:head>
-  <title>Contacts Organizer - Contacts</title>
+  <title>Contacts Organizer - {addressBook.displayName}</title>
 </svelte:head>
 <!-- Page head END -->
 

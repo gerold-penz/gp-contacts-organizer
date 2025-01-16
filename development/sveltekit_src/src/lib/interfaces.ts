@@ -47,6 +47,7 @@ export interface RefreshTokenResult {
 
 
 export interface Vcard {
+    addressBookUrl: string
     url: string
     etag?: unknown
     data?: string
