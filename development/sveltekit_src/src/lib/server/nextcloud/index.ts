@@ -93,7 +93,12 @@ export namespace Nextcloud {
         //   END:VCARD",
         // }
 
-        return collection as Vcard[]
+        return collection.map((vcard) => {
+            return {
+                ...vcard,
+                addressBookUrl
+            }
+        }) as Vcard[]
     }
 
 }

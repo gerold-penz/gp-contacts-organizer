@@ -22,7 +22,9 @@ export namespace Vcards {
 
     export function set(username: string, vcard: Vcard): void {
         console.debug(`server.vcards.set(${username}, ...${vcard.url.substring(vcard.url.length - 40)})`)
-        const key = `${VCARD_PREFIX}:${username}:${vcard.url}`
+        const addressBookHash = Bun.hash(vcard.addressBookUrl)
+        const vcardHash = Bun.hash(vcard.url)
+        const key = `${VCARD_PREFIX}:${username}:${addressBookHash}:${vcardHash}`
         db.set<Vcard>(key, vcard)
     }
 
@@ -37,9 +39,11 @@ export namespace Vcards {
     }
 
 
-    export function get(username: string, vcardUrl: string): Vcard | undefined {
-        console.debug(`server.vcards.get(${vcardUrl})`)
-        const key = `${VCARD_PREFIX}:${username}:${vcardUrl}`
+    export function get(username: string, addressBookUrl: string, vcardUrl: string): Vcard | undefined {
+        console.debug(`server.vcards.get(${vcardUrl.substring(vcardUrl.length - 40)})`)
+        const addressBookHash = Bun.hash(addressBookUrl)
+        const vcardHash = Bun.hash(vcardUrl)
+        const key = `${VCARD_PREFIX}:${username}:${addressBookHash}:${vcardHash}`
         return db.get<Vcard>(key)
     }
 
@@ -47,6 +51,14 @@ export namespace Vcards {
     export function getAllUserVcards(username: string): (Vcard | undefined)[] | undefined {
         console.debug(`server.vcards.getAllUserVcards(${username})`)
         const startsWith = `${VCARD_PREFIX}:${username}:`
+        return db.getValues<Vcard>(startsWith)
+    }
+
+
+    export function getAllAddressBookVcards(username: string, addressBookUrl: string) {
+        console.debug(`server.vcards.getAllAddressBookVcards(${username}, ${addressBookUrl.substring(addressBookUrl.length - 40)})`)
+        const addressBookHash = Bun.hash(addressBookUrl)
+        const startsWith = `${VCARD_PREFIX}:${username}:${addressBookHash}:`
         return db.getValues<Vcard>(startsWith)
     }
 
