@@ -122,6 +122,7 @@ export const actions: Actions = {
 
     updateAllVcards: async ({request, locals}) => {
         console.debug(`settings.+page.server.updateAllVcards()`)
+        console.time("updateAllVcards()")
 
         // Get form data
         const form = await superValidate(request, zod(updateAllContactsSchema))
@@ -139,10 +140,12 @@ export const actions: Actions = {
 
         // No check --> insert all vcards into database
         for await (const addressBook of addressBooks) {
-            if (!addressBook.active) return
+            if (!addressBook.active) continue
             await updateOrInsertVcards(username, addressBook.url)
         }
 
+        // Log
+        console.timeEnd("updateAllVcards()")
     },
 
 
