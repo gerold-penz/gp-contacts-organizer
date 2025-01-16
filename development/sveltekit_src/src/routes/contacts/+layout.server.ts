@@ -5,6 +5,10 @@ import { Users } from "$lib/server/users"
 import type { ContactGroup, Hash, UserAddressBook } from "$lib/interfaces"
 
 
+export const ssr = true
+export const csr = true
+
+
 export const load: LayoutServerLoad = async ({locals, params}) => {
 
     // Get session
@@ -42,11 +46,14 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
 
     }
 
+    console.log("AAAAAAAAAAAAAAAAAAAAAAA")
+
     // Finished
     return {
         activeAddressBooks,
         selectedAddressBooks,
-        activeContactGroups
+        activeContactGroups,
+        now: Date.now()
     }
 
 

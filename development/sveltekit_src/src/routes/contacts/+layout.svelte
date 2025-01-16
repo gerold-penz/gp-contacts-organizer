@@ -4,6 +4,8 @@
     import type { Snippet } from 'svelte'
 
 
+    console.log("UUUUUUUUUUUUUUUUUUUUUUUUUU")
+
     const {
         children,
         data,
@@ -19,6 +21,7 @@
         now,
     } = data
 
+    console.log({data, url: page.url.toString()})
     const currentPath = page.url.pathname
 
 
