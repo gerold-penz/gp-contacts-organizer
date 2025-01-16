@@ -7,8 +7,6 @@
     const pathname = page.url.pathname
     const {data} = $props()
 
-    console.log(data)
-
     let addressBooks = $state(data.addressBooks)
     const {
         form: addressBooksForm,
@@ -268,7 +266,7 @@
   <!-- Synchronization card END -->
 
 
-<!--    <pre>{JSON.stringify(data, undefined, 2)}</pre>-->
+  <!--    <pre>{JSON.stringify(data, undefined, 2)}</pre>-->
 
 
 </main>

@@ -2,7 +2,7 @@ import type {LayoutServerLoad} from "./$types"
 import { redirect, error } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
-import type { ContactGroup, UserAddressBook } from "$lib/interfaces"
+import type { ContactGroup, Hash, UserAddressBook } from "$lib/interfaces"
 
 
 export const load: LayoutServerLoad = async ({locals, params}) => {
@@ -24,19 +24,29 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     const activeAddressBooks: UserAddressBook[] = user?.addressBooks?.filter((addressBook) => addressBook.active) || []
 
     // Get selected address book
+    let selectedAddressBooks: UserAddressBook[] | undefined = undefined
+    const addressBookUrlHash = params?.addressBookUrlHash
+    if (addressBookUrlHash && addressBookUrlHash === "all") {
+        selectedAddressBooks = activeAddressBooks
+    } else if (addressBookUrlHash) {
+        const hash: Hash = BigInt(addressBookUrlHash)
+        selectedAddressBooks = activeAddressBooks.filter((addressBook) => addressBook.addressBookUrlHash === hash)
+    }
+
+    // activeContactGroups
     let activeContactGroups: ContactGroup[] = []
-    if (
-        params?.addressBookId === "all" ||
-        Number(params?.addressBookId) >= 0
-    ) {
+    if (selectedAddressBooks?.length) {
+
         // ToDo: Load contact groups of all active address books
         activeContactGroups = [{displayName: "Family"}, {displayName: "Customers"}, {displayName: "Starred in Android"}]
+
     }
 
     // Finished
     return {
         activeAddressBooks,
-        activeContactGroups,
+        selectedAddressBooks,
+        activeContactGroups
     }
 
 

@@ -1,19 +1,26 @@
 <script lang="ts">
     import { page } from "$app/state"
+    import type { LayoutData } from './$types'
+    import type { Snippet } from 'svelte'
 
 
     const {
         children,
         data,
+    }: {
+        children: Snippet,
+        data: LayoutData
     } = $props()
 
     const {
-        session,
         activeAddressBooks,
+        selectedAddressBooks,
         activeContactGroups,
+        now,
     } = data
 
     const currentPath = page.url.pathname
+
 
 </script>
 
@@ -38,7 +45,7 @@
       <div class="card mb-2">
 
         <div class="card-header">
-          Address Books
+          Address Books {now}
         </div>
 
         <!-- Address books list BEGIN -->
@@ -47,6 +54,7 @@
 
             <a
               class="list-group-item list-group-item-action border-0"
+              class:active={activeAddressBooks?.length === selectedAddressBooks?.length}
               href="/contacts/all">
               All contacts
             </a>
