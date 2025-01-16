@@ -11,6 +11,7 @@ import { Vcards } from "$lib/server/vcards"
 
 const addressBooksSchema = z.object({
     addressBooks: z.object({
+        addressBookUrlHash: z.number().or(z.bigint()),
         url: z.string().min(1),
         displayName: z.string().min(1),
         active: z.boolean(),

@@ -93,10 +93,25 @@ export namespace Nextcloud {
         //   END:VCARD",
         // }
 
+
+        //     /**
+        //      * addressBookUrlHash: Bun.hash(addressBook.url)
+        //      */
+        //     addressBookUrlHash: string
+        //     /**
+        //      * vcardUrlHash: Bun.hash(url)
+        //      */
+        //     vcardUrlHash: string
+        //     url: string
+        //     etag?: unknown
+        //     data?: string
+
+        const addressBookUrlHash = Bun.hash(addressBookUrl)
         return collection.map((vcard) => {
             return {
                 ...vcard,
-                addressBookUrl
+                addressBookUrlHash,
+                vcardUrlHash: Bun.hash(vcard.url),
             }
         }) as Vcard[]
     }

@@ -51,11 +51,11 @@
               All contacts
             </a>
 
-            {#each activeAddressBooks as addressBook, index}
+            {#each activeAddressBooks as addressBook}
               <a
                 class="list-group-item list-group-item-action border-0"
                 class:active={false}
-                href={`/contacts/${index}`}
+                href={`/contacts/${addressBook.addressBookUrlHash}`}
               >
                 {addressBook.displayName}
               </a>
@@ -64,7 +64,7 @@
           {:else}
             <div class="card-body text-bg-secondary">
               There are no address <br>
-              books selected. <br>
+              books activated. <br>
               Go to the user settings and <br>
               select your address books.
             </div>
@@ -134,10 +134,10 @@
 <!-- Main content END -->
 
 
-<style lang="scss">
-  .list-group {
-    //--bs-list-group-active-color: inherit;
-    //--bs-list-group-active-bg: var(--bs-light);
-    //--bs-list-group-active-border-color: inherit;
-  }
-</style>
+<!--<style lang="scss">-->
+<!--  .list-group {-->
+<!--    &#45;&#45;bs-list-group-active-color: inherit;-->
+<!--    &#45;&#45;bs-list-group-active-bg: var(&#45;&#45;bs-light);-->
+<!--    &#45;&#45;bs-list-group-active-border-color: inherit;-->
+<!--  }-->
+<!--</style>-->

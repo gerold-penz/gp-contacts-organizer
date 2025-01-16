@@ -20,7 +20,7 @@
   <div class="card text-bg-light">
     <div class="card-body">
 
-      Click on "Sign In" at the top right to grant "Contacts Organizer" access to your Nextcloud instance.
+      Click on <a href="/signin">Sign In</a> to grant "Contacts Organizer" access to your Nextcloud instance.
       "Contacts Organizer" has access to the contacts via the OAuth2 authentication of Nextcloud.
       No passwords are stored in "Contacts Organizer".
 

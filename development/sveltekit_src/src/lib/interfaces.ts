@@ -1,4 +1,5 @@
 export type Username = string
+export type Hash = number | bigint
 
 
 export interface NcAddressBook {
@@ -10,6 +11,10 @@ export interface NcAddressBook {
 
 
 export interface UserAddressBook {
+    /**
+     * addressBookUrlHash: Bun.hash(ncUrl)
+     */
+    addressBookUrlHash:  Hash
     url: string
     displayName: string
     active: boolean
@@ -47,7 +52,14 @@ export interface RefreshTokenResult {
 
 
 export interface Vcard {
-    addressBookUrl: string
+    /**
+     * addressBookUrlHash: Bun.hash(addressBook.url)
+     */
+    addressBookUrlHash:  Hash
+    /**
+     * vcardUrlHash: Bun.hash(url)
+     */
+    vcardUrlHash:  Hash
     url: string
     etag?: unknown
     data?: string

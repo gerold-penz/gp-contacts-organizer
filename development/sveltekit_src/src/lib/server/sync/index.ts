@@ -27,9 +27,10 @@ export async function updateUserAddressBookDefinitions(username: Username) {
         }))
         if (!found) {
             userAddressBooks.push({
+                addressBookUrlHash: Bun.hash(ncAddressBook.url),
                 url: ncAddressBook.url,
                 displayName: ncAddressBook.displayName,
-                active: true
+                active: false
             })
         }
 
