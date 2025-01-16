@@ -51,3 +51,8 @@ export interface Vcard {
     etag?: unknown
     data?: string
 }
+
+
+export interface ContactGroup {
+    displayName: string
+}
