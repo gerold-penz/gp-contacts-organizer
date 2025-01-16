@@ -1,4 +1,4 @@
-import { type Actions, fail, redirect, type ServerLoad } from "@sveltejs/kit"
+import { type Actions, error, fail, redirect, type ServerLoad } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
 import { updateOrInsertVcards, updateUserAddressBookDefinitions } from "$lib/server/sync"
@@ -29,20 +29,26 @@ const updateAllContactsSchema = z.object({})
 export const load: ServerLoad = async ({locals}) => {
     console.debug(`settings.+page.server.load()`)
 
-    if (!locals?.session) {
+    const session = locals?.session
+    if (!session) {
         return redirect(status.FOUND, "/signin?redirect=/settings")
     }
 
-    // Get address books
-    const username = locals.session?.user?.id!
+    // Get user
+    const username = session?.user?.id!
     let user = Users.get(username)!
+    if (!user) {
+        return error(status.NOT_FOUND, "User not found")
+    }
+
+    // Get settings
     let addressBooks = user.addressBooks || []
     let synchronization = user.synchronization || {active: false}
 
     // Update the address book definitions for first time
     if (!addressBooks?.length) {
         await updateUserAddressBookDefinitions(username)
-        // Load user again
+        // Load user and settings again
         user = Users.get(username)!
         addressBooks = user.addressBooks || []
         synchronization = user.synchronization || {active: false}

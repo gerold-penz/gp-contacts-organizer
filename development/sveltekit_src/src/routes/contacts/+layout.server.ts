@@ -1,17 +1,19 @@
 import type {LayoutServerLoad} from "./$types"
 import { redirect, error } from "@sveltejs/kit"
-import type { Session } from "@auth/core/types"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
 import type { ContactGroup, UserAddressBook } from "$lib/interfaces"
 
 
 export const load: LayoutServerLoad = async ({locals, params}) => {
-    const session: Session | undefined = locals?.session || undefined
+
+    // Get session
+    const session = locals?.session
     if (!session) {
         return redirect(status.FOUND, "/")
     }
 
+    // Get user
     const username = session?.user?.id!
     const user = Users.get(username)
     if (!user) {
@@ -33,7 +35,6 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
 
     // Finished
     return {
-        session,
         activeAddressBooks,
         activeContactGroups,
     }

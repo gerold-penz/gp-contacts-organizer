@@ -1,10 +1,9 @@
 <script lang="ts">
     import { page } from "$app/state"
-    import type { Session } from "@auth/core/types"
 
 
     const data = page.data
-    const session: Session | undefined = data?.session || undefined
+    const session = data?.session
 </script>
 
 

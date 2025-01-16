@@ -7,6 +7,8 @@
     const pathname = page.url.pathname
     const {data} = $props()
 
+    console.log(data)
+
     let addressBooks = $state(data.addressBooks)
     const {
         form: addressBooksForm,
