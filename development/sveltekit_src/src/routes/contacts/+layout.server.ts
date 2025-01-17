@@ -5,11 +5,8 @@ import { Users } from "$lib/server/users"
 import type { ContactGroup, Hash, UserAddressBook } from "$lib/interfaces"
 
 
-export const ssr = true
-export const csr = true
-
-
 export const load: LayoutServerLoad = async ({locals, params}) => {
+    console.debug(`--- /contacts/+layout.server.ts load() ---`)
 
     // Get session
     const session = locals?.session
@@ -27,6 +24,8 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     // Get active address books
     const activeAddressBooks: UserAddressBook[] = user?.addressBooks?.filter((addressBook) => addressBook.active) || []
 
+
+
     // Get selected address book
     let selectedAddressBooks: UserAddressBook[] | undefined = undefined
     const addressBookUrlHash = params?.addressBookUrlHash
@@ -37,6 +36,13 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
         selectedAddressBooks = activeAddressBooks.filter((addressBook) => addressBook.addressBookUrlHash === hash)
     }
 
+
+    console.log({selectedAddressBooks})
+
+
+
+
+
     // activeContactGroups
     let activeContactGroups: ContactGroup[] = []
     if (selectedAddressBooks?.length) {
@@ -45,8 +51,6 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
         activeContactGroups = [{displayName: "Family"}, {displayName: "Customers"}, {displayName: "Starred in Android"}]
 
     }
-
-    console.log("AAAAAAAAAAAAAAAAAAAAAAA")
 
     // Finished
     return {

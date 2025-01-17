@@ -1,11 +1,10 @@
 <script lang="ts">
 
+    console.debug(`--- /contacts/[addressBookUrlHash]/+page.svelte ---`)
+
+
     const {data} = $props()
     const {session} = data
-
-
-
-
 
 
     // ToDo: Load and show active address books
