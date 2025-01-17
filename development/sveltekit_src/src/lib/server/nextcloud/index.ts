@@ -31,7 +31,10 @@ async function getDavClient(username: Username) {
         authMethod: "Custom",
         credentials: {},
         fetchOptions: {
-            headers: {"Authorization": `Bearer ${accessToken}`}
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Accept": "text/vcard; version=4.0",
+            }
         }
     })
     _global_dav_client.accessToken = accessToken
@@ -71,8 +74,15 @@ export namespace Nextcloud {
         }
 
         const collection = await fetchVCards({
-            addressBook: {url: addressBookUrl},
-            headers: {"Authorization": `Bearer ${accessToken}`}
+            addressBook: {
+                url: addressBookUrl,
+                fetchOptions: {headers: {"Accept": "text/vcard; version=4.0"}},
+            },
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Accept": "text/vcard; version=4.0",
+            },
+
         })
 
         // https://next.gerold-penz.at/remote.php/dav/addressbooks/users/gerold/kontakte/

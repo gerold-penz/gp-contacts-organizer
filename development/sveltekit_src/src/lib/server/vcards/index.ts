@@ -2,6 +2,7 @@ import path from "node:path"
 import { env } from "$env/dynamic/private"
 import { BunSqliteKeyValue } from "bun-sqlite-key-value"
 import type { Hash, Vcard } from "$lib/interfaces"
+import {parseVCards} from "vcard4-tsm"
 
 
 const VCARD_PREFIX = "vcard"
