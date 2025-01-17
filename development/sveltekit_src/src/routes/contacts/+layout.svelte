@@ -4,7 +4,7 @@
     import type { LayoutData } from './$types'
 
 
-    let {
+    const {
         children,
         data,
     }: {
@@ -12,7 +12,7 @@
         data: LayoutData
     } = $props()
 
-    let {
+    const {
         activeAddressBooks,
         selectedAddressBooks,
         activeContactGroups,
@@ -78,7 +78,7 @@
       <!-- Contact groups card BEGIN -->
       <div class="card">
 
-        <div class="card-header">
+        <div class="card-header     text-secondary">
           Contact Groups
         </div>
 

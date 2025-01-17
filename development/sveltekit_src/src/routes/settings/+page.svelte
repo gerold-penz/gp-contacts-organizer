@@ -194,7 +194,7 @@
 
     <div class="card-header">
       Synchronization
-      {#if $updateAllVcardsSubmitting}
+      {#if $synchronizationSubmitting}
         <div class="ms-2 spinner-border spinner-border-sm text-secondary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
@@ -208,7 +208,7 @@
           class="btn btn-outline-primary"
           disabled={$updateAllVcardsSubmitting}
         >
-          {#if updatingDefinitions}
+          {#if $updateAllVcardsSubmitting}
             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             <span class="visually-hidden" role="status">Updating...</span>
           {/if}

@@ -10,7 +10,7 @@
     } = $props()
     const {session} = $derived(data)
 
-    let addressBookTitle = $derived.by(() => {
+    const addressBookTitle = $derived.by(() => {
         if (page.url.pathname.startsWith("/contacts/all")) {
             return "All contacts"
         }
@@ -52,7 +52,7 @@
 
   <div class="card-header d-flex flex-wrap justify-content-between">
     <div>
-      My contacts
+      {addressBookTitle}
     </div>
     <div>
       <span class="me-2">[Filter]</span>
