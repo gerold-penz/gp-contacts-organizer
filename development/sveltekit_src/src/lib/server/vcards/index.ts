@@ -49,9 +49,9 @@ export namespace Vcards {
     }
 
 
-    export function getAllAddressBookVcards(username: string, addressBookUrlHash: Hash) {
+    export function getAllAddressBookVcards(username: string, addressBookUrlHash: Hash): Vcard[] | undefined {
         const startsWith = `${VCARD_PREFIX}:${username}:${addressBookUrlHash}:`
-        return db.getValues<Vcard>(startsWith)
+        return db.getValues<Vcard>(startsWith) as Vcard[] | undefined
     }
 
 }

@@ -8,7 +8,7 @@
     }: {
         data: PageData
     } = $props()
-    const {session} = $derived(data)
+    const {session, activeVcards} = $derived(data)
 
     const addressBookTitle = $derived.by(() => {
         if (page.url.pathname.startsWith("/contacts/all")) {
@@ -18,17 +18,7 @@
     })
 
 
-    // ToDo: Load and show active address books
-
     // ToDo: Load and show all contact groups of all address books
-
-    // ToDo: Load last selected address book (localStorage by runed)
-
-    // ToDo: Select address book
-
-    // ToDo: Load selected address book
-
-    // ToDo: Load last selected contact group if exists (localStorage by runed)
 
     // ToDo: Filter contacts by selected contact group
 
@@ -53,6 +43,17 @@
   <div class="card-header d-flex flex-wrap justify-content-between">
     <div>
       {addressBookTitle}
+
+      <!-- Vcards count BEGIN -->
+      {#await activeVcards then vcards}
+        {#if vcards.length}
+          <span class="badge rounded-pill text-bg-secondary" style="--bs-badge-font-size: 0.6em; transform: translateY(-0.7em);">
+            {vcards.length}
+          </span>
+        {/if}
+      {/await}
+      <!-- Vcards count END -->
+
     </div>
     <div>
       <span class="me-2">[Filter]</span>
@@ -151,6 +152,22 @@
       </tr>
       </tbody>
     </table>
+
+
+    <!-- TEST BEGIN -->
+    <p class="d-flex flex-wrap">
+      {#await activeVcards}
+        Loading active vCards ...
+      {:then activeVcards}
+        {#each activeVcards as vcard}
+          <span class="me-2">{String(vcard.vcardUrlHash).substring(0, 3)}</span>
+        {/each}
+      {:catch error}
+        {String(error)}
+      {/await}
+    </p>
+    <!-- TEST END -->
+
 
   </div>
 </div>

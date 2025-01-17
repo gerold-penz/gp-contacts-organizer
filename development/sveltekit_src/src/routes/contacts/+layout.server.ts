@@ -2,7 +2,8 @@ import type {LayoutServerLoad} from "./$types"
 import { redirect, error } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
-import type { ContactGroup, Hash, UserAddressBook } from "$lib/interfaces"
+import type { ContactGroup, Hash, UserAddressBook, Vcard } from "$lib/interfaces"
+import { Vcards } from "$lib/server/vcards"
 
 
 export const load: LayoutServerLoad = async ({locals, params}) => {
@@ -33,6 +34,26 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
         selectedAddressBooks = activeAddressBooks.filter((addressBook) => addressBook.addressBookUrlHash === hash)
     }
 
+
+    // Get all vCards of the selected address books (async)
+    const getActiveVcards = async function() {
+
+        console.time("getActiveVcards()")
+        const activeVcards: Vcard[] = []
+        if (selectedAddressBooks?.length) {
+            for (const addressBook of selectedAddressBooks) {
+                const vcards = Vcards.getAllAddressBookVcards(username, addressBook.addressBookUrlHash) || []
+                if (vcards?.length) {
+                    activeVcards.push(...vcards)
+                }
+            }
+        }
+        console.timeEnd("getActiveVcards()")
+
+        return activeVcards
+    }
+
+
     // activeContactGroups
     let activeContactGroups: ContactGroup[] = []
     if (selectedAddressBooks?.length) {
@@ -46,6 +67,7 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     return {
         activeAddressBooks,
         selectedAddressBooks,
+        activeVcards: getActiveVcards(),
         activeContactGroups,
     }
 
