@@ -16,19 +16,11 @@
         activeAddressBooks,
         selectedAddressBooks,
         activeContactGroups,
-        now
     } = $derived(data)
 
     const currentPath = $derived(page.url.pathname)
 
 </script>
-
-
-<!-- Page head BEGIN -->
-<svelte:head>
-  <title>Contacts Organizer - Contacts</title>
-</svelte:head>
-<!-- Page head END -->
 
 
 <!-- Main content BEGIN -->
@@ -44,7 +36,7 @@
       <div class="card mb-2">
 
         <div class="card-header">
-          Address Books {now}
+          Address Books
         </div>
 
         <!-- Address books list BEGIN -->

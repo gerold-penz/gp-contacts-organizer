@@ -1,10 +1,21 @@
 <script lang="ts">
+    import { page } from "$app/state"
+    import { type PageData } from "./$types"
 
-    console.debug(`--- /contacts/[addressBookUrlHash]/+page.svelte ---`)
 
+    const {
+        data
+    }: {
+        data: PageData
+    } = $props()
+    const {session} = $derived(data)
 
-    const {data} = $props()
-    const {session} = data
+    let addressBookTitle = $derived.by(() => {
+        if (page.url.pathname.startsWith("/contacts/all")) {
+            return "All contacts"
+        }
+        return data.selectedAddressBooks?.[0].displayName
+    })
 
 
     // ToDo: Load and show active address books
@@ -29,7 +40,7 @@
 
 <!-- Page head BEGIN -->
 <svelte:head>
-  <title>Contacts Organizer - xxxxx</title>
+  <title>Contacts Organizer - {addressBookTitle}</title>
 </svelte:head>
 <!-- Page head END -->
 
