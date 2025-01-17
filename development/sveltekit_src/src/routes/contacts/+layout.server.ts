@@ -24,9 +24,7 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     // Get active address books
     const activeAddressBooks: UserAddressBook[] = user?.addressBooks?.filter((addressBook) => addressBook.active) || []
 
-
-
-    // Get selected address book
+    // Get selected address book(s)
     let selectedAddressBooks: UserAddressBook[] | undefined = undefined
     const addressBookUrlHash = params?.addressBookUrlHash
     if (addressBookUrlHash && addressBookUrlHash === "all") {
@@ -35,13 +33,6 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
         const hash: Hash = BigInt(addressBookUrlHash)
         selectedAddressBooks = activeAddressBooks.filter((addressBook) => addressBook.addressBookUrlHash === hash)
     }
-
-
-    console.log({selectedAddressBooks})
-
-
-
-
 
     // activeContactGroups
     let activeContactGroups: ContactGroup[] = []
@@ -57,7 +48,6 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
         activeAddressBooks,
         selectedAddressBooks,
         activeContactGroups,
-        now: Date.now()
     }
 
 

@@ -4,9 +4,6 @@
     import type { LayoutData } from './$types'
 
 
-    console.debug(`--- /contacts/+layout.svelte ---`)
-
-
     let {
         children,
         data,
@@ -24,8 +21,6 @@
 
     const currentPath = $derived(page.url.pathname)
 
-    $inspect(selectedAddressBooks)
-
 </script>
 
 
@@ -36,116 +31,114 @@
 <!-- Page head END -->
 
 
-{#key page.url.pathname}
-  <!-- Main content BEGIN -->
-  <main class="container-fluid py-2">
+<!-- Main content BEGIN -->
+<main class="container-fluid py-2">
 
-    <div class="row g-2">
+  <div class="row g-2">
 
-      <!-- Sidebar Column BEGIN -->
-      <div class="col-12 col-md-auto order-1 order-md-0">
+    <!-- Sidebar Column BEGIN -->
+    <div class="col-12 col-md-auto order-1 order-md-0">
 
 
-        <!-- Address books card BEGIN -->
-        <div class="card mb-2">
+      <!-- Address books card BEGIN -->
+      <div class="card mb-2">
 
-          <div class="card-header">
-            Address Books {now}
-          </div>
+        <div class="card-header">
+          Address Books {now}
+        </div>
 
-          <!-- Address books list BEGIN -->
-          <div class="list-group list-group-flush border-0">
-            {#if activeAddressBooks?.length}
+        <!-- Address books list BEGIN -->
+        <div class="list-group list-group-flush border-0">
+          {#if activeAddressBooks?.length}
 
+            <a
+              class="list-group-item list-group-item-action border-0"
+              class:active={currentPath.startsWith("/contacts/all")}
+              href="/contacts/all">
+              All contacts
+            </a>
+
+            {#each activeAddressBooks as addressBook}
               <a
                 class="list-group-item list-group-item-action border-0"
-                class:active={currentPath.startsWith("/contacts/all")}
-                href="/contacts/all">
-                All contacts
+                class:active={currentPath.startsWith(`/contacts/${addressBook.addressBookUrlHash}`)}
+                href={`/contacts/${addressBook.addressBookUrlHash}`}
+              >
+                {addressBook.displayName}
               </a>
+            {/each}
 
-              {#each activeAddressBooks as addressBook}
-                <a
-                  class="list-group-item list-group-item-action border-0"
-                  class:active={currentPath.startsWith(`/contacts/${addressBook.addressBookUrlHash}`)}
-                  href={`/contacts/${addressBook.addressBookUrlHash}`}
-                >
-                  {addressBook.displayName}
-                </a>
-              {/each}
-
-            {:else}
-              <div class="card-body text-bg-secondary">
-                There are no address <br>
-                books activated. <br>
-                Go to the user settings and <br>
-                select your address books.
-              </div>
-            {/if}
-          </div>
-          <!-- Address books list END -->
-
+          {:else}
+            <div class="card-body text-bg-secondary">
+              There are no address <br>
+              books activated. <br>
+              Go to the user settings and <br>
+              select your address books.
+            </div>
+          {/if}
         </div>
-        <!-- Address books card END -->
+        <!-- Address books list END -->
+
+      </div>
+      <!-- Address books card END -->
 
 
-        <!-- Contact groups card BEGIN -->
-        <div class="card">
+      <!-- Contact groups card BEGIN -->
+      <div class="card">
 
-          <div class="card-header">
-            Contact Groups
-          </div>
+        <div class="card-header">
+          Contact Groups
+        </div>
 
-          <!-- Contact groups list BEGIN -->
-          <div class="list-group list-group-flush border-0">
-            {#if activeContactGroups?.length}
+        <!-- Contact groups list BEGIN -->
+        <div class="list-group list-group-flush border-0">
+          {#if activeContactGroups?.length}
 
+            <a
+              class="list-group-item list-group-item-action border-0"
+              href={currentPath}>
+              All contacts
+            </a>
+
+            {#each activeContactGroups as contactGroup, index}
               <a
                 class="list-group-item list-group-item-action border-0"
-                href={currentPath}>
-                All contacts
+                href={`${currentPath}/${index}`}
+              >
+                {contactGroup.displayName}
               </a>
+            {/each}
 
-              {#each activeContactGroups as contactGroup, index}
-                <a
-                  class="list-group-item list-group-item-action border-0"
-                  href={`${currentPath}/${index}`}
-                >
-                  {contactGroup.displayName}
-                </a>
-              {/each}
-
-            {:else}
-              <div class="card-body">
-              </div>
-            {/if}
-          </div>
-          <!-- Contact groups list END -->
-
-
+          {:else}
+            <div class="card-body">
+            </div>
+          {/if}
         </div>
-        <!-- Contact groups card END -->
+        <!-- Contact groups list END -->
 
 
       </div>
-      <!-- Sidebar Column END -->
-
-
-      <!-- Contact list column BEGIN -->
-      <div class="col">
-
-        {@render children()}
-
-      </div>
-      <!-- Contact list column END -->
+      <!-- Contact groups card END -->
 
 
     </div>
+    <!-- Sidebar Column END -->
 
 
-  </main>
-  <!-- Main content END -->
-{/key}
+    <!-- Contact list column BEGIN -->
+    <div class="col">
+
+      {@render children()}
+
+    </div>
+    <!-- Contact list column END -->
+
+
+  </div>
+
+
+</main>
+<!-- Main content END -->
 
 <!--<style lang="scss">-->
 <!--  .list-group {-->
