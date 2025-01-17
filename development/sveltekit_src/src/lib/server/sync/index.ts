@@ -30,7 +30,7 @@ export async function updateUserAddressBookDefinitions(username: Username) {
                 addressBookUrlHash: Bun.hash(ncAddressBook.url),
                 url: ncAddressBook.url,
                 displayName: ncAddressBook.displayName,
-                active: false
+                active: true
             })
         }
 

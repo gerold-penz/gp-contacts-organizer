@@ -87,14 +87,14 @@
           {#if activeContactGroups?.length}
 
             <a
-              class="list-group-item list-group-item-action border-0"
+              class="list-group-item list-group-item-action border-0     disabled"
               href={currentPath}>
               All contacts
             </a>
 
             {#each activeContactGroups as contactGroup, index}
               <a
-                class="list-group-item list-group-item-action border-0"
+                class="list-group-item list-group-item-action border-0     disabled"
                 href={`${currentPath}/${index}`}
               >
                 {contactGroup.displayName}
