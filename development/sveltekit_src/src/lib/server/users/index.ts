@@ -43,7 +43,6 @@ export namespace Users {
      * @returns {User | undefined}
      */
     export function get(username: Username): User | undefined {
-        console.debug(`server.users.get(${username})`)
         const key = USER_PREFIX + username
         return db.get<User>(key)
     }
@@ -59,7 +58,6 @@ export namespace Users {
      * @returns {Username | undefined}
      */
     export function getUsernameBySub(sub: string): Username | undefined {
-        console.debug(`server.users.getUsernameBySub(${sub})`)
         const subTag = TAG_SUB_PREFIX + sub
         const keys = db.getTaggedKeys(subTag)
         if (keys) {

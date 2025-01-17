@@ -47,7 +47,6 @@ export namespace Nextcloud {
 
 
     export async function getAddressBooks(username: Username): Promise<NcAddressBook[]> {
-        console.debug(`server.carddav.getAddressBooks(${username})`)
 
         const client = await getDavClient(username)
         const collection = await client.fetchAddressBooks()
@@ -65,7 +64,6 @@ export namespace Nextcloud {
 
 
     export async function getAllVcards(username: Username, addressBookUrl: string): Promise<Vcard[]> {
-        console.debug(`server.carddav.getAllContacts(${username}, ${addressBookUrl})`)
 
         const accessToken = await getAccessToken(username)
         if (!accessToken) {

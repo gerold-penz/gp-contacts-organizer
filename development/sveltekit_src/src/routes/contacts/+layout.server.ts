@@ -6,7 +6,6 @@ import type { ContactGroup, Hash, UserAddressBook } from "$lib/interfaces"
 
 
 export const load: LayoutServerLoad = async ({locals, params}) => {
-    console.debug(`--- /contacts/+layout.server.ts load() ---`)
 
     // Get session
     const session = locals?.session
@@ -49,13 +48,5 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
         selectedAddressBooks,
         activeContactGroups,
     }
-
-
-
-
-
-
-
-
 
 }

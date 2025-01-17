@@ -1,24 +1,14 @@
 <script lang="ts">
     import { type Snippet } from "svelte"
-    import { page } from "$app/state"
-    import type { LayoutData } from './$types'
+    import AddressBooksCard from "./AddressBooksCard.svelte"
+    import ContactGroupsCard from "./ContactGroupsCard.svelte"
 
 
     const {
         children,
-        data,
     }: {
         children: Snippet,
-        data: LayoutData
     } = $props()
-
-    const {
-        activeAddressBooks,
-        selectedAddressBooks,
-        activeContactGroups,
-    } = $derived(data)
-
-    const currentPath = $derived(page.url.pathname)
 
 </script>
 
@@ -26,96 +16,22 @@
 <!-- Main content BEGIN -->
 <main class="container-fluid py-2">
 
+  <!-- Row BEGIN -->
   <div class="row g-2">
 
     <!-- Sidebar Column BEGIN -->
     <div class="col-12 col-md-auto order-1 order-md-0">
 
-
       <!-- Address books card BEGIN -->
-      <div class="card mb-2">
-
-        <div class="card-header">
-          Address Books
-        </div>
-
-        <!-- Address books list BEGIN -->
-        <div class="list-group list-group-flush border-0">
-          {#if activeAddressBooks?.length}
-
-            <a
-              class="list-group-item list-group-item-action border-0"
-              class:active={currentPath.startsWith("/contacts/all")}
-              href="/contacts/all">
-              All contacts
-            </a>
-
-            {#each activeAddressBooks as addressBook}
-              <a
-                class="list-group-item list-group-item-action border-0"
-                class:active={currentPath.startsWith(`/contacts/${addressBook.addressBookUrlHash}`)}
-                href={`/contacts/${addressBook.addressBookUrlHash}`}
-              >
-                {addressBook.displayName}
-              </a>
-            {/each}
-
-          {:else}
-            <div class="card-body text-bg-secondary">
-              There are no address <br>
-              books activated. <br>
-              Go to the user settings and <br>
-              select your address books.
-            </div>
-          {/if}
-        </div>
-        <!-- Address books list END -->
-
-      </div>
+      <AddressBooksCard></AddressBooksCard>
       <!-- Address books card END -->
 
-
       <!-- Contact groups card BEGIN -->
-      <div class="card">
-
-        <div class="card-header     text-secondary">
-          Contact Groups
-        </div>
-
-        <!-- Contact groups list BEGIN -->
-        <div class="list-group list-group-flush border-0">
-          {#if activeContactGroups?.length}
-
-            <a
-              class="list-group-item list-group-item-action border-0     disabled"
-              href={currentPath}>
-              All contacts
-            </a>
-
-            {#each activeContactGroups as contactGroup, index}
-              <a
-                class="list-group-item list-group-item-action border-0     disabled"
-                href={`${currentPath}/${index}`}
-              >
-                {contactGroup.displayName}
-              </a>
-            {/each}
-
-          {:else}
-            <div class="card-body">
-            </div>
-          {/if}
-        </div>
-        <!-- Contact groups list END -->
-
-
-      </div>
+      <ContactGroupsCard></ContactGroupsCard>
       <!-- Contact groups card END -->
-
 
     </div>
     <!-- Sidebar Column END -->
-
 
     <!-- Contact list column BEGIN -->
     <div class="col">
@@ -125,17 +41,10 @@
     </div>
     <!-- Contact list column END -->
 
-
   </div>
+  <!-- Row END -->
 
 
 </main>
 <!-- Main content END -->
 
-<!--<style lang="scss">-->
-<!--  .list-group {-->
-<!--    &#45;&#45;bs-list-group-active-color: inherit;-->
-<!--    &#45;&#45;bs-list-group-active-bg: var(&#45;&#45;bs-light);-->
-<!--    &#45;&#45;bs-list-group-active-border-color: inherit;-->
-<!--  }-->
-<!--</style>-->

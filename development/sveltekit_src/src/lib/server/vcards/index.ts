@@ -38,21 +38,18 @@ export namespace Vcards {
 
 
     export function get(username: string, addressBookUrlHash: Hash, vcardUrlHash: Hash): Vcard | undefined {
-        console.debug("server.vcards.get(...)")
         const key = `${VCARD_PREFIX}:${username}:${addressBookUrlHash}:${vcardUrlHash}`
         return db.get<Vcard>(key)
     }
 
 
     export function getAllUserVcards(username: string): (Vcard | undefined)[] | undefined {
-        console.debug(`server.vcards.getAllUserVcards(${username})`)
         const startsWith = `${VCARD_PREFIX}:${username}:`
         return db.getValues<Vcard>(startsWith)
     }
 
 
     export function getAllAddressBookVcards(username: string, addressBookUrlHash: Hash) {
-        console.debug(`server.vcards.getAllAddressBookVcards(${username}, ...)`)
         const startsWith = `${VCARD_PREFIX}:${username}:${addressBookUrlHash}:`
         return db.getValues<Vcard>(startsWith)
     }

@@ -28,7 +28,6 @@ const updateAllContactsSchema = z.object({})
 
 
 export const load: ServerLoad = async ({locals}) => {
-    console.debug(`settings.+page.server.load()`)
 
     const session = locals?.session
     if (!session) {
@@ -76,7 +75,6 @@ export const actions: Actions = {
 
 
     saveAddressBooks: async ({request, locals}) => {
-        console.debug(`settings.+page.server.saveAddressBooks()`)
 
         // Get form data
         const form = await superValidate(request, zod(addressBooksSchema))
@@ -96,7 +94,6 @@ export const actions: Actions = {
 
 
     updateDefinitions: async ({locals}) => {
-        console.debug(`settings.+page.server.updateDefinitions()`)
 
         // Update the address book definitions
         const username = locals.session?.user?.id!
@@ -108,7 +105,6 @@ export const actions: Actions = {
 
 
     saveSynchronization: async ({request, locals}) => {
-        console.debug(`settings.+page.server.saveSynchronization()`)
 
         // Get form data
         const form = await superValidate(request, zod(synchronizationSchema))
@@ -128,7 +124,6 @@ export const actions: Actions = {
 
 
     updateAllVcards: async ({request, locals}) => {
-        console.debug(`settings.+page.server.updateAllVcards()`)
         console.time("updateAllVcards()")
 
         // Get form data
