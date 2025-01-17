@@ -2,7 +2,6 @@
     import { page } from "$app/state"
     import { type PageData } from "./$types"
 
-
     const {
         data
     }: {
@@ -45,13 +44,14 @@
       {addressBookTitle}
 
       <!-- Vcards count BEGIN -->
-      {#await activeVcards then vcards}
-        {#if vcards.length}
-          <span class="badge rounded-pill text-bg-secondary" style="--bs-badge-font-size: 0.6em; transform: translateY(-0.7em);">
-            {vcards.length}
-          </span>
-        {/if}
-      {/await}
+      {#if activeVcards?.length}
+        <span
+          class="badge rounded-pill text-bg-secondary"
+          style="--bs-badge-font-size: 0.6em; transform: translateY(-0.7em);"
+        >
+          {activeVcards.length}
+        </span>
+      {/if}
       <!-- Vcards count END -->
 
     </div>
@@ -156,15 +156,9 @@
 
     <!-- TEST BEGIN -->
     <p class="d-flex flex-wrap">
-      {#await activeVcards}
-        Loading active vCards ...
-      {:then activeVcards}
-        {#each activeVcards as vcard}
-          <span class="me-2">{String(vcard.vcardUrlHash).substring(0, 3)}</span>
-        {/each}
-      {:catch error}
-        {String(error)}
-      {/await}
+      {#each activeVcards as vcard}
+        <span class="me-2">{String(vcard.vcardUrlHash).substring(0, 2)}</span>
+      {/each}
     </p>
     <!-- TEST END -->
 
