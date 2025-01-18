@@ -7,6 +7,7 @@ import { VcardsParsed } from "$lib/server/vcardsParsed"
 
 export const USER_NOT_FOUND_ERROR = "[USER NOT FOUND ERROR]"
 
+
 /**
  * Update the user's address book definitions.
  * @param {Username} username
@@ -46,11 +47,13 @@ export async function updateUserAddressBookDefinitions(username: Username) {
     })
 
     // Delete userAdressBook if not in ncAddressBooks
-    userAddressBooks = userAddressBooks.filter((userAddressBook) => {
-        return ncAddressBooks.find((ncAddressBook) => {
-            return ncAddressBook.url === userAddressBook.url
+    if (userAddressBooks?.length) {
+        userAddressBooks = userAddressBooks.filter((userAddressBook) => {
+            return ncAddressBooks.find((ncAddressBook) => {
+                return ncAddressBook.url === userAddressBook.url
+            })
         })
-    })
+    }
 
     // Speichern
     user = Users.get(username)!
@@ -73,11 +76,12 @@ export async function updateOrInsertVcards(username: Username, addressBookUrl: s
     // TESTS
 
     const vcard = vcards.find((vcard) => vcard.data?.includes("c07bc863-dd67-47e0-a803-8a7d235e4765"))!
-    console.log("vcard", vcard.data!)
+    if (vcard?.data) {
+        console.log("vcard", vcard.data)
 
-
-    const vcardParsed = VcardsParsed.parseVcard(vcard.data!)
-    console.log("vcardParsed", JSON.stringify(vcardParsed, undefined, 2))
+        const vcardParsed = VcardsParsed.parseVcard(vcard.data)
+        console.log("vcardParsed", JSON.stringify(vcardParsed, undefined, 2))
+    }
 
 
     // BEGIN:VCARD
@@ -95,11 +99,22 @@ export async function updateOrInsertVcards(username: Username, addressBookUrl: s
     // END:VCARD
 
     // {
+    //   "nags": [
+    //     {
+    //       "key": "VALUE_INVALID",
+    //       "description": "Invalid property value",
+    //       "isError": true,
+    //       "attributes": {
+    //         "property": "VERSION",
+    //         "line": "VERSION:3.0"
+    //       }
+    //     }
+    //   ],
     //   "BEGIN": {
     //     "value": "VCARD"
     //   },
     //   "VERSION": {
-    //     "value": "4.0"
+    //     "value": "3.0"
     //   },
     //   "PRODID": {
     //     "value": "-//Sabre//Sabre VObject 4.5.4//EN"
@@ -135,7 +150,7 @@ export async function updateOrInsertVcards(username: Username, addressBookUrl: s
     //     {
     //       "parameters": {
     //         "TYPE": [
-    //           "cell"
+    //           "CELL"
     //         ]
     //       },
     //       "value": "+436504091122"
@@ -145,9 +160,8 @@ export async function updateOrInsertVcards(username: Username, addressBookUrl: s
     //     {
     //       "parameters": {
     //         "TYPE": [
-    //           "home"
-    //         ],
-    //         "LABEL": "Telfs"
+    //           "HOME"
+    //         ]
     //       },
     //       "value": {
     //         "postOfficeBox": [
@@ -178,12 +192,12 @@ export async function updateOrInsertVcards(username: Username, addressBookUrl: s
     //     "parameters": {
     //       "VALUE": "DATE-AND-OR-TIME"
     //     },
-    //     "value": "20241212T142408Z"
+    //     "value": "20250117T214415Z"
     //   },
     //   "END": {
     //     "value": "VCARD"
     //   },
-    //   "hasErrors": false
+    //   "hasErrors": true
     // }
 
 
