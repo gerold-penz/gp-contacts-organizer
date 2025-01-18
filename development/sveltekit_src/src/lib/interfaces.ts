@@ -1,3 +1,6 @@
+import type { VCard4 } from "vcard4-tsm"
+
+
 export type Username = string
 export type Hash = number | bigint
 
@@ -52,17 +55,22 @@ export interface RefreshTokenResult {
 
 
 export interface Vcard {
-    /**
-     * addressBookUrlHash: Bun.hash(addressBook.url)
-     */
+    /** addressBookUrlHash: Bun.hash(addressBook.url) */
     addressBookUrlHash:  Hash
-    /**
-     * vcardUrlHash: Bun.hash(url)
-     */
+    /** vcardUrlHash: Bun.hash(url) */
     vcardUrlHash:  Hash
     url: string
     etag?: unknown
     data?: string
+}
+
+
+export interface VcardParsed {
+    /** addressBookUrlHash: Bun.hash(addressBook.url) */
+    addressBookUrlHash:  Hash
+    /** vcardUrlHash: Bun.hash(url) */
+    vcardUrlHash:  Hash
+    vcardParsed: VCard4
 }
 
 

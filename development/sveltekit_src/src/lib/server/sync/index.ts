@@ -1,4 +1,4 @@
-import type { User, Username } from "$lib/interfaces"
+import type { Hash, User, Username } from "$lib/interfaces"
 import { Users } from "$lib/server/users"
 import { Nextcloud } from "$lib/server/nextcloud"
 import { Vcards } from "$lib/server/vcards"
@@ -71,17 +71,33 @@ export async function updateOrInsertVcards(username: Username, addressBookUrl: s
 
     // Insert or update all vCards into the database
     Vcards.batchSet(username, vcards)
+}
 
 
-    // TESTS
+export function updateOrInsertParsedVcards(username: Username, addressBookUrlHash: Hash) {
+    console.debug(`sync.updateOrInsertParsedVcards(${username}, ${addressBookUrlHash})`)
 
-    const vcard = vcards.find((vcard) => vcard.data?.includes("c07bc863-dd67-47e0-a803-8a7d235e4765"))!
-    if (vcard?.data) {
-        console.log("vcard", vcard.data)
+    const vcards = Vcards.getAllAddressBookVcards(username, addressBookUrlHash)
+    if (!vcards) return
 
-        const vcardParsed = VcardsParsed.parseVcard(vcard.data)
-        console.log("vcardParsed", JSON.stringify(vcardParsed, undefined, 2))
-    }
+    // Parse all native vCards and insert or update all of them into the database
+    VcardsParsed.batchParseVcardsAndSet(username, vcards)
+}
+
+
+
+
+
+
+    // // TESTS
+    //
+    // const vcard = vcards.find((vcard) => vcard.data?.includes("c07bc863-dd67-47e0-a803-8a7d235e4765"))!
+    // if (vcard?.data) {
+    //     console.log("vcard", vcard.data)
+    //
+    //     const vcardParsed = VcardsParsed.parseVcard(vcard.data)
+    //     console.log("vcardParsed", JSON.stringify(vcardParsed, undefined, 2))
+    // }
 
 
     // BEGIN:VCARD
@@ -200,5 +216,3 @@ export async function updateOrInsertVcards(username: Username, addressBookUrl: s
     //   "hasErrors": true
     // }
 
-
-}

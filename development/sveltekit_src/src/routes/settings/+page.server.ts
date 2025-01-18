@@ -1,12 +1,13 @@
 import { type Actions, error, fail, redirect, type ServerLoad } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
-import { updateOrInsertVcards, updateUserAddressBookDefinitions } from "$lib/server/sync"
+import { updateOrInsertParsedVcards, updateOrInsertVcards, updateUserAddressBookDefinitions } from "$lib/server/sync"
 import { z } from "zod"
 import { zod } from "sveltekit-superforms/adapters"
 import { message, superValidate } from "sveltekit-superforms"
 import type { SynchronizationSettings } from "$lib/interfaces"
 import { Vcards } from "$lib/server/vcards"
+import { VcardsParsed } from "$lib/server/vcardsParsed"
 
 
 const addressBooksSchema = z.object({
@@ -137,13 +138,22 @@ export const actions: Actions = {
         const user = Users.get(username)!
         const addressBooks = user.addressBooks || []
 
-        // Delete all vcards of user from database
+        // Delete all vCards of user from database
         Vcards.deleteAllUserVcards(username)
 
-        // No check --> insert all vcards into database
+        // No check --> insert all vCards into database
         for await (const addressBook of addressBooks) {
             if (!addressBook.active) continue
             await updateOrInsertVcards(username, addressBook.url)
+        }
+
+        // Delete all parsed vCards of user from database
+        VcardsParsed.deleteAllUserVcardsParsed(username)
+
+        // No check --> parse and insert all vCards into database
+        for await (const addressBook of addressBooks) {
+            if (!addressBook.active) continue
+            updateOrInsertParsedVcards(username, addressBook.addressBookUrlHash)
         }
 
         // Log
