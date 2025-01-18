@@ -8,7 +8,7 @@
     }: {
         data: PageData
     } = $props()
-    const {session, activeVcards} = $derived(data)
+    const {session, activeVcardsParsed} = $derived(data)
 
     const addressBookTitle = $derived.by(() => {
         if (page.url.pathname.startsWith("/contacts/all")) {
@@ -57,12 +57,12 @@
         {addressBookTitle}
 
         <!-- Vcards count BEGIN -->
-        {#if activeVcards?.length}
+        {#if activeVcardsParsed?.length}
         <span
           class="badge rounded-pill text-bg-secondary"
           style="--bs-badge-font-size: 0.6em; transform: translateY(-0.7em);"
         >
-          {activeVcards.length}
+          {activeVcardsParsed.length}
         </span>
         {/if}
         <!-- Vcards count END -->
@@ -169,8 +169,8 @@
 
       <!-- TEST BEGIN -->
       <p class="d-flex flex-wrap">
-        {#each activeVcards as vcard}
-          <span class="me-2">{String(vcard.vcardUrlHash).substring(0, 2)}</span>
+        {#each activeVcardsParsed as vcardParsed}
+          <span class="me-2">{String(vcardParsed.vcardUrlHash).substring(0, 2)}</span>
         {/each}
       </p>
       <!-- TEST END -->
