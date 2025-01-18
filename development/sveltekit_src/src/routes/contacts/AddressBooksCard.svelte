@@ -34,7 +34,7 @@
       {/each}
 
     {:else}
-      <div class="card-body text-bg-secondary">
+      <div class="card-body text-bg-secondary rounded-bottom-1">
         There are no address <br>
         books activated. <br>
         Go to the user settings and <br>

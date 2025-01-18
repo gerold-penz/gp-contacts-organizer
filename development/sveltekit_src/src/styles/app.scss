@@ -12,7 +12,7 @@
 $font-family-sans-serif: "Ubuntu", sans-serif;
 $enable-shadows: true;
 $enable-gradients: true;
-//$breadcrumb-margin-bottom: 1rem;
+$breadcrumb-margin-bottom: 0.8rem;
 
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/variables-dark";
