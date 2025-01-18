@@ -156,9 +156,6 @@ export namespace VcardsParsed {
         //   "hasErrors": true
         // }
 
-
-
-
     }
 
 
@@ -171,6 +168,12 @@ export namespace VcardsParsed {
                 }
             })
         })()
+    }
+
+
+    export function getAllAddressBookVcardsParsed(username: string, addressBookUrlHash: Hash): VcardParsed[] | undefined {
+        const startsWith = `${PARSED_PREFIX}:${username}:${addressBookUrlHash}:`
+        return db.getValues<VcardParsed>(startsWith) as VcardParsed[] | undefined
     }
 
 }

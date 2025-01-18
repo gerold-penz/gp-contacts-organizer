@@ -2,8 +2,8 @@ import type {LayoutServerLoad} from "./$types"
 import { redirect, error } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
-import type { ContactGroup, Hash, UserAddressBook, Vcard } from "$lib/interfaces"
-import { Vcards } from "$lib/server/vcards"
+import type { ContactGroup, Hash, UserAddressBook, VcardParsed } from "$lib/interfaces"
+import { VcardsParsed } from "$lib/server/vcardsParsed"
 
 
 export const load: LayoutServerLoad = async ({locals, params}) => {
@@ -34,18 +34,18 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
         selectedAddressBooks = activeAddressBooks.filter((addressBook) => addressBook.addressBookUrlHash === hash)
     }
 
-    // Get all vCards of the selected address books (async)
-    console.time("load active vcards")
-    const activeVcards: Vcard[] = []
+    // Get all parsed vCards of the selected address books (async)
+    console.time("load active vcards parsed")
+    const activeVcardsParsed: VcardParsed[] = []
     if (selectedAddressBooks?.length) {
         for (const addressBook of selectedAddressBooks) {
-            const vcards = Vcards.getAllAddressBookVcards(username, addressBook.addressBookUrlHash) || []
-            if (vcards?.length) {
-                activeVcards.push(...vcards)
+            const vcardParseds = VcardsParsed.getAllAddressBookVcardsParsed(username, addressBook.addressBookUrlHash) || []
+            if (vcardParseds?.length) {
+                activeVcardsParsed.push(...vcardParseds)
             }
         }
     }
-    console.timeEnd("load active vcards")
+    console.timeEnd("load active vcards parsed")
 
 
     // activeContactGroups
@@ -61,7 +61,7 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     return {
         activeAddressBooks,
         selectedAddressBooks,
-        activeVcards,
+        activeVcardsParsed,
         activeContactGroups,
     }
 
