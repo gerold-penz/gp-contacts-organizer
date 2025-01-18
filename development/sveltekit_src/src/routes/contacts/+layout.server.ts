@@ -18,7 +18,7 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     const username = session?.user?.id!
     const user = Users.get(username)
     if (!user) {
-        return error(status.NOT_FOUND, "User not found")
+        return redirect(status.FOUND, "/signout")
     }
 
     // Get active address books

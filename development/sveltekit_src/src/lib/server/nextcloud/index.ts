@@ -1,6 +1,6 @@
 import { getAccessToken } from "$lib/server/auth"
 import { env } from "$env/dynamic/private"
-import { DAVClient, fetchVCards } from "tsdav"
+import { addressBookQuery, DAVClient, DAVNamespaceShort, type DAVResponse, fetchVCards } from "tsdav"
 import type { NcAddressBook, Username, Vcard } from "$lib/interfaces"
 
 
@@ -32,8 +32,7 @@ async function getDavClient(username: Username) {
         credentials: {},
         fetchOptions: {
             headers: {
-                "Authorization": `Bearer ${accessToken}`,
-                "Accept": "text/vcard; version=4.0",
+                "Authorization": `Bearer ${accessToken}`
             }
         }
     })
@@ -66,63 +65,63 @@ export namespace Nextcloud {
     }
 
 
-    export async function getAllVcards(username: Username, addressBookUrl: string): Promise<Vcard[]> {
+    export async function getAllVcards(username: Username, addressBookUrl: string): Promise<Vcard[] | undefined> {
 
-        const accessToken = await getAccessToken(username)
-        if (!accessToken) {
-            throw new Error(NO_ACCESS_TOKEN_ERROR)
-        }
+        const client = await getDavClient(username)
 
-        const collection = await fetchVCards({
-            addressBook: {
-                url: addressBookUrl,
-                fetchOptions: {headers: {"Accept": "text/vcard; version=4.0"}},
-            },
-            headers: {
-                "Authorization": `Bearer ${accessToken}`,
-                "Accept": "text/vcard; version=4.0",
-            },
-
+        // Get vCard urls
+        const urlsResponse: DAVResponse[] = await client.propfind({
+            url: addressBookUrl,
+            props: {[`${DAVNamespaceShort.DAV}:getetag`]: {}},
+        })
+        if (!urlsResponse) return
+        const objectUrls = urlsResponse.map((item) => {
+            return env.NEXTCLOUD_URL + item.href
         })
 
-        // https://next.gerold-penz.at/remote.php/dav/addressbooks/users/gerold/kontakte/
-        // {
-        //   url: "https://next.gerold-penz.at/remote.php/dav/addressbooks/users/gerold/kontakte/DA53F074-9383-42B6-86F3-38E38287DCC4.vcf",
-        //   etag: "\"159ed52d2dd33c3fa1601f654a8495ed\"",
-        //   data: "BEGIN:VCARD\r\n
-        //   VERSION:3.0\r\n
-        //   PRODID:-//Sabre//Sabre VObject 4.5.4//EN\r\n
-        //   UID:c07bc863-dd67-47e0-a803-8a7d235e4765\r\n
-        //   FN:Agnes Rimml\r\n
-        //   N:Rimml;Agnes;;;\r\n
-        //   TEL;TYPE=cell:+436504091122\r\n
-        //   ADR;TYPE=home;LABEL=Telfs:;;;Telfs;;;\r\n
-        //   REV;VALUE=DATE-AND-OR-TIME:20241212T142408Z\r\n
-        //   END:VCARD",
-        // }
-
-
-        //     /**
-        //      * addressBookUrlHash: Bun.hash(addressBook.url)
-        //      */
-        //     addressBookUrlHash: string
-        //     /**
-        //      * vcardUrlHash: Bun.hash(url)
-        //      */
-        //     vcardUrlHash: string
-        //     url: string
-        //     etag?: unknown
-        //     data?: string
+        // Get vCards
+        const vcardsResponse = await client.addressBookMultiGet({
+            url: addressBookUrl,
+            props: {
+                [`${DAVNamespaceShort.DAV}:getetag`]: {},
+                // See: https://github.com/nextcloud/contacts/issues/4038#issuecomment-2235176085
+                [`${DAVNamespaceShort.CARDDAV}:address-data content-type="text/vcard" version="4.0"`]: {},
+            },
+            objectUrls,
+            depth: "1"
+        })
+        if (!vcardsResponse) return
 
         const addressBookUrlHash = Bun.hash(addressBookUrl)
-        return collection.map((vcard) => {
+        return vcardsResponse.map((vcardResponse) => {
             return {
-                ...vcard,
                 addressBookUrlHash,
-                vcardUrlHash: Bun.hash(vcard.url),
+                vcardUrlHash: Bun.hash(vcardResponse.href!),
+                url: vcardResponse.href,
+                etag: vcardResponse.props?.getetag || undefined,
+                data: vcardResponse.props?.addressData || undefined
             }
         }) as Vcard[]
+
     }
+
+
+    // export async function loadAddressBookExportVcf(username: string, addressBookUrl: string): Promise<string | undefined> {
+    //     const accessToken = await getAccessToken(username)
+    //     if (!accessToken) {
+    //         throw new Error(NO_ACCESS_TOKEN_ERROR)
+    //     }
+    //     const url = new URL(addressBookUrl + "?export")
+    //     const response = await fetch(url, {
+    //         headers: {
+    //             "Authorization": `Bearer ${accessToken}`,
+    //         }
+    //     })
+    //     if (response.ok) {
+    //         return await response.text()
+    //     }
+    // }
+
 
 }
 

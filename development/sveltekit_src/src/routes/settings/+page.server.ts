@@ -8,6 +8,7 @@ import { message, superValidate } from "sveltekit-superforms"
 import type { SynchronizationSettings } from "$lib/interfaces"
 import { Vcards } from "$lib/server/vcards"
 import { VcardsParsed } from "$lib/server/vcardsParsed"
+import { Nextcloud } from "$lib/server/nextcloud"
 
 
 const addressBooksSchema = z.object({

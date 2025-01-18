@@ -22,7 +22,7 @@ export namespace VcardsParsed {
 
 
     export function set(username: string, addressBookUrlHash: Hash, vcardUrlHash: Hash, vcardParsed: VCard4): void {
-        console.debug(`server.vcardsParsed.set(${username}, ${vcardParsed.FN[0].value.slice(0, 40)})`)
+        console.debug(`server.vcardsParsed.set(${username}, ${vcardParsed.FN[0].value.slice(0, 10)}...)`)
         const key = `${PARSED_PREFIX}:${username}:${addressBookUrlHash}:${vcardUrlHash}`
         db.set<VcardParsed>(key, {
             addressBookUrlHash,
@@ -163,7 +163,7 @@ export namespace VcardsParsed {
         console.debug(`server.vcards.batchParseVcardsAndSet(${username}, ${vcards.length})`)
         db.db.transaction(() => {
             vcards.forEach((vcard) => {
-                if (vcard?.data) {
+                if (typeof vcard?.data === "string") {
                     parseVcardAndSet(username, vcard.addressBookUrlHash, vcard.vcardUrlHash, vcard.data)
                 }
             })

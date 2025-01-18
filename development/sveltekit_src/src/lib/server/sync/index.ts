@@ -23,6 +23,16 @@ export async function updateUserAddressBookDefinitions(username: Username) {
 
     ncAddressBooks.forEach((ncAddressBook) => {
 
+        // Don't sync system address books
+        // /z-server-generated--system/
+        // /z-app-generated--contactsinteraction--recent/
+        if (
+            ncAddressBook.url.includes("z-server-generated") ||
+            ncAddressBook.url.includes("z-app-generated")
+        ) {
+            return
+        }
+
         // Push webAddressBook to userAddressBooks if not exists
         const found = Boolean(userAddressBooks.find((userAddressBook) => {
             return ncAddressBook.url === userAddressBook.url

@@ -4,7 +4,6 @@ import { handle as handleAuth } from "$lib/server/auth"
 import type { Session } from "@auth/core/types"
 
 
-
 const handleCustom: Handle = async ({event, resolve}) => {
     const {locals} = event
 
@@ -20,4 +19,3 @@ export const handle: Handle = sequence(
     handleAuth,
     handleCustom,
 )
-

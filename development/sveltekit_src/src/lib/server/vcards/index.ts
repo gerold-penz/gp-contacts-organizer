@@ -22,7 +22,7 @@ export namespace Vcards {
 
 
     export function set(username: string, vcard: Vcard): void {
-        console.debug(`server.vcards.set(${username}, ...${vcard.url.substring(vcard.url.length - 40)})`)
+        console.debug(`server.vcards.set(${username}, ...${vcard.url.substring(vcard.url.length - 10)})`)
         const key = `${VCARD_PREFIX}:${username}:${vcard.addressBookUrlHash}:${vcard.vcardUrlHash}`
         db.set<Vcard>(key, vcard)
     }
