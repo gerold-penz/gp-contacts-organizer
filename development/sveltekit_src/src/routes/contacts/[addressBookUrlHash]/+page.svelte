@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from "$app/state"
     import { type PageData } from "./$types"
+    import ContactsTable from "./ContactsTable.svelte"
 
 
     const {
@@ -76,107 +77,12 @@
 
     <div class="card-body table-responsive pt-0 px-0 pb-2">
 
-      <table class="table table-hover">
-        <thead class="table-light">
-        <tr>
-          <th><input class="form-check-input" type="checkbox"/></th>
-          <th></th>
-          <th scope="row">Full Name</th>
-          <th scope="row">City</th>
-          <th scope="row">Phone number</th>
-          <th scope="row">Email</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td><input class="form-check-input" type="checkbox"/></td>
-          <td class="text-center">
-            <img
-              src={session?.user?.image}
-              class="rounded-circle"
-              style="width: 1.3em; transform: translateY(-2px);"
-              alt=""
-            />
-          </td>
-          <td>Gerold Penz</td>
-          <td>Oberhofen im Inntal</td>
-          <td>+43 664 3463652</td>
-          <td>gerold@gp-softwaretechnik.at</td>
-        </tr>
-        <tr class="table-active">
-          <td><input class="form-check-input" type="checkbox"/></td>
-          <td class="text-center">
-            <div
-              class="d-inline-flex rounded-circle bg-light text-secondary align-items-center justify-content-center"
-              style="height: 1.3em; width: 1.3em;"
-            >
-              <div class="text-nowrap" style="font-size: 0.6em;">BP</div>
-            </div>
-          </td>
-          <td>Bernhard Penz</td>
-          <td>Oberhofen im Inntal</td>
-          <td class="text-nowrap">+43 664 3463652</td>
-          <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>
-        </tr>
-        <tr>
-          <td><input class="form-check-input" type="checkbox"/></td>
-          <td class="text-center">
-            <img
-              src={session?.user?.image}
-              class="rounded-circle"
-              style="width: 1.3em; transform: translateY(-2px);"
-              alt=""
-            />
-          </td>
-          <td>Gerda Penz</td>
-          <td>Oberhofen im Inntal</td>
-          <td class="text-nowrap">+43 664 3463652</td>
-          <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>
-        </tr>
-        <tr>
-          <td><input class="form-check-input" type="checkbox"/></td>
-          <td class="text-center">
-            <div
-              class="d-inline-flex rounded-circle bg-light text-secondary align-items-center justify-content-center"
-              style="height: 1.3em; width: 1.3em;"
-            >
-              <div class="text-nowrap" style="font-size: 0.6em;">BM</div>
-            </div>
-          </td>
-          <td>Blutwurst Metzger</td>
-          <td>Oberhofen im Inntal</td>
-          <td class="text-nowrap">+43 664 3463652</td>
-          <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>
-        </tr>
-        <tr>
-          <td><input class="form-check-input" type="checkbox"/></td>
-          <td class="text-center">
-            <img
-              src={session?.user?.image}
-              class="rounded-circle"
-              style="width: 1.3em; transform: translateY(-2px);"
-              alt=""
-            />
-          </td>
-          <td>Salami Metzger</td>
-          <td>Oberhofen im Inntal</td>
-          <td class="text-nowrap">+43 664 3463652</td>
-          <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>
-        </tr>
-        </tbody>
-      </table>
-
-
-      <!-- TEST BEGIN -->
-      <p class="d-flex flex-wrap">
-        {#each activeVcardsParsed as vcardParsed}
-          <span class="me-2">{String(vcardParsed.vcardUrlHash).substring(0, 2)}</span>
-        {/each}
-      </p>
-      <!-- TEST END -->
-
+      <!-- Contacts Table BEGIN -->
+      <ContactsTable></ContactsTable>
+      <!-- Contacts Table END -->
 
     </div>
+
   </div>
   <!-- Main content END -->
 
