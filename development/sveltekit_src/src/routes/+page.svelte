@@ -9,6 +9,15 @@
 <!-- Page head END -->
 
 
+<!-- Breadcrumb BEGIN -->
+<nav class="container" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+  </ol>
+</nav>
+<!-- Breadcrumb END -->
+
+
 <!-- Main content BEGIN -->
 <main class="container py-4">
 

@@ -3,6 +3,17 @@
 </svelte:head>
 
 
+<!-- Breadcrumb BEGIN -->
+<nav class="container" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Privacy</li>
+  </ol>
+</nav>
+<!-- Breadcrumb END -->
+
+
+<!-- Main content BEGIN -->
 <main class="container my-4">
   <h1 class="mb-4">Privacy</h1>
 
@@ -18,4 +29,5 @@
   <!-- Card END -->
 
 </main>
+<!-- Main content END -->
 

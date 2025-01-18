@@ -34,9 +34,17 @@
 <!-- Page head END -->
 
 
+<!-- Breadcrumb BEGIN -->
+<nav class="container-fluid" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Contacts</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{addressBookTitle}</li>
+  </ol>
+</nav>
+<!-- Breadcrumb END -->
+
+
 <!-- Main content BEGIN -->
-
-
 <div class="card h-100">
 
   <div class="card-header d-flex flex-wrap justify-content-between">

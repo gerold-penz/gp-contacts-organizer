@@ -81,7 +81,17 @@
 <!-- Page head END -->
 
 
-<!-- Main container BEGIN -->
+<!-- Breadcrumb BEGIN -->
+<nav class="container" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Settings</li>
+  </ol>
+</nav>
+<!-- Breadcrumb END -->
+
+
+<!-- Main content BEGIN -->
 <main class="container my-4">
 
   <h1 class="mb-4">Settings</h1>
@@ -270,11 +280,10 @@
 
 
 </main>
-<!-- Main container BEGIN -->
+<!-- Main content END -->
 
 
 <!-- Toast BEGIN -->
 <BootstrapToast bind:this={bootstrapToast}>
 </BootstrapToast>
 <!-- Toast END -->
-
