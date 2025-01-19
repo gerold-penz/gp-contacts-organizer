@@ -14,9 +14,7 @@ export interface NcAddressBook {
 
 
 export interface UserAddressBook {
-    /**
-     * addressBookUrlHash: Bun.hash(ncUrl)
-     */
+    /** addressBookUrlHash: Bun.hash(ncUrl) */
     addressBookUrlHash:  Hash
     url: string
     displayName: string
@@ -27,9 +25,7 @@ export interface UserAddressBook {
 
 
 export interface SynchronizationSettings {
-    /**
-     * Activates the synchronization
-     */
+    /** Activates the synchronization */
     active: boolean
 }
 
@@ -42,6 +38,11 @@ export interface User {
     sub?: string
     addressBooks?: UserAddressBook[]
     synchronization?: SynchronizationSettings
+}
+
+
+export interface UserSub {
+    username: Username
 }
 
 
