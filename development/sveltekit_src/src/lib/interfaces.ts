@@ -73,6 +73,8 @@ export interface VcardParsed {
     vcardUrlHash:  Hash
     vcardParsed: VCard4
     thumbnailBuffer?: Buffer
+    thumbnailUrl?: string
+    initials?: string
 }
 
 

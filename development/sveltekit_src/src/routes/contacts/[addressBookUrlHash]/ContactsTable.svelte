@@ -24,13 +24,40 @@
     const fulltextFilter = $state<string>("")
 
 
-    // ToDo: Filter
+    // Create data urls for thumbnails
+    const activeVcardsWithThumbnails = $derived.by(() => {
+        return activeVcards.map((activeVcard) => {
+            // Thumbnail URL
+            if (!activeVcard?.thumbnailUrl && activeVcard?.thumbnailBuffer?.length) {
+                const blob = new Blob([activeVcard.thumbnailBuffer])
+                const thumbnailUrl = URL.createObjectURL(blob)
+                if (thumbnailUrl) {
+                    activeVcard.thumbnailUrl = thumbnailUrl
+                }
+            }
+            // Initials instead of thumbnail
+            let initials: string = ""
+            if (!activeVcard?.thumbnailUrl) {
+                const givenNameInitial = activeVcard?.vcardParsed.N?.value.givenNames[0].at(0)
+                const familyNameInitial = activeVcard?.vcardParsed.N?.value.familyNames[0].at(0)
+                const orgInitial = activeVcard?.vcardParsed.ORG?.[0].value[0].slice(0, 2)
+                if (givenNameInitial) initials += givenNameInitial
+                if (familyNameInitial) initials += familyNameInitial
+                if (!initials.length && orgInitial) initials = orgInitial
+                if (initials) activeVcard.initials = initials
+            }
+            return activeVcard
+        })
+    })
+
+    // Filter
     const filteredVcards = $derived.by(() => {
-        if (!fulltextFilter) return activeVcards
+        if (!fulltextFilter) return activeVcardsWithThumbnails
+
+        // ToDo: Filter
 
 
-        // TEST
-        return activeVcards
+        return activeVcardsWithThumbnails
     })
 
 
@@ -42,6 +69,7 @@
             let bValue: string
 
             if (sortBy === "TEL") {
+                // TEL
                 aValue = a.vcardParsed.TEL?.[0].value ?? ""
                 bValue = b.vcardParsed.TEL?.[0].value ?? ""
             } else {
@@ -117,41 +145,49 @@
     <tr>
 
       <!-- Checkbox col BEGIN -->
-      <td>
+      <td class="align-middle">
         <input class="form-check-input" type="checkbox"/>
       </td>
       <!-- Checkbox col END -->
 
-      <!-- Image col BEGIN -->
-      <td class="text-center">
 
-        {#if true}
-          <img
-            src=""
-            class="rounded-circle"
-            style="width: 1.3em; transform: translateY(-2px);"
-            alt=""
-          />
-        {:else}
-          <div
-            class="d-inline-flex rounded-circle bg-light text-secondary align-items-center justify-content-center"
-            style="height: 1.3em; width: 1.3em;"
+      <!-- Image/initials col BEGIN -->
+      <td class="px-1 py-0 align-middle">
+
+        {#if vcard?.thumbnailUrl}
+
+          <!-- Thumbnail BEGIN -->
+          <div class="rounded-circle"
+            style="width: 1.6rem; height: 1.6rem; background-size: cover"
+            style:background-image={`url(${vcard.thumbnailUrl})`}
           >
-            <div class="text-nowrap" style="font-size: 0.6em;">BP</div>
           </div>
+          <!-- Thumbnail END -->
+
+        {:else if vcard?.initials}
+
+          <!-- Initials BEGIN -->
+          <div class="rounded-circle bg-light text-secondary text-nowrap overflow-hidden d-flex align-items-center justify-content-center"
+            style="width: 1.6rem; height: 1.6rem; font-size: 0.7rem;"
+          >
+            <span style="transform: translateY(1px);">{vcard.initials}</span>
+          </div>
+          <!-- Initials END -->
+
         {/if}
 
       </td>
-      <!-- Image col END -->
+      <!-- Image/initials col END -->
+
 
       <!-- Full name col BEGIN -->
-      <td>
+      <td class="align-middle">
         {vcard.vcardParsed.FN[0].value}
       </td>
       <!-- Full name col END -->
 
       <!-- City col BEGIN -->
-      <td>
+      <td class="align-middle">
         {#if vcard.vcardParsed?.ADR?.length}
           {vcard.vcardParsed.ADR[0].value?.locality?.[0]}
         {/if}
@@ -159,7 +195,7 @@
       <!-- City col END -->
 
       <!-- Phone col BEGIN -->
-      <td class="text-nowrap text-truncate" style="max-widthx: 18em;">
+      <td class="align-middle text-nowrap text-truncate " style="max-widthx: 18em;">
         {#if vcard.vcardParsed?.TEL?.length}
           {vcard.vcardParsed.TEL[0].value}
         {/if}
@@ -167,7 +203,7 @@
       <!-- Phone col END -->
 
       <!-- Email col BEGIN -->
-      <td class="text-nowrap text-truncate" style="max-width: 18em;">
+      <td class="align-middle text-nowrap text-truncate" style="max-width: 18em;">
         {#if vcard.vcardParsed?.EMAIL?.length}
           {vcard.vcardParsed.EMAIL[0].value}
         {/if}
@@ -177,85 +213,6 @@
     </tr>
   {/each}
   <!-- Row END -->
-
-
-  <!--  &lt;!&ndash; TESTDATA BEGIN &ndash;&gt;-->
-  <!--  <tr>-->
-  <!--    <td><input class="form-check-input" type="checkbox"/></td>-->
-  <!--    <td class="text-center">-->
-  <!--      <img-->
-  <!--        src=""-->
-  <!--        class="rounded-circle"-->
-  <!--        style="width: 1.3em; transform: translateY(-2px);"-->
-  <!--        alt=""-->
-  <!--      />-->
-  <!--    </td>-->
-  <!--    <td>Gerold Penz</td>-->
-  <!--    <td>Oberhofen im Inntal</td>-->
-  <!--    <td>+43 664 3463652</td>-->
-  <!--    <td>gerold@gp-softwaretechnik.at</td>-->
-  <!--  </tr>-->
-  <!--  <tr class="table-active">-->
-  <!--    <td><input class="form-check-input" type="checkbox"/></td>-->
-  <!--    <td class="text-center">-->
-  <!--      <div-->
-  <!--        class="d-inline-flex rounded-circle bg-light text-secondary align-items-center justify-content-center"-->
-  <!--        style="height: 1.3em; width: 1.3em;"-->
-  <!--      >-->
-  <!--        <div class="text-nowrap" style="font-size: 0.6em;">BP</div>-->
-  <!--      </div>-->
-  <!--    </td>-->
-  <!--    <td>Bernhard Penz</td>-->
-  <!--    <td>Oberhofen im Inntal</td>-->
-  <!--    <td class="text-nowrap">+43 664 3463652</td>-->
-  <!--    <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>-->
-  <!--  </tr>-->
-  <!--  <tr>-->
-  <!--    <td><input class="form-check-input" type="checkbox"/></td>-->
-  <!--    <td class="text-center">-->
-  <!--      <img-->
-  <!--        src=""-->
-  <!--        class="rounded-circle"-->
-  <!--        style="width: 1.3em; transform: translateY(-2px);"-->
-  <!--        alt=""-->
-  <!--      />-->
-  <!--    </td>-->
-  <!--    <td>Gerda Penz</td>-->
-  <!--    <td>Oberhofen im Inntal</td>-->
-  <!--    <td class="text-nowrap">+43 664 3463652</td>-->
-  <!--    <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>-->
-  <!--  </tr>-->
-  <!--  <tr>-->
-  <!--    <td><input class="form-check-input" type="checkbox"/></td>-->
-  <!--    <td class="text-center">-->
-  <!--      <div-->
-  <!--        class="d-inline-flex rounded-circle bg-light text-secondary align-items-center justify-content-center"-->
-  <!--        style="height: 1.3em; width: 1.3em;"-->
-  <!--      >-->
-  <!--        <div class="text-nowrap" style="font-size: 0.6em;">BM</div>-->
-  <!--      </div>-->
-  <!--    </td>-->
-  <!--    <td>Blutwurst Metzger</td>-->
-  <!--    <td>Oberhofen im Inntal</td>-->
-  <!--    <td class="text-nowrap">+43 664 3463652</td>-->
-  <!--    <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>-->
-  <!--  </tr>-->
-  <!--  <tr>-->
-  <!--    <td><input class="form-check-input" type="checkbox"/></td>-->
-  <!--    <td class="text-center">-->
-  <!--      <img-->
-  <!--        src=""-->
-  <!--        class="rounded-circle"-->
-  <!--        style="width: 1.3em; transform: translateY(-2px);"-->
-  <!--        alt=""-->
-  <!--      />-->
-  <!--    </td>-->
-  <!--    <td>Salami Metzger</td>-->
-  <!--    <td>Oberhofen im Inntal</td>-->
-  <!--    <td class="text-nowrap">+43 664 3463652</td>-->
-  <!--    <td class="text-nowrap">gerold@gp-softwaretechnik.at</td>-->
-  <!--  </tr>-->
-  <!--  &lt;!&ndash; TESTDATA END &ndash;&gt;-->
 
 
   </tbody>
