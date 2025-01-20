@@ -154,7 +154,7 @@ export const actions: Actions = {
         // No check --> parse and insert all vCards into database
         for await (const addressBook of addressBooks) {
             if (!addressBook.active) continue
-            updateOrInsertParsedVcards(username, addressBook.addressBookUrlHash)
+            await updateOrInsertParsedVcards(username, addressBook.addressBookUrlHash)
         }
 
         // Log

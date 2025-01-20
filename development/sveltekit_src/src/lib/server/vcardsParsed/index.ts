@@ -3,6 +3,8 @@ import { env } from "$env/dynamic/private"
 import { BunSqliteKeyValue } from "bun-sqlite-key-value"
 import { parseVCards, type VCard4 } from "vcard4-tsm"
 import type { Vcard, Hash, VcardParsed } from "$lib/interfaces"
+import parseDataUrl, { type DataUrl } from "parse-data-url"
+import sharp from "sharp"
 
 
 const PARSED_PREFIX = "parsed"
@@ -21,22 +23,46 @@ export namespace VcardsParsed {
     }
 
 
-    export function set(username: string, addressBookUrlHash: Hash, vcardUrlHash: Hash, vcardParsed: VCard4): void {
+    export function set(username: string, addressBookUrlHash: Hash, vcardUrlHash: Hash, vcardParsed: VCard4, thumbnailBuffer?: Buffer): void {
         console.debug(`server.vcardsParsed.set(${username}, ${vcardParsed.FN[0].value.slice(0, 10)}...)`)
         const key = `${PARSED_PREFIX}:${username}:${addressBookUrlHash}:${vcardUrlHash}`
         db.set<VcardParsed>(key, {
             addressBookUrlHash,
             vcardUrlHash,
             vcardParsed,
+            thumbnailBuffer
         })
     }
 
 
-    export function parseVcardAndSet(username: string, addressBookUrlHash: Hash, vcardUrlHash: Hash, vcardData: string) {
+    export async function parseVcardAndSet(username: string, addressBookUrlHash: Hash, vcardUrlHash: Hash, vcardData: string) {
         const keepDefective = true
         const cards = parseVCards(vcardData, keepDefective)
         if (cards?.vCards?.length) {
-            set(username, addressBookUrlHash, vcardUrlHash, cards.vCards[0])
+            const vcard = cards.vCards[0]
+
+            // Get thumbnail
+            const imageValue = vcard.PHOTO?.[0].value
+            const imageParams = vcard?.PHOTO?.[0].parameters
+            let thumbnailBuffer: Buffer | undefined = undefined
+
+            if (imageValue && imageParams?.VALUE === "URI") {
+                if (imageValue.startsWith("data:")) {
+                    const parsed = parseDataUrl(imageValue) as DataUrl
+                    if (parsed?.contentType?.toLowerCase().startsWith("image")) {
+                        const imageBuffer = parsed.toBuffer()
+                        if (imageBuffer) {
+                            thumbnailBuffer = await sharp(imageBuffer)
+                                .resize({width: 40, fit: "cover"})
+                                .webp()
+                                .toBuffer()
+                        }
+                    }
+                }
+            }
+
+            // Save
+            set(username, addressBookUrlHash, vcardUrlHash, vcard, thumbnailBuffer)
         }
 
 
@@ -159,12 +185,12 @@ export namespace VcardsParsed {
     }
 
 
-    export function batchParseVcardsAndSet(username: string, vcards: Vcard[]): void {
+    export async function batchParseVcardsAndSet(username: string, vcards: Vcard[]): Promise<void> {
         console.debug(`server.vcards.batchParseVcardsAndSet(${username}, ${vcards.length})`)
-        db.db.transaction(() => {
-            vcards.forEach((vcard) => {
+        await db.db.transaction(() => {
+            vcards.forEach(async (vcard) => {
                 if (typeof vcard?.data === "string") {
-                    parseVcardAndSet(username, vcard.addressBookUrlHash, vcard.vcardUrlHash, vcard.data)
+                    await parseVcardAndSet(username, vcard.addressBookUrlHash, vcard.vcardUrlHash, vcard.data)
                 }
             })
         })()

@@ -84,12 +84,12 @@ export async function updateOrInsertVcards(username: Username, addressBookUrl: s
 }
 
 
-export function updateOrInsertParsedVcards(username: Username, addressBookUrlHash: Hash) {
+export async function updateOrInsertParsedVcards(username: Username, addressBookUrlHash: Hash) {
     console.debug(`sync.updateOrInsertParsedVcards(${username}, ${addressBookUrlHash})`)
 
     const vcards = Vcards.getAllAddressBookVcards(username, addressBookUrlHash)
     if (!vcards) return
 
     // Parse all native vCards and insert or update all of them into the database
-    VcardsParsed.batchParseVcardsAndSet(username, vcards)
+    await VcardsParsed.batchParseVcardsAndSet(username, vcards)
 }

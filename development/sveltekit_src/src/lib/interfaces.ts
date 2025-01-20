@@ -72,6 +72,7 @@ export interface VcardParsed {
     /** vcardUrlHash: Bun.hash(url) */
     vcardUrlHash:  Hash
     vcardParsed: VCard4
+    thumbnailBuffer?: Buffer
 }
 
 
