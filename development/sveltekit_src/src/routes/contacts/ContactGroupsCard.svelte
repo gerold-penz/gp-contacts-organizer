@@ -1,15 +1,17 @@
 <script lang="ts">
     import { page } from "$app/state"
+    import type { ContactGroup } from "$lib/interfaces"
 
-    const activeContactGroups = $derived(page.data.activeContactGroups)
+    const activeContactGroups: ContactGroup[] = $derived(page.data.activeContactGroups)
     const currentPath = $derived(page.url.pathname)
+
 </script>
 
 
 <!-- Contact groups card BEGIN -->
 <div class="card">
 
-  <div class="card-header     text-secondary">
+  <div class="card-header">
     Contact Groups
   </div>
 
@@ -17,18 +19,17 @@
   <div class="list-group list-group-flush border-0">
     {#if activeContactGroups?.length}
 
-      <a
-        class="list-group-item list-group-item-action border-0     disabled"
-        href={currentPath}>
-        All contacts
-      </a>
-
       {#each activeContactGroups as contactGroup, index}
         <a
-          class="list-group-item list-group-item-action border-0     disabled"
+          class="list-group-item list-group-item-action border-0"
           href={`${currentPath}/${index}`}
         >
           {contactGroup.displayName}
+
+
+
+
+
         </a>
       {/each}
 

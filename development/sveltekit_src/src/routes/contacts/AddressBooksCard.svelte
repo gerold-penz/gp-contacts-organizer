@@ -19,10 +19,10 @@
       <a
         class="list-group-item list-group-item-action border-0"
         class:active={currentPath.startsWith("/contacts/all")}
-        href="/contacts/all">
-        All contacts
+        href="/contacts/all"
+      >
+        All address books
       </a>
-
       {#each activeAddressBooks as addressBook}
         <a
           class="list-group-item list-group-item-action border-0"

@@ -1,4 +1,4 @@
-import type {LayoutServerLoad} from "./$types"
+import type { LayoutServerLoad } from "./$types"
 import { redirect, error } from "@sveltejs/kit"
 import { status } from "http-status"
 import { Users } from "$lib/server/users"
@@ -35,7 +35,6 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     }
 
     // Get all parsed vCards of the selected address books (async)
-    console.time("load active vcards parsed")
     const activeVcardsParsed: VcardParsed[] = []
     if (selectedAddressBooks?.length) {
         for (const addressBook of selectedAddressBooks) {
@@ -45,16 +44,42 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
             }
         }
     }
-    console.timeEnd("load active vcards parsed")
 
+    // Delete the images before they are sent to the browser
+    activeVcardsParsed.forEach((activeVcardParsed) => {
+        if (activeVcardParsed.vcardParsed.PHOTO?.length) {
+            activeVcardParsed.vcardParsed.PHOTO = undefined
+        }
+    })
 
     // activeContactGroups
     let activeContactGroups: ContactGroup[] = []
-    if (selectedAddressBooks?.length) {
+    let categoryNames = new Set<string>()
+    if (activeVcardsParsed?.length) {
+        // Load contact groups of all active address books
+        activeVcardsParsed.forEach((activeVcardParsed) => {
+            const categories = activeVcardParsed.vcardParsed.CATEGORIES
+            if (categories?.[0].value) {
+                categories?.[0].value.forEach((displayName) => {
+                    if (displayName) {
+                        categoryNames.add(displayName)
 
-        // ToDo: Load contact groups of all active address books
-        activeContactGroups = [{displayName: "Family"}, {displayName: "Customers"}, {displayName: "Starred in Android"}]
+                        // ToDo: Zählen
 
+                    }
+                })
+            }
+        })
+        // Add contact groups
+        categoryNames.forEach((displayName) => {
+            activeContactGroups.push({displayName})
+        })
+        // Sort
+        activeContactGroups.sort((a, b) => {
+            if (a.displayName > b.displayName) return 1
+            if (a.displayName < b.displayName) return -1
+            return 0
+        })
     }
 
     // Finished

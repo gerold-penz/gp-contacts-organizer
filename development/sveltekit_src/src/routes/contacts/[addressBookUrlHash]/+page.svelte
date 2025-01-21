@@ -13,7 +13,7 @@
 
     const addressBookTitle = $derived.by(() => {
         if (page.url.pathname.startsWith("/contacts/all")) {
-            return "All contacts"
+            return "All address books"
         }
         return data.selectedAddressBooks?.[0].displayName
     })
