@@ -15,10 +15,10 @@
 	"devDependencies": {
 		"@auth/sveltekit": "^1.7.4",
 		"@fontsource/ubuntu": "^5.1.1",
-		"@sveltejs/kit": "^2.16.0",
+		"@sveltejs/kit": "^2.16.1",
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
 		"@types/bootstrap": "^5.2.10",
-		"@types/bun": "^1.1.17",
+		"@types/bun": "^1.1.18",
 		"@types/luxon": "^3.4.2",
 		"@types/parse-data-url": "^3.0.2",
 		"@types/xml2js": "^0.4.14",
@@ -37,7 +37,7 @@
 		"tsdav": "^2.1.3",
 		"typescript": "^5.7.3",
 		"vcard4-tsm": "^1.0.0",
-		"vite": "^5.4.11",
+		"vite": "^5.4.13",
 		"xml2js": "^0.6.2",
 		"zod": "^3.24.1"
 	},
