@@ -80,4 +80,5 @@ export interface VcardParsed {
 
 export interface ContactGroup {
     displayName: string
+    length?: number
 }

@@ -54,25 +54,24 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
 
     // activeContactGroups
     let activeContactGroups: ContactGroup[] = []
-    let categoryNames = new Set<string>()
+
+    let categoryNames: {[categoryName: string]: number} = {}
+
     if (activeVcardsParsed?.length) {
         // Load contact groups of all active address books
         activeVcardsParsed.forEach((activeVcardParsed) => {
             const categories = activeVcardParsed.vcardParsed.CATEGORIES
             if (categories?.[0].value) {
-                categories?.[0].value.forEach((displayName) => {
-                    if (displayName) {
-                        categoryNames.add(displayName)
-
-                        // ToDo: Zählen
-
+                categories?.[0].value.forEach((categoryName) => {
+                    if (categoryName) {
+                        categoryNames[categoryName] = (categoryNames[categoryName] ?? 0) + 1
                     }
                 })
             }
         })
         // Add contact groups
-        categoryNames.forEach((displayName) => {
-            activeContactGroups.push({displayName})
+        Object.entries(categoryNames).forEach(([displayName, length]) => {
+            activeContactGroups.push({displayName, length})
         })
         // Sort
         activeContactGroups.sort((a, b) => {

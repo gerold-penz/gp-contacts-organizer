@@ -26,6 +26,14 @@
         >
           {contactGroup.displayName}
 
+          {#if contactGroup?.length}
+          <span
+            class="badge rounded-pill text-bg-secondary"
+            style="--bs-badge-font-size: 0.6em; transform: translateY(-0.6em);"
+          >
+            {contactGroup.length}
+          </span>
+          {/if}
 
 
 
