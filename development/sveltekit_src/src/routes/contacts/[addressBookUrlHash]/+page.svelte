@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <div class="card-body table-responsive pt-0 px-0 pb-2">
+    <div class="card-body pt-0 px-0 pb-2">
 
       <!-- Contacts Table BEGIN -->
       <ContactsTable></ContactsTable>

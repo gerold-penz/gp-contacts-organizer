@@ -1,7 +1,9 @@
 <script lang="ts">
     import { page } from "$app/state"
+    import type { UserAddressBook } from "$lib/interfaces"
 
-    const activeAddressBooks = $derived(page.data.activeAddressBooks)
+    const activeAddressBooks: UserAddressBook[] = $derived(page.data.activeAddressBooks)
+    const allAddressBooksLength = $derived(page.data.allAddressBooksLength)
     const currentPath = $derived(page.url.pathname)
 </script>
 
@@ -22,6 +24,17 @@
         href="/contacts/all"
       >
         All address books
+
+        <!-- Vcards count BEGIN -->
+        {#if allAddressBooksLength}
+        <span
+          class="badge rounded-pill text-bg-secondary"
+          style="--bs-badge-font-size: 0.6em; transform: translateY(-0.7em);"
+        >
+          {allAddressBooksLength}
+        </span>
+        {/if}
+        <!-- Vcards count END -->
       </a>
       {#each activeAddressBooks as addressBook}
         <a
@@ -30,6 +43,18 @@
           href={`/contacts/${addressBook.addressBookUrlHash}`}
         >
           {addressBook.displayName}
+
+          <!-- Vcards count BEGIN -->
+          {#if addressBook?.length}
+          <span
+            class="badge rounded-pill text-bg-secondary"
+            style="--bs-badge-font-size: 0.6em; transform: translateY(-0.7em);"
+          >
+            {addressBook.length}
+          </span>
+          {/if}
+          <!-- Vcards count END -->
+
         </a>
       {/each}
 

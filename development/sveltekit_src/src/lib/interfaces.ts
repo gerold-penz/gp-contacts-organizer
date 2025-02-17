@@ -21,6 +21,7 @@ export interface UserAddressBook {
     active: boolean
     ctag?: unknown
     syncToken?: string
+    length?: number
 }
 
 

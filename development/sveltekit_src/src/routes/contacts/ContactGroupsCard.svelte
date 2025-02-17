@@ -2,8 +2,22 @@
     import { page } from "$app/state"
     import type { ContactGroup } from "$lib/interfaces"
 
-    const activeContactGroups: ContactGroup[] = $derived(page.data.activeContactGroups)
+
+    interface ContactGroupWithUrl extends ContactGroup {
+        url: string
+    }
+
+
+    const activeContactGroups = $derived<ContactGroup[]>(page.data.activeContactGroups)
     const currentPath = $derived(page.url.pathname)
+
+    const activeContactGroupsWithUrl: ContactGroupWithUrl[] = $derived.by(() => {
+        return activeContactGroups.map((contactGroup) => {
+            const url = new URL(currentPath, location.origin)
+            url.searchParams.append("contactGroup", contactGroup.displayName.toLowerCase())
+            return {...contactGroup, url: url.toString()}
+        })
+    })
 
 </script>
 
@@ -19,10 +33,10 @@
   <div class="list-group list-group-flush border-0">
     {#if activeContactGroups?.length}
 
-      {#each activeContactGroups as contactGroup, index}
+      {#each activeContactGroupsWithUrl as contactGroup}
         <a
           class="list-group-item list-group-item-action border-0"
-          href={`${currentPath}/${index}`}
+          href={contactGroup.url}
         >
           {contactGroup.displayName}
 
@@ -34,10 +48,6 @@
             {contactGroup.length}
           </span>
           {/if}
-
-
-
-
         </a>
       {/each}
 

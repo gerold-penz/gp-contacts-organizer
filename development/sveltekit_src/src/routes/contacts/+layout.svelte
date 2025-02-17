@@ -34,7 +34,7 @@
     <!-- Sidebar Column END -->
 
     <!-- Contact list column BEGIN -->
-    <div class="col">
+    <div class="col w-50">
 
       {@render children()}
 

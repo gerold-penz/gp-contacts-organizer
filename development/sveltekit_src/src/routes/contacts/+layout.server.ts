@@ -24,6 +24,13 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     // Get active address books
     const activeAddressBooks: UserAddressBook[] = user?.addressBooks?.filter((addressBook) => addressBook.active) || []
 
+    // Get address books length
+    let allAddressBooksLength = 0
+    activeAddressBooks.forEach((addressBook) => {
+        addressBook.length = VcardsParsed.getAddressBookLength(username, addressBook.addressBookUrlHash)
+        allAddressBooksLength += addressBook.length
+    })
+
     // Get selected address book(s)
     let selectedAddressBooks: UserAddressBook[] | undefined = undefined
     const addressBookUrlHash = params?.addressBookUrlHash
@@ -38,10 +45,11 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
     const activeVcardsParsed: VcardParsed[] = []
     if (selectedAddressBooks?.length) {
         for (const addressBook of selectedAddressBooks) {
-            const vcardParseds = VcardsParsed.getAllAddressBookVcardsParsed(username, addressBook.addressBookUrlHash) || []
-            if (vcardParseds?.length) {
-                activeVcardsParsed.push(...vcardParseds)
+            const vcardsParsed = VcardsParsed.getAllAddressBookVcardsParsed(username, addressBook.addressBookUrlHash) || []
+            if (vcardsParsed?.length) {
+                activeVcardsParsed.push(...vcardsParsed)
             }
+
         }
     }
 
@@ -81,12 +89,14 @@ export const load: LayoutServerLoad = async ({locals, params}) => {
         })
     }
 
+
     // Finished
     return {
         activeAddressBooks,
         selectedAddressBooks,
         activeVcardsParsed,
         activeContactGroups,
+        allAddressBooksLength
     }
 
 }

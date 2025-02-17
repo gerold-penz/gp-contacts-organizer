@@ -202,6 +202,12 @@ export namespace VcardsParsed {
         return db.getValues<VcardParsed>(startsWith) as VcardParsed[] | undefined
     }
 
+
+    export function getAddressBookLength(username: string, addressBookUrlHash: Hash): number {
+        const startsWith = `${PARSED_PREFIX}:${username}:${addressBookUrlHash}:`
+        return (db.getKeys(startsWith) ?? []).length
+    }
+
 }
 
 
