@@ -2,17 +2,17 @@
     import { page } from "$app/state"
     import type { VcardParsed } from "$lib/interfaces"
     import { PersistedState } from "runed"
-    import { LOCAL_STORAGE_PREFIX } from "$lib/constants"
+    import { LOCAL_STORAGE_PREFIX, SortBy } from "$lib/constants"
     import { ArrowDownAz, ArrowDownZa } from "lucide-svelte"
 
 
-    const sortByPersisted = new PersistedState(
-        `${LOCAL_STORAGE_PREFIX}:sortBy`, "FN", {storage: "local"}
+    const sortByPersisted = new PersistedState<SortBy>(
+        `${LOCAL_STORAGE_PREFIX}:sortBy`, SortBy.FullName, {storage: "local"}
     )
 
     $inspect(sortByPersisted.current)
 
-    const sortBy = $derived(sortByPersisted.current)
+    const sortBy = $derived<SortBy>(sortByPersisted.current)
     const sortDirectionPersisted = new PersistedState<"asc" | "desc">(
         `${LOCAL_STORAGE_PREFIX}:sortDirection`, "asc", {storage: "local"}
     )
@@ -68,12 +68,17 @@
             let aValue: string
             let bValue: string
 
-            if (sortBy === "TEL") {
-                // TEL
+            if (sortBy === SortBy.City) {
+                aValue = a.vcardParsed.ADR?.[0].value?.locality?.[0] ?? ""
+                bValue = b.vcardParsed.ADR?.[0].value?.locality?.[0] ?? ""
+            } else if (sortBy === SortBy.PhoneNumber) {
                 aValue = a.vcardParsed.TEL?.[0].value ?? ""
                 bValue = b.vcardParsed.TEL?.[0].value ?? ""
+            } else if (sortBy === SortBy.Email) {
+                aValue = a.vcardParsed.EMAIL?.[0].value ?? ""
+                bValue = b.vcardParsed.EMAIL?.[0].value ?? ""
             } else {
-                // FN is the default
+                // FullName is the default
                 aValue = a.vcardParsed.FN?.[0].value ?? ""
                 bValue = b.vcardParsed.FN?.[0].value ?? ""
             }
@@ -91,13 +96,48 @@
         })
     })
 
-
 </script>
+
+
+<!-- Table-Header Button BEGIN -->
+{#snippet headerButton(headerButtonLabel: string, headerButtonSortBy: SortBy)}
+  <button
+    class="btn btn-link text-dark text-decoration-none fw-bold d-inline-flex align-items-center m-0 p-0 border-0"
+    onclick={() => {
+      if (sortByPersisted.current !== headerButtonSortBy) {
+        sortByPersisted.current = headerButtonSortBy
+        sortDirectionPersisted.current = "asc"
+      } else {
+        if (sortDirection === "asc"){
+          sortDirectionPersisted.current = "desc"
+        } else {
+          sortDirectionPersisted.current = "asc"
+        }
+      }
+    }}
+  >
+    <!-- Label BEGIN -->
+    <span>{headerButtonLabel}</span>
+    <!-- Label END -->
+
+    <!-- Sorting BEGIN -->
+    {#if sortBy === headerButtonSortBy}
+      {#if sortDirection === "asc"}
+        <ArrowDownAz class="ms-2" size="20"/>
+      {:else}
+        <ArrowDownZa class="ms-2" size="20"/>
+      {/if}
+    {/if}
+    <!-- Sorting END -->
+  </button>
+{/snippet}
+<!-- Table-Header Button END -->
 
 
 <div class="table-responsive">
 
   <table class="table table-hover">
+
     <thead class="table-light">
     <tr>
       <th><input class="form-check-input" type="checkbox"/></th>
@@ -105,41 +145,31 @@
 
       <!-- Full name header BEGIN -->
       <th scope="row">
-
-        <button
-          class="btn btn-link text-dark text-decoration-none fw-bold d-inline-flex align-items-center m-0 p-0 border-0"
-          onclick={() => {
-            sortByPersisted.current = "FN"
-            if (sortDirection === "asc"){
-                sortDirectionPersisted.current = "desc"
-            } else {
-                sortDirectionPersisted.current = "asc"
-            }
-        }}
-        >
-          <!-- Label BEGIN -->
-          <span>Full Name</span>
-          <!-- Label END -->
-
-          <!-- Sorting BEGIN -->
-          {#if sortBy === "FN"}
-            {#if sortDirection === "asc"}
-              <ArrowDownAz class="ms-2" size="20"/>
-            {:else}
-              <ArrowDownZa class="ms-2" size="20"/>
-            {/if}
-          {/if}
-          <!-- Sorting END -->
-        </button>
-
+        {@render headerButton("Full Name", SortBy.FullName)}
       </th>
       <!-- Full name header END -->
 
-      <th scope="row">City</th>
-      <th scope="row">Phone number</th>
-      <th scope="row">Email</th>
+      <!-- City header BEGIN -->
+      <th scope="row">
+        {@render headerButton("City", SortBy.City)}
+      </th>
+      <!-- City header END -->
+
+      <!-- Phone header BEGIN -->
+      <th scope="row">
+        {@render headerButton("Phone number", SortBy.PhoneNumber)}
+      </th>
+      <!-- Phone header END -->
+
+      <!-- Email header BEGIN -->
+      <th scope="row">
+        {@render headerButton("Email", SortBy.Email)}
+      </th>
+      <!-- Email header END -->
+
     </tr>
     </thead>
+
     <tbody>
 
     <!-- Row BEGIN -->
