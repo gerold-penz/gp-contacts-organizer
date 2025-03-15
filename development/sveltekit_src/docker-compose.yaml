@@ -1,5 +1,5 @@
 services:
-  gp-imap-rest-api:
+  gp_contacts_organizer:
     image: ghcr.io/gerold-penz/gp-contacts-organizer
     ports:
       - "3000:3000"

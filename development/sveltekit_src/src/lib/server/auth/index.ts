@@ -58,6 +58,7 @@ export const {handle, signIn, signOut} = SvelteKitAuth({
     providers: [
         nextcloudProvider
     ],
+    trustHost: true,
 })
 
 
