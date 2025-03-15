@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@auth/sveltekit": "^1.8.0",
 		"@fontsource/ubuntu": "^5.2.5",
-		"@sveltejs/kit": "^2.19.0",
+		"@sveltejs/kit": "^2.19.1",
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
 		"@types/bootstrap": "^5.2.10",
 		"@types/bun": "^1.2.5",
