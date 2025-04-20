@@ -14,7 +14,7 @@
 
 
 <!-- Main content BEGIN -->
-<main class="container-fluid py-2">
+<main class="container py-2">
 
   <!-- Row BEGIN -->
   <div class="row g-2">

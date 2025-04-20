@@ -9,8 +9,9 @@
 
 <header>
 
-  <nav class="navbar navbar-expand-sm bg-body-tertiary">
-    <div class="container-fluid">
+<!--  <nav class="navbar navbar-expand-sm bg-body-tertiary">-->
+  <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+    <div class="container">
 
       <!-- Brand BEGIN -->
       <a
@@ -19,7 +20,7 @@
         title="Go to start page"
       >
         Contacts Organizer <br>
-        <small class="text-secondary">for Nextcloud</small>
+        <small class="text-white-50">for Nextcloud</small>
       </a>
       <!-- Brand END -->
 

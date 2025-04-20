@@ -28,8 +28,8 @@
         <!-- Vcards count BEGIN -->
         {#if allAddressBooksLength}
         <span
-          class="badge rounded-pill text-bg-secondary"
-          style="--bs-badge-font-size: 0.6em; transform: translateY(-0.7em);"
+          class="badge rounded-pill text-bg-secondary ms-1"
+          style="--bs-badge-font-size: 0.6em; transform: translateY(-0.5em);"
         >
           {allAddressBooksLength}
         </span>
@@ -47,8 +47,8 @@
           <!-- Vcards count BEGIN -->
           {#if addressBook?.length}
           <span
-            class="badge rounded-pill text-bg-secondary"
-            style="--bs-badge-font-size: 0.6em; transform: translateY(-0.7em);"
+            class="badge rounded-pill text-bg-secondary ms-1"
+            style="--bs-badge-font-size: 0.6em; transform: translateY(-0.5em);"
           >
             {addressBook.length}
           </span>

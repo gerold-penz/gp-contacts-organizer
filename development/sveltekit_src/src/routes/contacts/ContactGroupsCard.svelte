@@ -42,8 +42,8 @@
 
           {#if contactGroup?.length}
           <span
-            class="badge rounded-pill text-bg-secondary"
-            style="--bs-badge-font-size: 0.6em; transform: translateY(-0.6em);"
+            class="badge rounded-pill text-bg-secondary ms-1"
+            style="--bs-badge-font-size: 0.6em; transform: translateY(-0.5em);"
           >
             {contactGroup.length}
           </span>

@@ -36,15 +36,11 @@
                 }
             }
             // Initials instead of thumbnail
-            let initials: string = ""
             if (!activeVcard?.thumbnailUrl) {
-                const givenNameInitial = activeVcard?.vcardParsed.N?.value.givenNames[0].at(0)
-                const familyNameInitial = activeVcard?.vcardParsed.N?.value.familyNames[0].at(0)
-                const orgInitial = activeVcard?.vcardParsed.ORG?.[0].value[0].slice(0, 2)
-                if (givenNameInitial) initials += givenNameInitial
-                if (familyNameInitial) initials += familyNameInitial
-                if (!initials.length && orgInitial) initials = orgInitial
-                if (initials) activeVcard.initials = initials
+                const words = activeVcard.vcardParsed.FN[0].value.split(" ")
+                const chars = words.map((word) => word.at(0))
+                const initialsArray = chars.filter((char) => char && char === char.toUpperCase()) || chars || [""]
+                activeVcard.initials = initialsArray.join("").slice(0, 2)
             }
             return activeVcard
         })
